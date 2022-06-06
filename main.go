@@ -21,5 +21,15 @@ func main() {
 		}
 		c.AsciiJSON(http.StatusOK, data)
 	})
-	r.Run() // // 监听并在 0.0.0.0:8080 上启动服务
+
+	r.LoadHTMLGlob("templates/*")
+	//router.LoadHTMLFiles("templates/template1.html", "templates/template2.html")
+	r.GET("/index", func(c *gin.Context) {
+		c.HTML(http.StatusOK, "index.tmpl", gin.H{
+			"title": "Main website",
+		})
+	})
+
+	// 监听并在 0.0.0.0:8080 上启动服务
+	r.Run()
 }
