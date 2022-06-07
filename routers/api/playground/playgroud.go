@@ -57,6 +57,10 @@ func playgroundPost(r *gin.RouterGroup) {
 		json := make(map[string]interface{}) //注意该结构接受的内容
 		c.BindJSON(&json)
 		log.Printf("%v", &json)
+		c.JSON(http.StatusOK, gin.H{
+			"message": "success",
+			"data":    json,
+		})
 
 		// // 获取body中的参数方式二
 		// json := User{}
