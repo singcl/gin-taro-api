@@ -7,6 +7,7 @@ import (
 )
 
 func main() {
+	// 默认使用了2个中间件Logger(), Recovery()
 	r := gin.Default()
 	r.Static("/assets", "./assets")
 	r.LoadHTMLGlob("templates/*")
