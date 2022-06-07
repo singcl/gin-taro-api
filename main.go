@@ -10,6 +10,8 @@ import (
 func main() {
 	r := gin.Default()
 	r.Static("/assets", "./assets")
+	r.LoadHTMLGlob("templates/*")
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
 			"message": "pong",
@@ -37,7 +39,6 @@ func main() {
 		c.AsciiJSON(http.StatusOK, data)
 	})
 
-	r.LoadHTMLGlob("templates/*")
 	//router.LoadHTMLFiles("templates/template1.html", "templates/template2.html")
 	r.GET("/index", func(c *gin.Context) {
 		c.HTML(http.StatusOK, "index.tmpl", gin.H{
