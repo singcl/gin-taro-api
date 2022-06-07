@@ -38,10 +38,12 @@
     "historynew",
     "imei",
     "prdid",
+    "silenceper",
     "singcl",
     "tmpl",
     "total_datas",
     "vuex",
+    "Wechat",
     "xmiles"
   ],
   // Enable / Disable compound words like 'errormessage'
