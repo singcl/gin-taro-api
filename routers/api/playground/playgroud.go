@@ -1,19 +1,22 @@
 package playground
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
-type UrlQuery struct {
-	name, email string
-}
+// type User struct {
+// 	name   string `json:name`
+// 	account int64  `json:account`
+// }
 
 func PlaygroundInitRouter(r *gin.RouterGroup) {
 	playground := r.Group("/playground")
 	playgroundUrlParams(playground)
 	playgroundUrlQuery(playground)
+	playgroundPost(playground)
 }
 
 //  /playground/:param/ *action  形式的url
@@ -40,5 +43,23 @@ func playgroundUrlQuery(r *gin.RouterGroup) {
 			"message": "success",
 			"data":    []string{name, email},
 		})
+	})
+}
+
+//
+func playgroundPost(r *gin.RouterGroup) {
+	r.POST("/query", func(c *gin.Context) {
+		/* // 获取表单参数
+		message := c.PostForm("userName")              // 表单参数
+		nick := c.DefaultPostForm("account", "123456") // 此方法可以设置默认值，和上面的get一样 */
+
+		// 获取body中的参数方式一
+		json := make(map[string]interface{}) //注意该结构接受的内容
+		c.BindJSON(&json)
+		log.Printf("%v", &json)
+
+		// // 获取body中的参数方式二
+		// json := User{}
+		// c.BindJSON(&json)
 	})
 }
