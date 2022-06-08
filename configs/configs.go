@@ -9,6 +9,10 @@ type Config struct {
 		PoolSize     int    `toml:"poolSize"`
 		MinIdleConns int    `toml:"minIdleConns"`
 	} `toml:"redis"`
+
+	Language struct {
+		Local string `toml:"local"`
+	} `toml:"language"`
 }
 
 // 生产配置
