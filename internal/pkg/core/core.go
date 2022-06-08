@@ -158,6 +158,9 @@ func New(options ...Option) (Kiko, error) {
 		}))
 	}
 
+	// 暂时使用内置logger
+	kiko.engine.Use(gin.Logger())
+
 	// recover两次，防止处理时发生panic，尤其是在OnPanicNotify中。
 	kiko.engine.Use(func(ctx *gin.Context) {
 		defer func() {
