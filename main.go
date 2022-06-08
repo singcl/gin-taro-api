@@ -5,6 +5,7 @@ import (
 
 	"github.com/singcl/gin-taro-api/configs"
 	"github.com/singcl/gin-taro-api/internal/router"
+	"github.com/singcl/gin-taro-api/pkg/shutdown"
 )
 
 func main() {
@@ -30,4 +31,6 @@ func main() {
 			// logger
 		}
 	}()
+	//
+	shutdown.NewHook().Close()
 }
