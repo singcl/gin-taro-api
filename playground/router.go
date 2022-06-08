@@ -1,8 +1,8 @@
-package routers
+package playground
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/singcl/gin-taro-api/routers/api"
+	"github.com/singcl/gin-taro-api/playground/api"
 )
 
 // 初始化路由

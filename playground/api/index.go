@@ -2,8 +2,8 @@ package api
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/singcl/gin-taro-api/routers/api/auth"
-	"github.com/singcl/gin-taro-api/routers/api/playground"
+	"github.com/singcl/gin-taro-api/playground/api/auth"
+	"github.com/singcl/gin-taro-api/playground/api/playground"
 )
 
 func InitApi(r *gin.Engine) *gin.RouterGroup {
