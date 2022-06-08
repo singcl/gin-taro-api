@@ -3,14 +3,16 @@ package core
 import (
 	"bytes"
 	"io/ioutil"
+	"net/http"
 	"sync"
 
 	"github.com/gin-gonic/gin"
 )
 
 const (
-	_BodyName    = "_body_"
-	_PayloadName = "_payload_"
+	_BodyName       = "_body_"
+	_PayloadName    = "_payload_"
+	_AbortErrorName = "_abort_error_"
 )
 
 type HandlerFunc func(c Context)
@@ -25,6 +27,11 @@ type Context interface {
 	getPayload() interface{}
 	// Host 获取 Request.Host
 	Host() string
+	// ShouldBindURI 反序列化 path 参数(如路由路径为 /user/:name)
+	// tag: `uri:"xxx"`
+	ShouldBindURI(obj interface{}) error
+	// AbortWithError 错误返回
+	AbortWithError(err BusinessError)
 }
 
 type context struct {
@@ -55,6 +62,24 @@ func (c *context) getPayload() interface{} {
 // Host 请求的host
 func (c *context) Host() string {
 	return c.ctx.Request.Host
+}
+
+// ShouldBindURI 反序列化path参数(如路由路径为 /user/:name)
+// tag: `uri:"xxx"`
+func (c *context) ShouldBindURI(obj interface{}) error {
+	return c.ctx.ShouldBindUri(obj)
+}
+
+func (c *context) AbortWithError(err BusinessError) {
+	if err != nil {
+		httpCode := err.HTTPCode()
+		if httpCode == 0 {
+			httpCode = http.StatusInternalServerError
+		}
+
+		c.ctx.AbortWithStatus(httpCode)
+		c.ctx.Set(_AbortErrorName, err)
+	}
 }
 
 var contextPool = &sync.Pool{
