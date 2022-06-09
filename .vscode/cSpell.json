@@ -29,11 +29,14 @@
   "showStatus": true,
   // Words to add to dictionary for a workspace.
   "words": [
+    "apikey",
     "Arpu",
     "Cascader",
     "daterange",
+    "Dialector",
     "ecpm",
     "gonic",
+    "gorm",
     "historyarpu",
     "historynew",
     "imei",
@@ -42,11 +45,13 @@
     "prdid",
     "silenceper",
     "singcl",
+    "timeutil",
     "tmpl",
     "total_datas",
     "vuex",
     "Wechat",
-    "xmiles"
+    "xmiles",
+    "zapcore"
   ],
   // Enable / Disable compound words like 'errormessage'
   "allowCompoundWords": false,
