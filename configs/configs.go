@@ -1,6 +1,20 @@
 package configs
 
-import "time"
+import (
+	"bytes"
+	_ "embed"
+	"io"
+	"os"
+	"path/filepath"
+	"time"
+
+	"github.com/fsnotify/fsnotify"
+	"github.com/singcl/gin-taro-api/pkg/env"
+	"github.com/singcl/gin-taro-api/pkg/file"
+	"github.com/spf13/viper"
+)
+
+var config = new(Config)
 
 type Config struct {
 	MySQL struct {
@@ -37,8 +51,75 @@ type Config struct {
 	} `toml:"language"`
 }
 
-// 生产配置
-var config = new(Config)
+var (
+	//go:embed dev_configs.toml
+	devConfigs []byte
+
+	//go:embed fat_configs.toml
+	fatConfigs []byte
+
+	//go:embed uat_configs.toml
+	uatConfigs []byte
+
+	//go:embed pro_configs.toml
+	proConfigs []byte
+)
+
+func init() {
+	var r io.Reader
+
+	switch env.Active().Value() {
+	case "dev":
+		r = bytes.NewReader(devConfigs)
+	case "fat":
+		r = bytes.NewReader(fatConfigs)
+	case "uat":
+		r = bytes.NewReader(uatConfigs)
+	case "pro":
+		r = bytes.NewReader(proConfigs)
+	default:
+		r = bytes.NewReader(fatConfigs)
+	}
+
+	viper.SetConfigType("toml")
+
+	if err := viper.ReadConfig(r); err != nil {
+		panic(err)
+	}
+
+	if err := viper.Unmarshal(config); err != nil {
+		panic(err)
+	}
+
+	viper.SetConfigName(env.Active().Value() + "_configs")
+	viper.AddConfigPath("./configs")
+
+	configFile := "./configs/" + env.Active().Value() + "_configs.toml"
+	_, ok := file.IsExists(configFile)
+
+	if !ok {
+		if err := os.MkdirAll(filepath.Dir(configFile), 0766); err != nil {
+			panic(err)
+		}
+
+		f, err := os.Create(configFile)
+		if err != nil {
+			panic(err)
+		}
+		defer f.Close()
+
+		if err := viper.WriteConfig(); err != nil {
+			panic(err)
+		}
+	}
+
+	viper.WatchConfig()
+	viper.OnConfigChange(func(e fsnotify.Event) {
+		if err := viper.Unmarshal(config); err != nil {
+			panic(err)
+		}
+	})
+}
 
 // 获取配置
 func Get() Config {
