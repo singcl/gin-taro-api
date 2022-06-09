@@ -9,5 +9,6 @@ func setApiRouter(r *resource) {
 	helpers := r.kiko.Group("helper")
 	{
 		helpers.GET("/md5/:str", helperHandler.Md5())
+		helpers.POST("/sign", helperHandler.Sign())
 	}
 }

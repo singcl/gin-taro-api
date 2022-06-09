@@ -18,7 +18,7 @@ type Handler interface {
 	// Sign 签名
 	// @Tags Helper
 	// @Router /helper/sign [post]
-	// Sign() core.HandlerFunc
+	Sign() core.HandlerFunc
 }
 
 type handler struct {
