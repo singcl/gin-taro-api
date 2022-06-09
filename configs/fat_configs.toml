@@ -23,14 +23,14 @@
   [mysql.read]
     addr = "127.0.0.1:3306"
     name = "gin_taro_api"
-    pass = "123456789"
-    user = "root"
+    pass = "taro123456"
+    user = "taro"
 
   [mysql.write]
     addr = "127.0.0.1:3306"
     name = "gin_taro_api"
-    pass = "123456789"
-    user = "root"
+    pass = "taro123456"
+    user = "taro"
 
 [redis]
   addr = "127.0.0.1:6379"
