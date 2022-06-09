@@ -9,6 +9,15 @@ const (
 	// ProjectPort 项目端口
 	ProjectPort = ":9000"
 
+	// ProjectInstallMark 项目安装完成标识
+	ProjectInstallMark = "INSTALL.lock"
+
+	// ProjectAccessLogFile 项目访问日志存放文件
+	ProjectAccessLogFile = "./logs/" + ProjectName + "-access.log"
+
+	// ProjectCronLogFile 项目后台任务日志存放文件
+	ProjectCronLogFile = "./logs/" + ProjectName + "-cron.log"
+
 	// HeaderSignTokenTimeout 签名有效期为 2 分钟
 	HeaderSignTokenTimeout = time.Minute * 2
 

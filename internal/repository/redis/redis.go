@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/go-redis/redis/v7"
+	"github.com/singcl/gin-taro-api/configs"
 	"github.com/singcl/gin-taro-api/pkg/errors"
 	"github.com/singcl/gin-taro-api/pkg/timeutil"
 	"github.com/singcl/gin-taro-api/pkg/trace"
@@ -32,6 +33,35 @@ type Repo interface {
 
 type cacheRepo struct {
 	client *redis.Client
+}
+
+func New() (Repo, error) {
+	client, err := redisConnect()
+	if err != nil {
+		return nil, err
+	}
+
+	return &cacheRepo{
+		client: client,
+	}, nil
+}
+
+func redisConnect() (*redis.Client, error) {
+	cfg := configs.Get().Redis
+	client := redis.NewClient(&redis.Options{
+		Addr:         cfg.Addr,
+		Password:     cfg.Pass,
+		DB:           cfg.Db,
+		MaxRetries:   cfg.MaxRetries,
+		PoolSize:     cfg.PoolSize,
+		MinIdleConns: cfg.MinIdleConns,
+	})
+
+	if err := client.Ping().Err(); err != nil {
+		return nil, errors.Wrap(err, "ping redis err")
+	}
+
+	return client, nil
 }
 
 func (c *cacheRepo) i() {}
