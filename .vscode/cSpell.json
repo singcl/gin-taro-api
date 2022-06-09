@@ -35,6 +35,7 @@
     "daterange",
     "Dialector",
     "ecpm",
+    "fsnotify",
     "gonic",
     "gorm",
     "historyarpu",
