@@ -51,6 +51,7 @@ type Context interface {
 
 	// Logger 获取 Logger 对象
 	Logger() *zap.Logger
+	setLogger(logger *zap.Logger)
 }
 
 type context struct {
@@ -130,6 +131,10 @@ func (c *context) Logger() *zap.Logger {
 	}
 
 	return logger.(*zap.Logger)
+}
+
+func (c *context) setLogger(logger *zap.Logger) {
+	c.ctx.Set(_LoggerName, logger)
 }
 
 // RequestContext (包装 Trace + Logger) 获取请求的 context (当client关闭后，会自动canceled)

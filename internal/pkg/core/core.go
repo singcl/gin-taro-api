@@ -3,13 +3,16 @@ package core
 import (
 	"fmt"
 	"net/http"
+	"runtime/debug"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	cors "github.com/rs/cors/wrapper/gin"
 	"github.com/singcl/gin-taro-api/pkg/color"
 	"github.com/singcl/gin-taro-api/pkg/env"
+	"github.com/singcl/gin-taro-api/pkg/errors"
 	"go.uber.org/multierr"
+	"go.uber.org/zap"
 )
 
 // https://patorjk.com/software/taag/#p=testall&f=ANSI%20Regular&t=gin-taro-api%0A
@@ -131,8 +134,12 @@ func (k *kiko) Group(relativePath string, handlers ...HandlerFunc) RouterGroup {
 	}
 }
 
-func New(options ...Option) (Kiko, error) {
-	// gin.SetMode(gin.ReleaseMode)
+func New(logger *zap.Logger, options ...Option) (Kiko, error) {
+	if logger == nil {
+		return nil, errors.New("logger required")
+	}
+	gin.SetMode(gin.ReleaseMode)
+
 	kiko := &kiko{engine: gin.New()}
 	fmt.Println(color.Blue(_UI))
 
@@ -165,7 +172,7 @@ func New(options ...Option) (Kiko, error) {
 	kiko.engine.Use(func(ctx *gin.Context) {
 		defer func() {
 			if err := recover(); err != nil {
-				// logger
+				logger.Error("got panic", zap.String("panic", fmt.Sprintf("%+v", err)), zap.String("stack", string(debug.Stack())))
 			}
 		}()
 		ctx.Next()
@@ -182,6 +189,7 @@ func New(options ...Option) (Kiko, error) {
 		defer releaseContext(context)
 
 		context.init()
+		context.setLogger(logger)
 
 		defer func() {
 			var (
