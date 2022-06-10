@@ -50,7 +50,7 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 	// cronServer.Start()
 	// r.cronServer = cronServer
 
-	kiko, err := core.New(logger)
+	kiko, err := core.New(logger, core.WithEnableCors())
 
 	if err != nil {
 		panic(err)

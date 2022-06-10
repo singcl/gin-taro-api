@@ -71,6 +71,13 @@ func DisableRecordMetrics(ctx Context) {
 	ctx.disableRecordMetrics()
 }
 
+// WithEnableCors 设置支持跨域
+func WithEnableCors() Option {
+	return func(opt *option) {
+		opt.enableCors = true
+	}
+}
+
 type router struct {
 	group *gin.RouterGroup
 }
