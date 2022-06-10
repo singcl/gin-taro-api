@@ -3,6 +3,9 @@ package configs
 import "time"
 
 const (
+	// MinGoVersion 最小 Go 版本
+	MinGoVersion = 1.16
+
 	// ProjectName 项目名称
 	ProjectName = "gin-taro-api"
 
