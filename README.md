@@ -1,4 +1,4 @@
-![gin-taro-api](./assets/images/20220609102431.jpg)
+![gin-taro-api](./public/images/20220609102431.jpg)
 
 # GIN-TARO-API
 
