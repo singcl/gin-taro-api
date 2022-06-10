@@ -184,7 +184,7 @@ func (c *context) RequestContext() StdContext {
 }
 
 func (c *context) HTML(name string, obj interface{}) {
-	c.ctx.HTML(200, name+".html", obj)
+	c.ctx.HTML(http.StatusOK, name+".tmpl", obj)
 }
 
 var contextPool = &sync.Pool{

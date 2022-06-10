@@ -1,6 +1,9 @@
 package install
 
 import (
+	"runtime"
+
+	"github.com/singcl/gin-taro-api/configs"
 	"github.com/singcl/gin-taro-api/internal/pkg/core"
 	"go.uber.org/zap"
 )
@@ -16,7 +19,17 @@ func New(logger *zap.Logger) *handler {
 }
 
 func (h *handler) View() core.HandlerFunc {
+	type viewResponse struct {
+		Config       configs.Config
+		MinGoVersion float64
+		GoVersion    string
+	}
+
 	return func(c core.Context) {
-		c.HTML("install_view", &struct{}{})
+		obj := new(viewResponse)
+		obj.Config = configs.Get()
+		obj.MinGoVersion = configs.MinGoVersion
+		obj.GoVersion = runtime.Version()
+		c.HTML("install_view", obj)
 	}
 }
