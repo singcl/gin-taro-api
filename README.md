@@ -2,11 +2,11 @@
 
 # GIN-TARO-API
 
-https://gin-gonic.com/zh-cn/docs/quickstart/
+[gin framework](https://gin-gonic.com/zh-cn/docs/quickstart/)
 
-moose-go: https://gitee.com/shizidada/moose-go
+[go-gin-api](https://github.com/xinliangnote/go-gin-api)
 
-go-gin-api: https://github.com/xinliangnote/go-gin-api
+[moose-go](https://gitee.com/shizidada/moose-go)
 
 ## start
 
@@ -14,11 +14,11 @@ go run github.com/singcl/gin-taro-api -env fat
 
 ## mysql
 
-```sh
-# root 用户登录
+```sql
+-- root 用户登录
 sudo mysql
-# 创建数据库
+-- 创建数据库
 CREATE DATABASE gin_taro_api DEFAULT CHARACTER SET = 'utf8mb4';
-# 为远程用户授权
+/* 为远程用户授权 */
 GRANT ALL PRIVILEGES ON gin_taro_api.* TO taro'@'127.0.0.1' WITH GRANT OPTION;
 ```
