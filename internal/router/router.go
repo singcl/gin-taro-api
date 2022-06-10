@@ -58,6 +58,9 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 
 	r.kiko = kiko
 
+	// 设置 Render 路由
+	setRenderRouter(r)
+
 	// 设置API路由
 	setApiRouter(r)
 
