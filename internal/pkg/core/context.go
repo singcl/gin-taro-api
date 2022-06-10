@@ -14,11 +14,12 @@ import (
 )
 
 const (
-	_BodyName       = "_body_"
-	_PayloadName    = "_payload_"
-	_AbortErrorName = "_abort_error_"
-	_LoggerName     = "_logger_"
-	_TraceName      = "_trace_"
+	_BodyName        = "_body_"
+	_PayloadName     = "_payload_"
+	_AbortErrorName  = "_abort_error_"
+	_LoggerName      = "_logger_"
+	_TraceName       = "_trace_"
+	_IsRecordMetrics = "_is_record_metrics_"
 )
 
 type HandlerFunc func(c Context)
@@ -48,10 +49,20 @@ type Context interface {
 
 	// Trace 获取 Trace 对象
 	Trace() Trace
+	setTrace(trace Trace)
+	disableTrace()
+
+	// disableRecordMetrics 设置禁止记录指标
+	disableRecordMetrics()
+	ableRecordMetrics()
+	isRecordMetrics() bool
 
 	// Logger 获取 Logger 对象
 	Logger() *zap.Logger
 	setLogger(logger *zap.Logger)
+
+	// HTML 返回界面
+	HTML(name string, obj interface{})
 }
 
 type context struct {
@@ -124,6 +135,31 @@ func (c *context) Trace() Trace {
 	return t.(Trace)
 }
 
+func (c *context) setTrace(trace Trace) {
+	c.ctx.Set(_TraceName, trace)
+}
+
+func (c *context) disableTrace() {
+	c.setTrace(nil)
+}
+
+func (c *context) isRecordMetrics() bool {
+	isRecordMetrics, ok := c.ctx.Get(_IsRecordMetrics)
+	if !ok {
+		return false
+	}
+
+	return isRecordMetrics.(bool)
+}
+
+func (c *context) ableRecordMetrics() {
+	c.ctx.Set(_IsRecordMetrics, true)
+}
+
+func (c *context) disableRecordMetrics() {
+	c.ctx.Set(_IsRecordMetrics, false)
+}
+
 func (c *context) Logger() *zap.Logger {
 	logger, ok := c.ctx.Get(_LoggerName)
 	if !ok {
@@ -145,6 +181,10 @@ func (c *context) RequestContext() StdContext {
 		c.Trace(),
 		c.Logger(),
 	}
+}
+
+func (c *context) HTML(name string, obj interface{}) {
+	c.ctx.HTML(200, name+".html", obj)
 }
 
 var contextPool = &sync.Pool{

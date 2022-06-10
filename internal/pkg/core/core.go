@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 	"runtime/debug"
 	"time"
@@ -11,6 +12,8 @@ import (
 	"github.com/singcl/gin-taro-api/pkg/color"
 	"github.com/singcl/gin-taro-api/pkg/env"
 	"github.com/singcl/gin-taro-api/pkg/errors"
+	"github.com/singcl/gin-taro-api/public"
+	"github.com/singcl/gin-taro-api/views"
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 )
@@ -56,6 +59,16 @@ type IRoutes interface {
 	PUT(string, ...HandlerFunc)
 	OPTIONS(string, ...HandlerFunc)
 	HEAD(string, ...HandlerFunc)
+}
+
+// DisableTraceLog 禁止记录日志
+func DisableTraceLog(ctx Context) {
+	ctx.disableTrace()
+}
+
+// DisableRecordMetrics 禁止记录指标
+func DisableRecordMetrics(ctx Context) {
+	ctx.disableRecordMetrics()
 }
 
 type router struct {
@@ -141,7 +154,12 @@ func New(logger *zap.Logger, options ...Option) (Kiko, error) {
 	gin.SetMode(gin.ReleaseMode)
 
 	kiko := &kiko{engine: gin.New()}
+
 	fmt.Println(color.Blue(_UI))
+
+	// 静态资源服务
+	kiko.engine.StaticFS("public", http.FS(public.Public))
+	kiko.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(views.Templates, "templates/**/*")))
 
 	opt := new(option)
 	for _, f := range options {
