@@ -1,6 +1,9 @@
 package router
 
-import "github.com/singcl/gin-taro-api/internal/api/helper"
+import (
+	"github.com/singcl/gin-taro-api/internal/api/admin"
+	"github.com/singcl/gin-taro-api/internal/api/helper"
+)
 
 func setApiRouter(r *resource) {
 	// helper
@@ -10,5 +13,14 @@ func setApiRouter(r *resource) {
 	{
 		helpers.GET("/md5/:str", helperHandler.Md5())
 		helpers.POST("/sign", helperHandler.Sign())
+	}
+
+	// admin
+	adminHandler := admin.New(r.logger, r.db, r.cache)
+
+	// 需要签名验证，无需登录验证，无需 RBAC 权限验证
+	login := r.kiko.Group("/api", r.interceptors.CheckSignature())
+	{
+		login.POST("/login", adminHandler.Login())
 	}
 }
