@@ -46,6 +46,14 @@ type Config struct {
 		MinIdleConns int    `toml:"minIdleConns"`
 	} `toml:"redis"`
 
+	Mail struct {
+		Host string `toml:"host"`
+		Port int    `toml:"port"`
+		User string `toml:"user"`
+		Pass string `toml:"pass"`
+		To   string `toml:"to"`
+	} `toml:"mail"`
+
 	Language struct {
 		Local string `toml:"local"`
 	} `toml:"language"`
