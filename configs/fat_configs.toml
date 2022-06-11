@@ -1,42 +1,41 @@
-
 [hashids]
-  length = 12
-  secret = "6ab6122836cfef95f8db"
+length = 12
+secret = '6ab6122836cfef95f8db'
 
 [language]
-  local = "zh-cn"
+local = 'zh-cn'
 
-# 邮件配置文件在~/fat_configs.toml
 [mail]
-  host = "smtp.126.com"
-  port = 465
-  user = ""
-  pass = ""
-  to = ""
+host = 'smtp.126.com'
+pass = ''
+port = 465
+to = ''
+user = ''
 
 [mysql]
+[mysql.base]
+connmaxlifetime = 60
+maxidleconn = 60
+maxopenconn = 10
 
-  [mysql.base]
-    connmaxlifetime = 60
-    maxidleconn = 60
-    maxopenconn = 10
+[mysql.read]
+addr = '127.0.0.1:3306'
+name = 'gin_taro_api'
+pass = 'taro123456'
+user = 'taro'
 
-  [mysql.read]
-    addr = "127.0.0.1:3306"
-    name = "gin_taro_api"
-    pass = "taro123456"
-    user = "taro"
+[mysql.write]
+addr = '127.0.0.1:3306'
+name = 'gin_taro_api'
+pass = 'taro123456'
+user = 'taro'
 
-  [mysql.write]
-    addr = "127.0.0.1:3306"
-    name = "gin_taro_api"
-    pass = "taro123456"
-    user = "taro"
 
 [redis]
-  addr = "127.0.0.1:6379"
-  db = 0
-  maxretries = 3
-  minidleconns = 5
-  pass = ""
-  poolsize = 10
+addr = '127.0.0.1:6379'
+db = '0'
+maxretries = 3
+minidleconns = 5
+pass = ''
+poolsize = 10
+
