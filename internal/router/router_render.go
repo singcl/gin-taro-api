@@ -18,5 +18,6 @@ func setRenderRouter(r *resource) {
 
 		// 安装
 		notRBAC.GET("install", renderInstall.View())
+		notRBAC.POST("/install/execute", renderInstall.Execute())
 	}
 }
