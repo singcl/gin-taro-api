@@ -6,12 +6,13 @@
 [language]
   local = "zh-cn"
 
+# 邮件配置文件在~/fat_configs.toml
 [mail]
-  host = "smtp.163.com"
-  pass = ""
+  host = "smtp.126.com"
   port = 465
-  to = ""
   user = ""
+  pass = ""
+  to = ""
 
 [mysql]
 
