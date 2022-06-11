@@ -4,16 +4,20 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"net/url"
 	"runtime/debug"
 	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/pkg/browser"
 	cors "github.com/rs/cors/wrapper/gin"
+	"github.com/singcl/gin-taro-api/configs"
+	"github.com/singcl/gin-taro-api/internal/code"
 	"github.com/singcl/gin-taro-api/internal/proposal"
 	"github.com/singcl/gin-taro-api/pkg/color"
 	"github.com/singcl/gin-taro-api/pkg/env"
 	"github.com/singcl/gin-taro-api/pkg/errors"
+	"github.com/singcl/gin-taro-api/pkg/trace"
 	"github.com/singcl/gin-taro-api/public"
 	"github.com/singcl/gin-taro-api/views"
 	"go.uber.org/multierr"
@@ -191,6 +195,27 @@ func New(logger *zap.Logger, options ...Option) (Kiko, error) {
 	kiko.engine.StaticFS("public", http.FS(public.Public))
 	kiko.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(views.Templates, "templates/**/*")))
 
+	// withoutTracePaths 这些请求，默认不记录日志
+	withoutTracePaths := map[string]bool{
+		"/metrics": true,
+
+		"/debug/pprof/":             true,
+		"/debug/pprof/cmdline":      true,
+		"/debug/pprof/profile":      true,
+		"/debug/pprof/symbol":       true,
+		"/debug/pprof/trace":        true,
+		"/debug/pprof/allocs":       true,
+		"/debug/pprof/block":        true,
+		"/debug/pprof/goroutine":    true,
+		"/debug/pprof/heap":         true,
+		"/debug/pprof/mutex":        true,
+		"/debug/pprof/threadcreate": true,
+
+		"/favicon.ico": true,
+
+		"/system/health": true,
+	}
+
 	opt := new(option)
 	for _, f := range options {
 		f(opt)
@@ -235,29 +260,178 @@ func New(logger *zap.Logger, options ...Option) (Kiko, error) {
 			return
 		}
 
-		// ts := time.Now()
+		ts := time.Now()
 
 		context := newContext(ctx)
 		defer releaseContext(context)
 
 		context.init()
 		context.setLogger(logger)
+		context.ableRecordMetrics()
+
+		if !withoutTracePaths[ctx.Request.URL.Path] {
+			if traceId := context.GetHeader(trace.Header); traceId != "" {
+				context.setTrace(trace.New(traceId))
+			} else {
+				context.setTrace(trace.New(""))
+			}
+		}
 
 		defer func() {
 			var (
-				response interface{}
-				abortErr error
+				response        interface{}
+				traceId         string
+				abortErr        error
+				businessCode    int
+				businessCodeMsg string
 			)
+
+			if ct := context.Trace(); ct != nil {
+				context.SetHeader(trace.Header, ct.ID())
+				traceId = ct.ID()
+			}
+
+			// region 发生 Panic 异常发送告警提醒
+			if err := recover(); err != nil {
+				stackInfo := string(debug.Stack())
+				logger.Error("got panic", zap.String("panic", fmt.Sprintf("%+v", err)), zap.String("stack", stackInfo))
+				context.AbortWithError(Error(
+					http.StatusInternalServerError,
+					code.ServerError,
+					code.Text(code.ServerError)),
+				)
+
+				if notifyHandler := opt.alertNotify; notifyHandler != nil {
+					notifyHandler(&proposal.AlertMessage{
+						ProjectName:  configs.ProjectName,
+						Env:          env.Active().Value(),
+						TraceID:      traceId,
+						HOST:         context.Host(),
+						URI:          context.URI(),
+						Method:       context.Method(),
+						ErrorMessage: err,
+						ErrorStack:   stackInfo,
+						Timestamp:    time.Now(),
+					})
+				}
+			}
+
 			if ctx.IsAborted() {
 				for i := range ctx.Errors {
 					multierr.AppendInto(&abortErr, ctx.Errors[i])
 				}
+
+				if err := context.abortError(); err != nil { // customer err
+					// 判断是否需要发送告警通知
+					if err.IsAlert() {
+						if notifyHandler := opt.alertNotify; notifyHandler != nil {
+							notifyHandler(&proposal.AlertMessage{
+								ProjectName:  configs.ProjectName,
+								Env:          env.Active().Value(),
+								TraceID:      traceId,
+								HOST:         context.Host(),
+								URI:          context.URI(),
+								Method:       context.Method(),
+								ErrorMessage: err.Message(),
+								ErrorStack:   fmt.Sprintf("%+v", err.StackError()),
+								Timestamp:    time.Now(),
+							})
+						}
+					}
+
+					multierr.AppendInto(&abortErr, err.StackError())
+					businessCode = err.BusinessCode()
+					businessCodeMsg = err.Message()
+					response = &code.Failure{
+						Code:    businessCode,
+						Message: businessCodeMsg,
+					}
+					ctx.JSON(err.HTTPCode(), response)
+				}
 			}
-			// region 正确返回
+			// 自定义ctx.Payload方式的返回
 			response = context.getPayload()
 			if response != nil {
 				ctx.JSON(http.StatusOK, response)
 			}
+
+			// region 记录指标
+			if opt.recordHandler != nil && context.isRecordMetrics() {
+				path := context.Path()
+				if alias := context.Alias(); alias != "" {
+					path = alias
+				}
+
+				opt.recordHandler(&proposal.MetricsMessage{
+					ProjectName:  configs.ProjectName,
+					Env:          env.Active().Value(),
+					TraceID:      traceId,
+					HOST:         context.Host(),
+					Path:         path,
+					Method:       context.Method(),
+					HTTPCode:     ctx.Writer.Status(),
+					BusinessCode: businessCode,
+					CostSeconds:  time.Since(ts).Seconds(),
+					IsSuccess:    !ctx.IsAborted() && (ctx.Writer.Status() == http.StatusOK),
+				})
+			}
+			// endregion
+
+			// region 记录日志
+			var t *trace.Trace
+			if x := context.Trace(); x != nil {
+				t = x.(*trace.Trace)
+			} else {
+				return
+			}
+			decodedURL, _ := url.QueryUnescape(ctx.Request.URL.RequestURI())
+			// ctx.Request.Header，精简 Header 参数
+			traceHeader := map[string]string{
+				"Content-Type":              ctx.GetHeader("Content-Type"),
+				configs.HeaderLoginToken:    ctx.GetHeader(configs.HeaderLoginToken),
+				configs.HeaderSignToken:     ctx.GetHeader(configs.HeaderSignToken),
+				configs.HeaderSignTokenDate: ctx.GetHeader(configs.HeaderSignTokenDate),
+			}
+
+			t.WithRequest(&trace.Request{
+				TTL:        "un-limit",
+				Method:     ctx.Request.Method,
+				DecodedURL: decodedURL,
+				Header:     traceHeader,
+				Body:       string(context.RawData()),
+			})
+
+			var responseBody any
+
+			if response != nil {
+				responseBody = response
+			}
+
+			t.WithResponse(&trace.Response{
+				Header:          ctx.Writer.Header(),
+				HttpCode:        ctx.Writer.Status(),
+				HttpCodeMsg:     http.StatusText(ctx.Writer.Status()),
+				BusinessCode:    businessCode,
+				BusinessCodeMsg: businessCodeMsg,
+				Body:            responseBody,
+				CostSeconds:     time.Since(ts).Seconds(),
+			})
+
+			t.Success = !ctx.IsAborted() && (ctx.Writer.Status() == http.StatusOK)
+			t.CostSeconds = time.Since(ts).Seconds()
+
+			logger.Info("trace-log",
+				zap.Any("method", ctx.Request.Method),
+				zap.Any("path", decodedURL),
+				zap.Any("http_code", ctx.Writer.Status()),
+				zap.Any("business_code", businessCode),
+				zap.Any("success", t.Success),
+				zap.Any("cost_seconds", t.CostSeconds),
+				zap.Any("trace_id", t.Identifier),
+				zap.Any("trace_info", t),
+				zap.Error(abortErr),
+			)
+			// endregion
 		}()
 
 		ctx.Next()
