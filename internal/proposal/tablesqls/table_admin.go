@@ -38,7 +38,7 @@ func CreateAdminTableSql() (sql string) {
 
 func CreateAdminTableDataSql() (sql string) {
 	sql = "INSERT INTO `admin` (`id`, `username`, `password`, `nickname`, `mobile`, `created_user`) VALUES"
-	sql += "(1, 'admin', 'f78382de80cf583cf854bbac0b6e796fbde36fe2739ca4ae072637010f179cb0', '管理员', '13888888888', 'init');"
+	sql += "(1, 'admin', '5b37b751fd3ccee62d95da9b9ed9e08a850e9833d6c2b4110f99daa9219dcff0', '管理员', '13888888888', 'init');"
 
 	return
 }
