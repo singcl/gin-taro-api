@@ -5,6 +5,8 @@ import (
 	stdctx "context"
 	"io/ioutil"
 	"net/http"
+	"net/url"
+	"strings"
 	"sync"
 
 	"github.com/gin-gonic/gin"
@@ -20,6 +22,7 @@ const (
 	_LoggerName      = "_logger_"
 	_TraceName       = "_trace_"
 	_IsRecordMetrics = "_is_record_metrics_"
+	_Alias           = "_alias_"
 )
 
 type HandlerFunc func(c Context)
@@ -33,19 +36,35 @@ type Context interface {
 	// Payload 正确返回
 	Payload(payload interface{})
 	getPayload() interface{}
+	Method() string
+	// Alias 设置路由别名 for metrics path
+	Alias() string
+	setAlias(path string)
 	// Host 获取 Request.Host
 	Host() string
+	// Path 获取 请求的路径 Request.URL.Path (不附带 querystring)
+	Path() string
+	// URI 获取 unescape 后的 Request.URL.RequestURI()
+	URI() string
 	// ShouldBindURI 反序列化 path 参数(如路由路径为 /user/:name)
 	// tag: `uri:"xxx"`
 	ShouldBindURI(obj interface{}) error
 	// AbortWithError 错误返回
 	AbortWithError(err BusinessError)
+	abortError() BusinessError
 	// ShouldBindForm 同时反序列化 querystring 和 postform;
 	// 当 querystring 和 postform 存在相同字段时，postform 优先使用。
 	// tag: `form:"xxx"`
 	ShouldBindForm(obj interface{}) error
 	// RequestContext 获取请求的 context (当 client 关闭后，会自动 canceled)
 	RequestContext() StdContext
+
+	// Header 获取 Header 对象
+	Header() http.Header
+	// GetHeader 获取 Header
+	GetHeader(key string) string
+	// SetHeader 设置 Header
+	SetHeader(key, value string)
 
 	// Trace 获取 Trace 对象
 	Trace() Trace
@@ -63,6 +82,8 @@ type Context interface {
 
 	// HTML 返回界面
 	HTML(name string, obj interface{})
+	// RawData 获取 Request.Body
+	RawData() []byte
 }
 
 type context struct {
@@ -96,9 +117,40 @@ func (c *context) getPayload() interface{} {
 	return nil
 }
 
+// Method 请求的method
+func (c *context) Method() string {
+	return c.ctx.Request.Method
+}
+
 // Host 请求的host
 func (c *context) Host() string {
 	return c.ctx.Request.Host
+}
+
+// Path 请求的路径(不附带querystring)
+func (c *context) Path() string {
+	return c.ctx.Request.URL.Path
+}
+
+// URI unescape后的uri
+func (c *context) URI() string {
+	uri, _ := url.QueryUnescape(c.ctx.Request.URL.RequestURI())
+	return uri
+}
+
+func (c *context) Alias() string {
+	path, ok := c.ctx.Get(_Alias)
+	if !ok {
+		return ""
+	}
+
+	return path.(string)
+}
+
+func (c *context) setAlias(path string) {
+	if path = strings.TrimSpace(path); path != "" {
+		c.ctx.Set(_Alias, path)
+	}
 }
 
 // ShouldBindURI 反序列化path参数(如路由路径为 /user/:name)
@@ -117,6 +169,11 @@ func (c *context) AbortWithError(err BusinessError) {
 		c.ctx.AbortWithStatus(httpCode)
 		c.ctx.Set(_AbortErrorName, err)
 	}
+}
+
+func (c *context) abortError() BusinessError {
+	err, _ := c.ctx.Get(_AbortErrorName)
+	return err.(BusinessError)
 }
 
 // ShouldBindForm 同时反序列化querystring和postform;
@@ -181,6 +238,36 @@ func (c *context) RequestContext() StdContext {
 		c.Trace(),
 		c.Logger(),
 	}
+}
+
+func (c *context) Header() http.Header {
+	header := c.ctx.Request.Header
+
+	clone := make(http.Header, len(header))
+	for k, v := range header {
+		value := make([]string, len(v))
+		copy(value, v)
+
+		clone[k] = value
+	}
+	return clone
+}
+
+func (c *context) GetHeader(key string) string {
+	return c.ctx.GetHeader(key)
+}
+
+func (c *context) SetHeader(key, value string) {
+	c.ctx.Header(key, value)
+}
+
+func (c *context) RawData() []byte {
+	body, ok := c.ctx.Get(_BodyName)
+	if !ok {
+		return nil
+	}
+
+	return body.([]byte)
 }
 
 func (c *context) HTML(name string, obj interface{}) {
