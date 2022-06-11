@@ -7,10 +7,12 @@ var _ BusinessError = (*businessError)(nil)
 type BusinessError interface {
 	// i 为了避免被其他包实现
 	i()
-	// HTTPCode 获取 HTTP 状态码
-	HTTPCode() int
 	// WithError 设置错误信息
 	WithError(err error) BusinessError
+	// WithAlert 设置告警通知
+	WithAlert() BusinessError
+	// HTTPCode 获取 HTTP 状态码
+	HTTPCode() int
 	// Message 获取错误描述
 	Message() string
 	// IsAlert 是否开启告警通知
@@ -46,6 +48,11 @@ func (e *businessError) HTTPCode() int {
 
 func (e *businessError) WithError(err error) BusinessError {
 	e.stackError = errors.WithStack(err)
+	return e
+}
+
+func (e *businessError) WithAlert() BusinessError {
+	e.isAlert = true
 	return e
 }
 
