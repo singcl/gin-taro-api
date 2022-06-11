@@ -2,6 +2,12 @@ package code
 
 import "github.com/singcl/gin-taro-api/configs"
 
+// Failure 错误时返回结构
+type Failure struct {
+	Code    int    `json:"code"`    // 业务码
+	Message string `json:"message"` // 描述信息
+}
+
 const (
 	ServerError        = 10101
 	TooManyRequests    = 10102

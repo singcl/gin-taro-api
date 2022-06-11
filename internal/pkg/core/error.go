@@ -11,6 +11,14 @@ type BusinessError interface {
 	HTTPCode() int
 	// WithError 设置错误信息
 	WithError(err error) BusinessError
+	// Message 获取错误描述
+	Message() string
+	// IsAlert 是否开启告警通知
+	IsAlert() bool
+	// StackError 获取带堆栈的错误信息
+	StackError() error
+	// BusinessCode 获取业务码
+	BusinessCode() int
 }
 
 type businessError struct {
@@ -39,4 +47,20 @@ func (e *businessError) HTTPCode() int {
 func (e *businessError) WithError(err error) BusinessError {
 	e.stackError = errors.WithStack(err)
 	return e
+}
+
+func (e *businessError) IsAlert() bool {
+	return e.isAlert
+}
+
+func (e *businessError) Message() string {
+	return e.message
+}
+
+func (e *businessError) StackError() error {
+	return e.stackError
+}
+
+func (e *businessError) BusinessCode() int {
+	return e.businessCode
 }
