@@ -22,3 +22,6 @@ CREATE DATABASE gin_taro_api DEFAULT CHARACTER SET = 'utf8mb4';
 /* 为远程用户授权 */
 GRANT ALL PRIVILEGES ON gin_taro_api.* TO taro'@'127.0.0.1' WITH GRANT OPTION;
 ```
+
+## mail
+告警邮件发送调试通过 SUCCESS😇
