@@ -36,6 +36,7 @@
     "Dialector",
     "ecpm",
     "fsnotify",
+    "gomail",
     "gonic",
     "gorm",
     "historyarpu",
