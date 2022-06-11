@@ -8,7 +8,9 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/pkg/browser"
 	cors "github.com/rs/cors/wrapper/gin"
+	"github.com/singcl/gin-taro-api/internal/proposal"
 	"github.com/singcl/gin-taro-api/pkg/color"
 	"github.com/singcl/gin-taro-api/pkg/env"
 	"github.com/singcl/gin-taro-api/pkg/errors"
@@ -36,9 +38,9 @@ type option struct {
 	// disablePrometheus bool
 	enableCors bool
 	// enableRate        bool
-	// enableOpenBrowser string
-	// alertNotify       proposal.NotifyHandler
-	// recordHandler     proposal.RecordHandler
+	enableOpenBrowser string
+	alertNotify       proposal.NotifyHandler
+	recordHandler     proposal.RecordHandler
 }
 
 // RouterGroup 包装gin的RouterGroup
@@ -75,6 +77,27 @@ func DisableRecordMetrics(ctx Context) {
 func WithEnableCors() Option {
 	return func(opt *option) {
 		opt.enableCors = true
+	}
+}
+
+// WithEnableOpenBrowser 启动后在浏览器中打开 uri
+func WithEnableOpenBrowser(uri string) Option {
+	return func(opt *option) {
+		opt.enableOpenBrowser = uri
+	}
+}
+
+// WithAlertNotify 设置告警通知
+func WithAlertNotify(notifyHandler proposal.NotifyHandler) Option {
+	return func(opt *option) {
+		opt.alertNotify = notifyHandler
+	}
+}
+
+// WithRecordMetrics 设置记录接口指标
+func WithRecordMetrics(recordHandler proposal.RecordHandler) Option {
+	return func(opt *option) {
+		opt.recordHandler = recordHandler
 	}
 }
 
@@ -188,6 +211,10 @@ func New(logger *zap.Logger, options ...Option) (Kiko, error) {
 			AllowCredentials:   true,
 			OptionsPassthrough: true,
 		}))
+	}
+
+	if opt.enableOpenBrowser != "" {
+		_ = browser.OpenURL(opt.enableOpenBrowser)
 	}
 
 	// 暂时使用内置logger
