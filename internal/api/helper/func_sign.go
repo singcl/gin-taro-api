@@ -2,7 +2,6 @@ package helper
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 	"net/url"
 
@@ -70,8 +69,6 @@ func (h *handler) Sign() core.HandlerFunc {
 			)
 			return
 		}
-
-		fmt.Println(req.Params)
 
 		params, err := url.ParseQuery(req.Params)
 
