@@ -82,6 +82,12 @@ type Context interface {
 
 	// HTML 返回界面
 	HTML(name string, obj interface{})
+	// RequestInputParams 获取所有参数
+	RequestInputParams() url.Values
+	// RequestPostFormParams  获取 PostForm 参数
+	RequestPostFormParams() url.Values
+	// Request 获取 Request 对象
+	Request() *http.Request
 	// RawData 获取 Request.Body
 	RawData() []byte
 }
@@ -272,6 +278,23 @@ func (c *context) RawData() []byte {
 
 func (c *context) HTML(name string, obj interface{}) {
 	c.ctx.HTML(http.StatusOK, name+".tmpl", obj)
+}
+
+// RequestInputParams 获取所有参数
+func (c *context) RequestInputParams() url.Values {
+	_ = c.ctx.Request.ParseForm()
+	return c.ctx.Request.Form
+}
+
+// RequestPostFormParams 获取 PostForm 参数
+func (c *context) RequestPostFormParams() url.Values {
+	_ = c.ctx.Request.ParseForm()
+	return c.ctx.Request.PostForm
+}
+
+// Request 获取 Request
+func (c *context) Request() *http.Request {
+	return c.ctx.Request
 }
 
 var contextPool = &sync.Pool{

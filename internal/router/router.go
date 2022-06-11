@@ -7,16 +7,18 @@ import (
 	"github.com/singcl/gin-taro-api/internal/pkg/core"
 	"github.com/singcl/gin-taro-api/internal/repository/mysql"
 	"github.com/singcl/gin-taro-api/internal/repository/redis"
+	"github.com/singcl/gin-taro-api/internal/router/interceptor"
 	"github.com/singcl/gin-taro-api/pkg/errors"
 	"github.com/singcl/gin-taro-api/pkg/file"
 	"go.uber.org/zap"
 )
 
 type resource struct {
-	kiko   core.Kiko
-	logger *zap.Logger
-	db     mysql.Repo
-	cache  redis.Repo
+	kiko         core.Kiko
+	logger       *zap.Logger
+	db           mysql.Repo
+	cache        redis.Repo
+	interceptors interceptor.Interceptor
 }
 
 type Server struct {
@@ -77,6 +79,7 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 	}
 
 	r.kiko = kiko
+	r.interceptors = interceptor.New(logger, r.cache, r.db)
 
 	// 设置 Render 路由
 	setRenderRouter(r)
