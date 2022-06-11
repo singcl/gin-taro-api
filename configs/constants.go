@@ -24,8 +24,8 @@ const (
 	// ProjectCronLogFile 项目后台任务日志存放文件
 	ProjectCronLogFile = "./logs/" + ProjectName + "-cron.log"
 
-	// HeaderSignTokenTimeout 签名有效期为 2 分钟
-	HeaderSignTokenTimeout = time.Minute * 2
+	// HeaderSignTokenTimeout 签名有效期为 20 分钟
+	HeaderSignTokenTimeout = time.Minute * 20
 
 	// HeaderLoginToken 登录验证 Token，Header 中传递的参数
 	HeaderLoginToken = "Token"
@@ -33,7 +33,7 @@ const (
 	// HeaderSignToken 签名验证 Authorization，Header 中传递的参数
 	HeaderSignToken = "Authorization"
 
-	// HeaderSignTokenDate 签名验证 Date，Header 中传递的参数
+	// HeaderSignTokenDate 签名验证 Authorization-Date，Header 中传递的参数
 	HeaderSignTokenDate = "Authorization-Date"
 
 	// RedisKeyPrefixLoginUser Redis Key 前缀 - 登录用户信息
