@@ -29,6 +29,7 @@ type Repo interface {
 	Exists(keys ...string) bool
 	Get(key string, options ...Option) (string, error)
 	Set(key, value string, ttl time.Duration, options ...Option) error
+	Del(key string, options ...Option) bool
 }
 
 type cacheRepo struct {
@@ -135,4 +136,29 @@ func (c *cacheRepo) Get(key string, options ...Option) (string, error) {
 	}
 
 	return value, nil
+}
+
+func (c *cacheRepo) Del(key string, options ...Option) bool {
+	ts := time.Now()
+	opt := newOption()
+	defer func() {
+		if opt.Trace != nil {
+			opt.Redis.Timestamp = timeutil.CSTLayoutString()
+			opt.Redis.Handle = "del"
+			opt.Redis.Key = key
+			opt.Redis.CostSeconds = time.Since(ts).Seconds()
+			opt.Trace.AppendRedis(opt.Redis)
+		}
+	}()
+
+	for _, f := range options {
+		f(opt)
+	}
+
+	if key == "" {
+		return true
+	}
+
+	value, _ := c.client.Del(key).Result()
+	return value > 0
 }
