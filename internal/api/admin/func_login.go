@@ -1,6 +1,7 @@
 package admin
 
 import (
+	"encoding/json"
 	"errors"
 	"net/http"
 
@@ -88,6 +89,31 @@ func (h *handler) Login() core.HandlerFunc {
 			configs.LoginSessionTTL,
 			redis.WithTrace(c.Trace()))
 
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.AdminLoginError,
+				code.Text(code.AdminLoginError)).WithError(err),
+			)
+			return
+		}
+
+		searchMenuData := new(admin.SearchMyMenuData)
+		searchMenuData.AdminId = info.Id
+		menu, err := h.adminService.MyMenu(c, searchMenuData)
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.AdminLoginError,
+				code.Text(code.AdminLoginError)).WithError(err),
+			)
+			return
+		}
+
+		// 菜单栏信息
+		menuJsonInfo, _ := json.Marshal(menu)
+		// 将菜单栏信息记录到 Redis 中
+		err = h.cache.Set(configs.RedisKeyPrefixLoginUser+token+":menu", string(menuJsonInfo), configs.LoginSessionTTL, redis.WithTrace(c.Trace()))
 		if err != nil {
 			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
