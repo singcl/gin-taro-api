@@ -29,5 +29,6 @@ func setApiRouter(r *resource) {
 	notRBAC := r.kiko.Group("/api", core.WrapAuthHandler(r.interceptors.CheckLogin), r.interceptors.CheckSignature())
 	{
 		notRBAC.POST("/admin/logout", adminHandler.Logout())
+		notRBAC.GET("/admin/info", adminHandler.Detail())
 	}
 }
