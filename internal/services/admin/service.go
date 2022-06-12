@@ -13,6 +13,7 @@ type Service interface {
 	i()
 	Detail(ctx core.Context, searchOneData *SearchOneData) (info *admin.Admin, err error)
 	MyMenu(ctx core.Context, searchData *SearchMyMenuData) (menuData []ListMyMenuData, err error)
+	MyAction(ctx core.Context, searchData *SearchMyActionData) (actionData []MyActionData, err error)
 }
 
 type service struct {
