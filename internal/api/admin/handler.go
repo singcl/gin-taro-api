@@ -19,6 +19,10 @@ type Handler interface {
 	// @Tags API.admin
 	// @Router /api/login [post]
 	Login() core.HandlerFunc
+	// Logout 管理员登出
+	// @Tags API.admin
+	// @Router /api/admin/logout [post]
+	Logout() core.HandlerFunc
 }
 
 type handler struct {

@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/singcl/gin-taro-api/internal/api/admin"
 	"github.com/singcl/gin-taro-api/internal/api/helper"
+	"github.com/singcl/gin-taro-api/internal/pkg/core"
 )
 
 func setApiRouter(r *resource) {
@@ -22,5 +23,11 @@ func setApiRouter(r *resource) {
 	login := r.kiko.Group("/api", r.interceptors.CheckSignature())
 	{
 		login.POST("/login", adminHandler.Login())
+	}
+
+	// 需要签名验证、登录验证，无需 RBAC 权限验证
+	notRBAC := r.kiko.Group("/api", core.WrapAuthHandler(r.interceptors.CheckLogin), r.interceptors.CheckSignature())
+	{
+		notRBAC.POST("/admin/logout", adminHandler.Logout())
 	}
 }
