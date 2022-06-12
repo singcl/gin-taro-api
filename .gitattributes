@@ -3,4 +3,4 @@
 
 # 不统计改路径下的语言
 public/static/js/vue/* -linguist-detectable
-public/static/js/lib/* -linguist-detectable
+public/static/js/lib/**/* -linguist-detectable
