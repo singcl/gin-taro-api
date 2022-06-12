@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
 	"net/url"
 	"runtime/debug"
@@ -18,8 +17,6 @@ import (
 	"github.com/singcl/gin-taro-api/pkg/env"
 	"github.com/singcl/gin-taro-api/pkg/errors"
 	"github.com/singcl/gin-taro-api/pkg/trace"
-	"github.com/singcl/gin-taro-api/public"
-	"github.com/singcl/gin-taro-api/views"
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 )
@@ -198,15 +195,22 @@ func New(logger *zap.Logger, options ...Option) (Kiko, error) {
 	if logger == nil {
 		return nil, errors.New("logger required")
 	}
-	gin.SetMode(gin.ReleaseMode)
+	// gin.SetMode(gin.ReleaseMode)
 
 	kiko := &kiko{engine: gin.New()}
 
 	fmt.Println(color.Blue(_UI))
 
 	// 静态资源服务
-	kiko.engine.StaticFS("public", http.FS(public.Public))
-	kiko.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(views.Templates, "templates/**/*")))
+	// kiko.engine.StaticFS("public", http.FS(public.Public))
+	// kiko.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(views.Templates, "templates/**/*")))
+
+	// @DEBUG: DEBUG for fed live reload
+	// 第一个参数静态资源前缀，第二参数静态资源目录
+	// kiko.engine.Static("/public", "./public")
+	// 和上面的方式功能一样，不过下面会启动一个静态资源文件系统
+	kiko.engine.StaticFS("/public", http.Dir("./public"))
+	kiko.engine.LoadHTMLGlob("views/templates/**/*")
 
 	// withoutTracePaths 这些请求，默认不记录日志
 	withoutTracePaths := map[string]bool{
