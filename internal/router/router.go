@@ -68,7 +68,7 @@ func NewHTTPServer(logger *zap.Logger, cronLogger *zap.Logger) (*Server, error) 
 	}
 
 	kiko, err := core.New(logger,
-		core.WithEnableOpenBrowser(openBrowserUri),
+		core.WithEnableOpenBrowser(openBrowserUri+"/login"),
 		core.WithEnableCors(),
 		core.WithAlertNotify(alert.NotifyHandler(logger)),
 		core.WithRecordMetrics(metrics.RecordHandler(logger)),
