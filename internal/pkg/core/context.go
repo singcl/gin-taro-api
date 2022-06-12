@@ -11,6 +11,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/gin-gonic/gin/binding"
+	"github.com/singcl/gin-taro-api/internal/proposal"
 	"github.com/singcl/gin-taro-api/pkg/trace"
 	"go.uber.org/zap"
 )
@@ -23,6 +24,7 @@ const (
 	_TraceName       = "_trace_"
 	_IsRecordMetrics = "_is_record_metrics_"
 	_Alias           = "_alias_"
+	_SessionUserInfo = "_session_user_info"
 )
 
 type HandlerFunc func(c Context)
@@ -90,6 +92,10 @@ type Context interface {
 	Request() *http.Request
 	// RawData 获取 Request.Body
 	RawData() []byte
+
+	// SessionUserInfo 当前用户信息
+	SessionUserInfo() proposal.SessionUserInfo
+	setSessionUserInfo(info proposal.SessionUserInfo)
 }
 
 type context struct {
@@ -295,6 +301,19 @@ func (c *context) RequestPostFormParams() url.Values {
 // Request 获取 Request
 func (c *context) Request() *http.Request {
 	return c.ctx.Request
+}
+
+func (c *context) SessionUserInfo() proposal.SessionUserInfo {
+	val, ok := c.ctx.Get(_SessionUserInfo)
+	if !ok {
+		return proposal.SessionUserInfo{}
+	}
+
+	return val.(proposal.SessionUserInfo)
+}
+
+func (c *context) setSessionUserInfo(info proposal.SessionUserInfo) {
+	c.ctx.Set(_SessionUserInfo, info)
 }
 
 var contextPool = &sync.Pool{

@@ -105,6 +105,19 @@ func WithRecordMetrics(recordHandler proposal.RecordHandler) Option {
 	}
 }
 
+// WrapAuthHandler 用来处理 Auth 的入口
+func WrapAuthHandler(handler func(Context) (sessionUserInfo proposal.SessionUserInfo, err BusinessError)) HandlerFunc {
+	return func(ctx Context) {
+		sessionUserInfo, err := handler(ctx)
+
+		if err != nil {
+			ctx.AbortWithError(err)
+			return
+		}
+		ctx.setSessionUserInfo(sessionUserInfo)
+	}
+}
+
 type router struct {
 	group *gin.RouterGroup
 }
