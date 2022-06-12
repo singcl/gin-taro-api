@@ -2,6 +2,7 @@ package interceptor
 
 import (
 	"github.com/singcl/gin-taro-api/internal/pkg/core"
+	"github.com/singcl/gin-taro-api/internal/proposal"
 	"github.com/singcl/gin-taro-api/internal/repository/mysql"
 	"github.com/singcl/gin-taro-api/internal/repository/redis"
 	"github.com/singcl/gin-taro-api/internal/services/admin"
@@ -14,6 +15,9 @@ var _ Interceptor = (*interceptor)(nil)
 type Interceptor interface {
 	// CheckSignature 验证签名是否合法，对用签名算法 pkg/signature
 	CheckSignature() core.HandlerFunc
+
+	// CheckLogin 验证是否登录
+	CheckLogin(ctx core.Context) (info proposal.SessionUserInfo, err core.BusinessError)
 
 	// i 为了避免被其他包实现
 	i()
