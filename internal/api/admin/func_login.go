@@ -98,6 +98,7 @@ func (h *handler) Login() core.HandlerFunc {
 			return
 		}
 
+		//
 		searchMenuData := new(admin.SearchMyMenuData)
 		searchMenuData.AdminId = info.Id
 		menu, err := h.adminService.MyMenu(c, searchMenuData)
@@ -113,7 +114,42 @@ func (h *handler) Login() core.HandlerFunc {
 		// 菜单栏信息
 		menuJsonInfo, _ := json.Marshal(menu)
 		// 将菜单栏信息记录到 Redis 中
-		err = h.cache.Set(configs.RedisKeyPrefixLoginUser+token+":menu", string(menuJsonInfo), configs.LoginSessionTTL, redis.WithTrace(c.Trace()))
+		err = h.cache.Set(
+			configs.RedisKeyPrefixLoginUser+token+":menu",
+			string(menuJsonInfo),
+			configs.LoginSessionTTL,
+			redis.WithTrace(c.Trace()))
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.AdminLoginError,
+				code.Text(code.AdminLoginError)).WithError(err),
+			)
+			return
+		}
+
+		searchActionData := new(admin.SearchMyActionData)
+		searchActionData.AdminId = info.Id
+		action, err := h.adminService.MyAction(c, searchActionData)
+
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.AdminLoginError,
+				code.Text(code.AdminLoginError)).WithError(err),
+			)
+			return
+		}
+
+		// 可访问接口信息
+		actionJsonInfo, _ := json.Marshal(action)
+
+		// 将可访问接口信息记录到 Redis 中
+		err = h.cache.Set(
+			configs.RedisKeyPrefixLoginUser+token+":action",
+			string(actionJsonInfo),
+			configs.LoginSessionTTL,
+			redis.WithTrace(c.Trace()))
 		if err != nil {
 			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
