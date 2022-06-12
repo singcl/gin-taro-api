@@ -1,4 +1,5 @@
 import { h, ref } from '/public/static/js/vue/vue3.esm-browser.js';
+import Md5Con from '/public/static/js/lib/authorization/md5.min.js';
 
 // App
 export default {
@@ -14,6 +15,7 @@ export default {
 
         //
         function handleSubmitClick() {
+            console.log("---", Md5Con.md5())
             fetch("/api/login", {
                 method: "POST",
                 headers: {
