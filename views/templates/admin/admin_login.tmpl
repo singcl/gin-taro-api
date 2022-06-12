@@ -1,13 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <link rel="shortcut icon" type="image/x-icon" href="/public/static/favicon.ico">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>登录</title>
-</head>
-<body>
-    <input type="text" name="用户">
-</body>
+    <head>
+        <meta charset="UTF-8" />
+        <link
+            rel="shortcut icon"
+            type="image/x-icon"
+            href="/public/static/favicon.ico"
+        />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>登录</title>
+    </head>
+    <body>
+        <div id="app"></div>
+
+        <script type="module">
+            import { createApp } from '/public/static/js/vue/vue3.esm-browser.js';
+            import App from '/public/static/js/admin/login/app.js';
+
+            createApp(App).mount('#app');
+        </script>
+    </body>
 </html>
