@@ -40,6 +40,22 @@ func (h *handler) Execute() core.HandlerFunc {
 			"table_sql":      tablesqls.CreateAuthorizedAPITableSql(),
 			"table_data_sql": tablesqls.CreateAuthorizedAPITableDataSql(),
 		},
+		"admin": {
+			"table_sql":      tablesqls.CreateAdminTableSql(),
+			"table_data_sql": tablesqls.CreateAdminTableDataSql(),
+		},
+		"admin_menu": {
+			"table_sql":      tablesqls.CreateAdminMenuTableSql(),
+			"table_data_sql": tablesqls.CreateAdminMenuTableDataSql(),
+		},
+		"menu": {
+			"table_sql":      tablesqls.CreateMenuTableSql(),
+			"table_data_sql": tablesqls.CreateMenuTableDataSql(),
+		},
+		"menu_action": {
+			"table_sql":      tablesqls.CreateMenuActionTableSql(),
+			"table_data_sql": tablesqls.CreateMenuActionTableDataSql(),
+		},
 	}
 
 	return func(ctx core.Context) {
