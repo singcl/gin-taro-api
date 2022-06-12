@@ -2,6 +2,7 @@ package router
 
 import (
 	"github.com/singcl/gin-taro-api/internal/pkg/core"
+	"github.com/singcl/gin-taro-api/internal/render/admin"
 	"github.com/singcl/gin-taro-api/internal/render/index"
 	"github.com/singcl/gin-taro-api/internal/render/install"
 )
@@ -9,6 +10,7 @@ import (
 func setRenderRouter(r *resource) {
 	renderInstall := install.New(r.logger)
 	renderIndex := index.New(r.logger, r.db, r.cache)
+	renderAdmin := admin.New(r.logger, r.db, r.cache)
 
 	// 无需记录日志，无需 RBAC 权限验证
 	notRBAC := r.kiko.Group("", core.DisableTraceLog, core.DisableRecordMetrics)
@@ -19,5 +21,8 @@ func setRenderRouter(r *resource) {
 		// 安装
 		notRBAC.GET("install", renderInstall.View())
 		notRBAC.POST("/install/execute", renderInstall.Execute())
+
+		// 管理员
+		notRBAC.GET("/login", renderAdmin.Login())
 	}
 }
