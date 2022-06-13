@@ -1,6 +1,9 @@
 import { h, ref } from '/public/static/js/vue/vue3.esm-browser.js';
 import Md5Con from '/public/static/js/lib/authorization/md5.min.js';
 
+const businessKey = "admin"
+const businessSecret = "12878dd962115106db6d"
+
 // App
 export default {
     setup() {
