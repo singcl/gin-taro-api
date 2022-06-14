@@ -1,5 +1,0 @@
-class Kiko {
-    constructor() {
-        //
-    }
-}
