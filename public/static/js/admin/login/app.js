@@ -23,11 +23,21 @@ export default {
           password: password.value,
         },
       });
+
+      console.log(response);
+      const status = response.status;
       const body = await response.json();
-      const token = body && body.token;
-      token && localStorage.setItem(Kiko.getTokenName(), token);
-      //
-      location.href = '/'
+      const ok = response.ok;
+      if (ok && status == 200) {
+        const token = body && body.token;
+        token && localStorage.setItem(Kiko.getTokenName(), token);
+        //
+        location.href = '/';
+      } else {
+        const code = body.code;
+        const message = body.message;
+        alert(`code：${code}\r\nmessage：${message}`);
+      }
     }
 
     // 渲染函数
