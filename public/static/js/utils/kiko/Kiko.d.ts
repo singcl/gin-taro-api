@@ -1,3 +1,4 @@
+
 export = Kiko;
 
 declare class Kiko {
