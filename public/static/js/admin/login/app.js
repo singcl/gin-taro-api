@@ -3,6 +3,9 @@ import Md5Con from '/public/static/js/lib/authorization/md5.min.js';
 // 绝对路径导入无法识别类型。 不知道怎么配置？
 import Kiko from './../../utils/kiko/Kiko.js';
 
+const businessKey = "admin"
+const businessSecret = "12878dd962115106db6d"
+
 // App
 export default {
     setup() {
