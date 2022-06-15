@@ -20,6 +20,7 @@ var whiteListPath = map[string]bool{
 
 func (i *interceptor) CheckSignature() core.HandlerFunc {
 	return func(c core.Context) {
+		// 生产环境才进行签名校验
 		if !env.Active().IsPro() {
 			return
 		}
