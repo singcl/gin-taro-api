@@ -53,7 +53,7 @@ func (s *service) DetailByKey(ctx core.Context, key string) (cacheData *CacheAut
 		// 设置缓存 data
 		cacheData = new(CacheAuthorizedData)
 		cacheData.Key = key
-		cacheData.Secret = authorizedInfo.BusinessKey
+		cacheData.Secret = authorizedInfo.BusinessSecret
 		cacheData.IsUsed = authorizedInfo.IsUsed
 		cacheData.Apis = make([]cacheApiData, len(authorizedApiInfo))
 
