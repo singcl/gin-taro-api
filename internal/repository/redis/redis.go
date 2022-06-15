@@ -1,6 +1,7 @@
 package redis
 
 import (
+	"strings"
 	"time"
 
 	"github.com/go-redis/redis/v7"
@@ -30,6 +31,7 @@ type Repo interface {
 	Get(key string, options ...Option) (string, error)
 	Set(key, value string, ttl time.Duration, options ...Option) error
 	Del(key string, options ...Option) bool
+	Version() string
 }
 
 type cacheRepo struct {
@@ -161,4 +163,13 @@ func (c *cacheRepo) Del(key string, options ...Option) bool {
 
 	value, _ := c.client.Del(key).Result()
 	return value > 0
+}
+
+// Version redis server version
+func (c *cacheRepo) Version() string {
+	server := c.client.Info("server").Val()
+	spl1 := strings.Split(server, "# Server")
+	spl2 := strings.Split(spl1[1], "redis_version:")
+	spl3 := strings.Split(spl2[1], "redis_git_sha1:")
+	return spl3[0]
 }
