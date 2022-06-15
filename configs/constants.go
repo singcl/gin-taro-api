@@ -24,8 +24,8 @@ const (
 	// ProjectCronLogFile 项目后台任务日志存放文件
 	ProjectCronLogFile = "./logs/" + ProjectName + "-cron.log"
 
-	// HeaderSignTokenTimeout 签名有效期为 20 分钟
-	HeaderSignTokenTimeout = time.Minute * 20
+	// HeaderSignTokenTimeout 签名有效期为 2 分钟
+	HeaderSignTokenTimeout = time.Minute * 2
 
 	// HeaderLoginToken 登录验证 Token，Header 中传递的参数
 	HeaderLoginToken = "Token"
