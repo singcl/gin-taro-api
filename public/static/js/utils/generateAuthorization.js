@@ -1,5 +1,5 @@
 /* global ksort CryptoJS */
-import jqParam from './jqParam.js';
+// import jqParam from './jqParam.js';
 
 export default function generateAuthorization({
   businessKey,
@@ -24,7 +24,7 @@ export default function generateAuthorization({
     ':' + // "分钟"
     (date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds()); // "秒"
 
-  let sortParamsEncode = decodeURIComponent(jqParam(ksort(params)));
+  let sortParamsEncode = decodeURIComponent(new URLSearchParams(ksort(params)));
   let encryptStr =
     path + '|' + method.toUpperCase() + '|' + sortParamsEncode + '|' + datetime;
   let digest = CryptoJS.enc.Base64.stringify(
