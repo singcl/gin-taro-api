@@ -33,7 +33,7 @@ export default class Kiko {
     let bodyR = Object.assign({}, body, { password });
     //
     const authorizationData = generateAuthorization({
-      url,
+      path: url,
       method,
       params: bodyR,
       businessKey: this.businessKey,
