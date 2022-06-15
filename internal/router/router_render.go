@@ -3,6 +3,7 @@ package router
 import (
 	"github.com/singcl/gin-taro-api/internal/pkg/core"
 	"github.com/singcl/gin-taro-api/internal/render/admin"
+	"github.com/singcl/gin-taro-api/internal/render/dashboard"
 	"github.com/singcl/gin-taro-api/internal/render/index"
 	"github.com/singcl/gin-taro-api/internal/render/install"
 )
@@ -10,6 +11,7 @@ import (
 func setRenderRouter(r *resource) {
 	renderInstall := install.New(r.logger)
 	renderIndex := index.New(r.logger, r.db, r.cache)
+	renderDashboard := dashboard.New(r.logger, r.db, r.cache)
 	renderAdmin := admin.New(r.logger, r.db, r.cache)
 
 	// 无需记录日志，无需 RBAC 权限验证
@@ -17,6 +19,9 @@ func setRenderRouter(r *resource) {
 	{
 		// 首页
 		notRBAC.GET("", renderIndex.Index())
+
+		// 仪表盘
+		notRBAC.GET("/dashboard", renderDashboard.View())
 
 		// 安装
 		notRBAC.GET("install", renderInstall.View())
