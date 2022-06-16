@@ -9,6 +9,9 @@ const (
 	// ProjectName 项目名称
 	ProjectName = "gin-taro-api"
 
+	// ProjectVersion 项目版本
+	ProjectVersion = "v0.0.1"
+
 	// ProjectDomain 项目域名
 	ProjectDomain = "http://127.0.0.1"
 
