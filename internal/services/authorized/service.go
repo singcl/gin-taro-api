@@ -13,6 +13,9 @@ type Service interface {
 	i()
 	Detail(ctx core.Context, id int32) (info *authorized.Authorized, err error)
 	DetailByKey(ctx core.Context, key string) (data *CacheAuthorizedData, err error)
+	Create(ctx core.Context, authorizedData *CreateAuthorizedData) (id int32, err error)
+	PageList(ctx core.Context, searchData *SearchData) (listData []*authorized.Authorized, err error)
+	PageListCount(ctx core.Context, searchData *SearchData) (total int64, err error)
 }
 
 type service struct {
