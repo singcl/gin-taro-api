@@ -19,6 +19,9 @@ type Interceptor interface {
 	// CheckLogin 验证是否登录
 	CheckLogin(ctx core.Context) (info proposal.SessionUserInfo, err core.BusinessError)
 
+	// CheckRBAC 验证 RBAC 权限是否合法
+	CheckRBAC() core.HandlerFunc
+
 	// i 为了避免被其他包实现
 	i()
 }
