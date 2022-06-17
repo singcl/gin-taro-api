@@ -1,6 +1,7 @@
 import { h, ref } from '/public/static/js/vue/vue3.esm-browser.js';
 // 绝对路径导入无法识别类型。 不知道怎么配置？
 import Kiko from './../../utils/kiko/Kiko.js';
+import naive from '/public/static/js/vue/naive.js';
 
 // App
 export default {
@@ -16,26 +17,21 @@ export default {
     const onPasswordChange = (v) => (password.value = v);
     //
     async function handleSubmitClick() {
-      const response = await new Kiko().fetch('/api/login', {
-        method: 'POST',
-        body: {
-          username: username.value,
-          password: password.value,
-        },
-      });
-
-      console.log(response);
-      const status = response.status;
-      const body = await response.json();
-      const ok = response.ok;
-      if (ok && status == 200) {
-        const token = body && body.token;
+      try {
+        const response = await new Kiko().fetch('/api/login', {
+          method: 'POST',
+          body: {
+            username: username.value,
+            password: password.value,
+          },
+        });
+        const token = response && response.token;
         token && localStorage.setItem(Kiko.getTokenName(), token);
         //
         location.href = '/';
-      } else {
-        const code = body.code;
-        const message = body.message;
+      } catch (error) {
+        const code = error.code;
+        const message = error.message;
         alert(`code：${code}\r\nmessage：${message}`);
       }
     }
@@ -73,11 +69,7 @@ export default {
 
           h('div', { class: 'admin-login-form__item' }, [
             h('label'),
-            h(
-              'button',
-              { class: 'login-btn', onClick: handleSubmitClick },
-              '登录'
-            ),
+            h(naive.NButton, {type: 'info', onClick: handleSubmitClick }, '登录'),
           ]),
         ]),
       ]);
