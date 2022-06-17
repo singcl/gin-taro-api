@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="shortcut icon"
+      type="image/x-icon"
+      href="/public/static/favicon.ico"
+    />
+    <title>LIST</title>
+  </head>
+  <body>
+    <div id="app"></div>
+    <script src="/public/static/js/lib/authorization/crypto-js.min.js"></script>
+    <script type="module">
+      import { createApp } from '/public/static/js/vue/vue3.esm-browser.js';
+      import App from '/public/static/js/authorized/authorized_list.js';
+
+      // 全局安装组件不生效？
+      // import naive from '/public/static/js/vue/naive.js';
+
+      const app = createApp(App);
+      // app.use(naive);
+      app.mount('#app');
+    </script>
+  </body>
+</html>
