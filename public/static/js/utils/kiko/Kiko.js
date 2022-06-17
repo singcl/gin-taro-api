@@ -1,3 +1,4 @@
+/* global Promise */
 import Md5Con from '../../lib/authorization/md5.min.js';
 import generateAuthorization from './../generateAuthorization.js';
 
@@ -22,7 +23,7 @@ export default class Kiko {
    * @param {RequestInit} init
    * @returns
    */
-  fetch(input, init) {
+  async fetch(input, init = {}) {
     const method = init.method || 'GET';
     const url = typeof input === 'string' ? input : input && input.url;
     const body = init.body;
@@ -30,7 +31,7 @@ export default class Kiko {
     let password = body && body.password;
     password = password ? Md5Con.md5(password) : password;
 
-    let bodyR = Object.assign({}, body, { password });
+    let bodyR = body && Object.assign({}, body, { password });
     //
     const authorizationData = generateAuthorization({
       path: url,
@@ -51,10 +52,18 @@ export default class Kiko {
         'Authorization-Date': authorizationData.date,
         Token: token,
       },
-      body: new URLSearchParams(bodyR),
+      body: bodyR ? new URLSearchParams(bodyR) : undefined,
     });
     //
-    return fetch(input, initAuth);
+    const response = await fetch(input, initAuth);
+    const status = response.status;
+    const resBody = await response.json();
+    const ok = response.ok;
+    if (ok && status == 200) {
+      return resBody;
+    } else {
+      return Promise.reject(resBody);
+    }
   }
 
   static getTokenName() {
