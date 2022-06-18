@@ -74,7 +74,7 @@ export default {
               const op_used = { 1: -1, '-1': 1 }[is_used];
               const itm = useOptions.find((m) => m.value == op_used);
               return h('div', [
-                h(naive.NButton, { type: 'info', style: { marginRight: '10px' } }, () => '详情'),
+                h(naive.NButton, { type: 'info', style: { marginRight: '10px' } }, () => '接口'),
                 itm
                   ? h(
                       naive.NButton,

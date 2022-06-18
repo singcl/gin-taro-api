@@ -42,5 +42,7 @@ func setApiRouter(r *resource) {
 		api.GET("/authorized", authorizedHandler.List())
 		api.PATCH("/authorized/used", authorizedHandler.UpdateUsed())
 		api.DELETE("/authorized/:id", core.AliasForRecordMetrics("/api/authorized/info"), authorizedHandler.Delete())
+
+		api.GET("/authorized_api", authorizedHandler.ListAPI())
 	}
 }
