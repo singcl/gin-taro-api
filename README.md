@@ -10,7 +10,7 @@
 
 ## start
 
-go run github.com/singcl/gin-taro-api -env fat
+go run github.com/singcl/gin-taro-api -env pro
 
 ## mysql
 
