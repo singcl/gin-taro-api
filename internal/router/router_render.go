@@ -39,7 +39,7 @@ func setRenderRouter(r *resource) {
 		// 调用方
 		render.GET("/authorized/list", renderAuthorized.List())
 		// render.GET("/authorized/add", renderAuthorized.Add()) // 新增不用单独页面，弹窗即可
-		// render.GET("/authorized/api/:id", renderAuthorized.Api())
+		// render.GET("/authorized/api/:id", renderAuthorized.Api()) // 接口不用单独页面，Drawer即可
 		// render.GET("/authorized/demo", renderAuthorized.Demo())
 	}
 }
