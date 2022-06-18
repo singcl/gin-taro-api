@@ -1,4 +1,4 @@
-import { h, reactive, onMounted } from '/public/static/js/vue/vue3.esm-browser.js';
+import { h, reactive, ref, onMounted } from '/public/static/js/vue/vue3.esm-browser.js';
 import naive from '/public/static/js/vue/naive.js';
 // 绝对路径导入无法识别类型。 不知道怎么配置？
 import Kiko from './../utils/kiko/Kiko.js';
@@ -19,10 +19,27 @@ const useOptions = [
 //
 const defaultColumns = [
   { key: 'id', title: '编号' },
+  { key: 'hashid', title: 'hashid' },
   { key: 'business_key', title: '调用方' },
+  { key: 'business_secret', title: '调用方Secret' },
   { key: 'business_developer', title: '对接人' },
-  { key: 'created_at', title: '创建日期' },
-  { key: 'updated_at', title: '更新日期' },
+  {
+    key: 'created_at',
+    title: '创建日期',
+    render(row) {
+      const { created_at } = row;
+      return created_at.split(/\s/)[0];
+    },
+  },
+  {
+    key: 'updated_at',
+    title: '更新日期',
+    render(row) {
+      const { created_at } = row;
+      return created_at.split(/\s/)[0];
+    },
+  },
+  { key: 'remark', title: '备注' },
   {
     key: 'is_used',
     title: '状态',
@@ -35,6 +52,7 @@ const defaultColumns = [
   {
     key: 'operation',
     title: '操作',
+    align: 'right',
     render(row) {
       const { is_used } = row;
       const op_used = { 1: -1, '-1': 1 }[is_used];
@@ -52,22 +70,24 @@ const defaultColumns = [
 export default {
   setup() {
     const columns = reactive(defaultColumns);
-    let tableData = reactive([]);
+    const tableData = ref([]);
     //
     onMounted(async () => {
       const response = await new Kiko().fetch('/api/authorized');
-      tableData.splice(0, tableData.length);
-      tableData.push(...response.list);
+      tableData.value = response.list;
     });
     //
     return () =>
-      h('div', [
-        h(naive.NAlert, { type: 'success', title: '授权信息' }, '已授权信息表格'),
+      h('div', { style: { maxWidth: '1200px', margin: '0 auto' } }, [
+        h(naive.NAlert, { type: 'success', title: '授权信息', style: 'margin-bottom: 10px' }, '已授权信息表格'),
         h('div', [
+          h('div', { style: { marginBottom: '10px', textAlign: 'right', padding: '0 12px' } }, [
+            h(naive.NButton, { type: 'info' }, '新增'),
+          ]),
           h(naive.NDataTable, {
             columns: columns,
             bordered: false,
-            data: tableData,
+            data: tableData.value,
           }),
         ]),
       ]);
