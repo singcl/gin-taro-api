@@ -82,7 +82,7 @@ export default {
                       () => itm.label
                     )
                   : undefined,
-                h(naive.NButton, { type: 'error' }, () => '删除'),
+                h(naive.NButton, { type: 'error', onClick: () => handleDelete(row) }, () => '删除'),
               ]);
             },
           };
@@ -145,7 +145,29 @@ export default {
             message.success(`${itm.label}成功！`);
             handleSearch();
           } catch (error) {
-            message.error(`创建失败:code: ${error.code};message: ${error.message}`);
+            message.error(`code: ${error.code};message: ${error.message}`);
+          }
+        },
+      });
+    }
+    //
+    async function handleDelete(row) {
+      const { hashid } = row;
+
+      dialog.warning({
+        title: '警告',
+        content: `确定删除当前授权吗？`,
+        positiveText: '确定',
+        negativeText: '取消',
+        onPositiveClick: async () => {
+          try {
+            await new Kiko().fetch(`/api/authorized/${hashid}`, {
+              method: 'DELETE'
+            });
+            message.success(`删除成功！`);
+            handleSearch();
+          } catch (error) {
+            message.error(`code: ${error.code};message: ${error.message}`);
           }
         },
       });
