@@ -16,6 +16,7 @@ type Service interface {
 	Create(ctx core.Context, authorizedData *CreateAuthorizedData) (id int32, err error)
 	PageList(ctx core.Context, searchData *SearchData) (listData []*authorized.Authorized, err error)
 	PageListCount(ctx core.Context, searchData *SearchData) (total int64, err error)
+	UpdateUsed(ctx core.Context, id int32, used int32) (err error)
 }
 
 type service struct {

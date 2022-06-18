@@ -40,5 +40,6 @@ func setApiRouter(r *resource) {
 		authorizedHandler := authorized.New(r.logger, r.db, r.cache)
 		api.POST("/authorized", authorizedHandler.Create())
 		api.GET("/authorized", authorizedHandler.List())
+		api.PATCH("/authorized/used", authorizedHandler.UpdateUsed())
 	}
 }

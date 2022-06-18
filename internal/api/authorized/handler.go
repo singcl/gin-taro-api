@@ -24,6 +24,11 @@ type Handler interface {
 	// @Tags API.authorized
 	// @Router /api/authorized [get]
 	List() core.HandlerFunc
+
+	// UpdateUsed 更新调用方为启用/禁用
+	// @Tags API.authorized
+	// @Router /api/authorized/used [patch]
+	UpdateUsed() core.HandlerFunc
 }
 
 type handler struct {
