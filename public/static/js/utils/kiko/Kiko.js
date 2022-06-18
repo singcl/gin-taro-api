@@ -31,7 +31,7 @@ export default class Kiko {
     let password = body && body.password;
     password = password ? Md5Con.md5(password) : password;
 
-    let bodyR = body && Object.assign({}, body, { password });
+    let bodyR = body && Object.assign({}, body, password && { password });
     //
     const authorizationData = generateAuthorization({
       path: url,
