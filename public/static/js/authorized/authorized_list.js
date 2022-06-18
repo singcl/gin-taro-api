@@ -6,6 +6,7 @@ import Kiko from './../utils/kiko/Kiko.js';
 //
 import AddDialog from './components/authorized_add.js';
 
+const { useMessage } = naive;
 const useOptions = [
   {
     value: 1,
@@ -20,7 +21,7 @@ const useOptions = [
 ];
 
 //
-const defaultColumns = [
+const defaultColumnsConfig = [
   { key: 'id', title: '编号' },
   { key: 'hashid', title: 'hashid' },
   { key: 'business_key', title: '调用方' },
@@ -56,25 +57,45 @@ const defaultColumns = [
     key: 'operation',
     title: '操作',
     align: 'right',
-    render(row) {
-      const { is_used } = row;
-      const op_used = { 1: -1, '-1': 1 }[is_used];
-      const itm = useOptions.find((m) => m.value == op_used);
-      return h('div', [
-        h(naive.NButton, { type: 'info', style: { marginRight: '10px' } }, () => '详情'),
-        itm ? h(naive.NButton, { type: itm.type, style: { marginRight: '10px' } }, () => itm.label) : undefined,
-        h(naive.NButton, { type: 'error' }, () => '删除'),
-      ]);
-    },
   },
 ];
 
 // App
 export default {
   setup() {
+    const defaultColumns = defaultColumnsConfig.map((item) => {
+      let newItem = item;
+      switch (item.key) {
+        case 'operation':
+          newItem = {
+            ...newItem,
+            render(row) {
+              const { is_used } = row;
+              const op_used = { 1: -1, '-1': 1 }[is_used];
+              const itm = useOptions.find((m) => m.value == op_used);
+              return h('div', [
+                h(naive.NButton, { type: 'info', style: { marginRight: '10px' } }, () => '详情'),
+                itm
+                  ? h(
+                      naive.NButton,
+                      { type: itm.type, style: { marginRight: '10px' }, onClick: () => handleUpdateUsed(row) },
+                      () => itm.label
+                    )
+                  : undefined,
+                h(naive.NButton, { type: 'error' }, () => '删除'),
+              ]);
+            },
+          };
+          break;
+        default:
+          break;
+      }
+      return newItem;
+    });
     const columns = reactive(defaultColumns);
     const tableData = ref([]);
     const adModalVisible = ref(false);
+    const message = useMessage();
     //
     onMounted(async () => {
       await handleSearch();
@@ -96,6 +117,24 @@ export default {
     function handleConfirm(v) {
       console.log(v);
       handleSearch();
+    }
+    //
+    async function handleUpdateUsed(row) {
+      try {
+        const { hashid, is_used } = row;
+        const used = { 1: -1, '-1': 1 }[is_used];
+        await new Kiko().fetch('/api/authorized/used', {
+          method: 'PATCH',
+          body: {
+            id: hashid,
+            used: used,
+          },
+        });
+        message.error("操作成功！");
+        handleSearch()
+      } catch (error) {
+        message.error(`创建失败:code: ${error.code};message: ${error.message}`);
+      }
     }
     //
     return () =>
