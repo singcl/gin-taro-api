@@ -6,7 +6,7 @@ import Kiko from './../utils/kiko/Kiko.js';
 //
 import AddDialog from './components/authorized_add.js';
 
-const { useMessage } = naive;
+const { useMessage, useDialog } = naive;
 const useOptions = [
   {
     value: 1,
@@ -96,14 +96,19 @@ export default {
     const tableData = ref([]);
     const adModalVisible = ref(false);
     const message = useMessage();
+    const dialog = useDialog();
     //
     onMounted(async () => {
       await handleSearch();
     });
     //
     async function handleSearch() {
-      const response = await new Kiko().fetch('/api/authorized');
-      tableData.value = response.list;
+      try {
+        const response = await new Kiko().fetch('/api/authorized');
+        tableData.value = response.list;
+      } catch (error) {
+        message.error(`code: ${error.code};message: ${error.message}`);
+      }
     }
     //
     function handleAddAuth() {
@@ -120,21 +125,30 @@ export default {
     }
     //
     async function handleUpdateUsed(row) {
-      try {
-        const { hashid, is_used } = row;
-        const used = { 1: -1, '-1': 1 }[is_used];
-        await new Kiko().fetch('/api/authorized/used', {
-          method: 'PATCH',
-          body: {
-            id: hashid,
-            used: used,
-          },
-        });
-        message.error("操作成功！");
-        handleSearch()
-      } catch (error) {
-        message.error(`创建失败:code: ${error.code};message: ${error.message}`);
-      }
+      const { hashid, is_used } = row;
+      const used = { 1: -1, '-1': 1 }[is_used];
+      const itm = useOptions.find((item) => item.value == used);
+      dialog.warning({
+        title: '警告',
+        content: `确定${itm.label}当前授权吗？`,
+        positiveText: '确定',
+        negativeText: '取消',
+        onPositiveClick: async () => {
+          try {
+            await new Kiko().fetch('/api/authorized/used', {
+              method: 'PATCH',
+              body: {
+                id: hashid,
+                used: used,
+              },
+            });
+            message.success(`${itm.label}成功！`);
+            handleSearch();
+          } catch (error) {
+            message.error(`创建失败:code: ${error.code};message: ${error.message}`);
+          }
+        },
+      });
     }
     //
     return () =>
