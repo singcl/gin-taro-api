@@ -14,8 +14,7 @@ export default class Kiko {
     const businessKey = params && params.businessKey;
     const businessSecret = params && params.businessSecret;
     if (typeof businessKey !== 'undefined') this.businessKey = businessKey;
-    if (typeof businessSecret !== 'undefined')
-      this.businessSecret = businessSecret;
+    if (typeof businessSecret !== 'undefined') this.businessSecret = businessSecret;
   }
   /**
    *
@@ -24,7 +23,7 @@ export default class Kiko {
    * @returns
    */
   async fetch(input, init = {}) {
-    const method = init.method || 'GET';
+    const method = (init.method || 'GET').toUpperCase();
     const url = typeof input === 'string' ? input : input && input.url;
     const body = init.body;
     //
@@ -34,7 +33,7 @@ export default class Kiko {
     let bodyR = body && Object.assign({}, body, password && { password });
     //
     const authorizationData = generateAuthorization({
-      path: url,
+      path: url.split('?')[0],
       method,
       params: bodyR,
       businessKey: this.businessKey,
@@ -42,6 +41,9 @@ export default class Kiko {
     });
     //
     const token = localStorage.getItem(Kiko.getTokenName());
+    // GET HEAD 请求不能穿BODY
+    const banBody = ['GET', 'HEAD'].some((m) => m === method);
+    const bodyRQS = new URLSearchParams(bodyR);
     /**
      * @type {RequestInit}
      */
@@ -52,10 +54,25 @@ export default class Kiko {
         'Authorization-Date': authorizationData.date,
         Token: token,
       },
-      body: bodyR ? new URLSearchParams(bodyR) : null,
+      body: !banBody && bodyRQS ? bodyRQS : null,
     });
     //
-    const response = await fetch(input, initAuth);
+    let inputR = input;
+    if (banBody) {
+      switch (typeof inputR) {
+        case 'string':
+          inputR = `${inputR}?${bodyRQS}`;
+          break;
+        case 'object':
+          inputR.url = `${inputR.url}?${bodyRQS}`;
+          break;
+        default:
+          break;
+      }
+    }
+
+    //
+    const response = await fetch(inputR, initAuth);
     const status = response.status;
     const resBody = await response.json();
     const ok = response.ok;
