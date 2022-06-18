@@ -80,7 +80,7 @@ export default {
                   'h3',
                   { style: { margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
                   [
-                    h('span', () => `授权方：${listData.business_key}`),
+                    h('span', null, `授权方：${listData.business_key}`),
                     h(NButton, { type: 'success', onClick: handleAddApiAuth }, () => '新增API授权'),
                   ]
                 ),
