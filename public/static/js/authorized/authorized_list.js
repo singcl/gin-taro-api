@@ -5,6 +5,7 @@ import Kiko from './../utils/kiko/Kiko.js';
 
 //
 import AddDialog from './components/authorized_add.js';
+import AuthApiDrawer from './components/authorized_api.js';
 
 const { useMessage, useDialog } = naive;
 const useOptions = [
@@ -74,7 +75,11 @@ export default {
               const op_used = { 1: -1, '-1': 1 }[is_used];
               const itm = useOptions.find((m) => m.value == op_used);
               return h('div', [
-                h(naive.NButton, { type: 'info', style: { marginRight: '10px' } }, () => '接口'),
+                h(
+                  naive.NButton,
+                  { type: 'info', style: { marginRight: '10px' }, onClick: () => handleAuthApiDetail(row) },
+                  () => '接口'
+                ),
                 itm
                   ? h(
                       naive.NButton,
@@ -95,6 +100,8 @@ export default {
     const columns = reactive(defaultColumns);
     const tableData = ref([]);
     const adModalVisible = ref(false);
+    const apiDrawerVisible = ref(false);
+    const detailData = ref(null);
     const message = useMessage();
     const dialog = useDialog();
     //
@@ -117,6 +124,10 @@ export default {
     //
     function handleAddModalCancel(v) {
       adModalVisible.value = Boolean(v);
+    }
+    //
+    function handleApiDrawerCancel(v) {
+      apiDrawerVisible.value = Boolean(v);
     }
     //
     function handleConfirm(v) {
@@ -150,6 +161,13 @@ export default {
         },
       });
     }
+
+    //
+    async function handleAuthApiDetail(row) {
+      apiDrawerVisible.value = true;
+      detailData.value = row;
+    }
+
     //
     async function handleDelete(row) {
       const { hashid } = row;
@@ -162,7 +180,7 @@ export default {
         onPositiveClick: async () => {
           try {
             await new Kiko().fetch(`/api/authorized/${hashid}`, {
-              method: 'DELETE'
+              method: 'DELETE',
             });
             message.success(`删除成功！`);
             handleSearch();
@@ -194,6 +212,16 @@ export default {
             'onUpdate:visible': handleAddModalCancel,
             onClose: handleAddModalCancel,
             'onKiko:conform': handleConfirm,
+          })
+        ),
+
+        // 已授权API drawer
+        h(naive.NMessageProvider, () =>
+          h(AuthApiDrawer, {
+            detailData: detailData,
+            visible: apiDrawerVisible.value,
+            'onUpdate:visible': handleApiDrawerCancel,
+            'onUpdate:show': handleApiDrawerCancel,
           })
         ),
       ]);
