@@ -21,6 +21,7 @@ type Service interface {
 	Delete(ctx core.Context, id int32) (err error)
 
 	ListAPI(ctx core.Context, searchAPIData *SearchAPIData) (listData []*authorized_api.AuthorizedApi, err error)
+	CreateAPI(ctx core.Context, authorizedAPIData *CreateAuthorizedAPIData) (id int32, err error)
 }
 
 type service struct {

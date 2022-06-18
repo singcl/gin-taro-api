@@ -39,6 +39,11 @@ type Handler interface {
 	// @Tags API.authorized
 	// @Router /api/authorized_api [get]
 	ListAPI() core.HandlerFunc
+
+	// CreateAPI 授权调用方接口地址
+	// @Tags API.authorized
+	// @Router /api/authorized_api [post]
+	CreateAPI() core.HandlerFunc
 }
 
 type handler struct {
