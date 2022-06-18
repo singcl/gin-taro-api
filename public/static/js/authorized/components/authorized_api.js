@@ -1,10 +1,10 @@
-import { h, reactive, ref, toRef, watch } from '/public/static/js/vue/vue3.esm-browser.js';
+import { h, reactive, toRef, watch } from '/public/static/js/vue/vue3.esm-browser.js';
 import naive from '/public/static/js/vue/naive.js';
 // 绝对路径导入无法识别类型。 不知道怎么配置？
 import Kiko from '/public/static/js/utils/kiko/Kiko.js';
 import { getTagType } from './utils.js';
 
-const { NDrawer, NList, NListItem, useMessage, NAlert, NThing, NTag, NEmpty } = naive;
+const { NDrawer, NList, NListItem, /* useMessage, */ NAlert, NThing, NTag, NEmpty } = naive;
 
 export default {
   props: {
@@ -13,8 +13,8 @@ export default {
   },
   emits: ['update:visible', 'kiko:conform'],
   // https://staging-cn.vuejs.org/guide/components/attrs.html#attribute-inheritance-on-multiple-root-nodes
-  setup(props, ctx) {
-    const message = useMessage();
+  setup(props /* ctx */) {
+    // const message = useMessage();
     const visible = toRef(props, 'visible');
     const detailData = toRef(props, 'detailData');
     const listData = reactive({
