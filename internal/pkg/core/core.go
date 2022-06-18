@@ -115,6 +115,14 @@ func WrapAuthHandler(handler func(Context) (sessionUserInfo proposal.SessionUser
 	}
 }
 
+// AliasForRecordMetrics 对请求路径起个别名，用于记录指标。
+// 如：Get /user/:username 这样的路径，因为 username 会有非常多的情况，这样记录指标非常不友好。
+func AliasForRecordMetrics(path string) HandlerFunc {
+	return func(ctx Context) {
+		ctx.setAlias(path)
+	}
+}
+
 type router struct {
 	group *gin.RouterGroup
 }
