@@ -1,10 +1,11 @@
-import { h, reactive, toRef, watch } from '/public/static/js/vue/vue3.esm-browser.js';
+import { h, reactive, toRef, watch, ref } from '/public/static/js/vue/vue3.esm-browser.js';
 import naive from '/public/static/js/vue/naive.js';
 // 绝对路径导入无法识别类型。 不知道怎么配置？
 import Kiko from '/public/static/js/utils/kiko/Kiko.js';
 import { getTagType } from './utils.js';
+import ApiAddDialog from './authorized_api_add.js';
 
-const { NDrawer, NList, NListItem, /* useMessage, */ NAlert, NThing, NTag, NEmpty } = naive;
+const { NDrawer, NList, NListItem, /* useMessage, */ NAlert, NThing, NTag, NEmpty, NButton } = naive;
 
 export default {
   props: {
@@ -17,6 +18,7 @@ export default {
     // const message = useMessage();
     const visible = toRef(props, 'visible');
     const detailData = toRef(props, 'detailData');
+    const apiModalVisible = ref(false);
     const listData = reactive({
       business_key: undefined,
       list: [],
@@ -41,6 +43,20 @@ export default {
       listData.list = list;
     }
 
+    function handleAddApiAuth() {
+      apiModalVisible.value = true;
+    }
+
+    //
+    function handleAddModalCancel(v) {
+      apiModalVisible.value = Boolean(v);
+    }
+    //
+    function handleConfirm(v) {
+      console.log(v);
+      handleSearch();
+    }
+
     //
     return () =>
       h(
@@ -59,7 +75,15 @@ export default {
             NList,
             { style: { margin: '0 15px' } },
             {
-              header: () => h('h3', { style: { margin: 0 } }, `授权方：${listData.business_key}`),
+              header: () =>
+                h(
+                  'h3',
+                  { style: { margin: 0, display: 'flex', alignItems: 'center', justifyContent: 'space-between' } },
+                  [
+                    h('span', () => `授权方：${listData.business_key}`),
+                    h(NButton, { type: 'success', onClick: handleAddApiAuth }, () => '新增API授权'),
+                  ]
+                ),
               default: () =>
                 listData.list && listData.list.length > 0
                   ? listData.list.map((item) =>
@@ -74,6 +98,15 @@ export default {
                   : h(NEmpty, { description: '没有任何已授权接口' }),
             }
           ),
+
+          // 新增接口授权
+          h(ApiAddDialog, {
+            visible: apiModalVisible.value,
+            'onUpdate:visible': handleAddModalCancel,
+            onClose: handleAddModalCancel,
+            'onKiko:conform': handleConfirm,
+            detailData: detailData,
+          }),
         ]
       );
   },
