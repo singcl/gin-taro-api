@@ -49,7 +49,7 @@ const defaultColumns = [
     render(row) {
       const { is_used } = row;
       const itm = useOptions.find((m) => m.value == is_used);
-      return itm ? h(naive.NTag, { type: itm.type }, itm.label) : is_used;
+      return itm ? h(naive.NTag, { type: itm.type }, () => itm.label) : is_used;
     },
   },
   {
@@ -61,9 +61,9 @@ const defaultColumns = [
       const op_used = { 1: -1, '-1': 1 }[is_used];
       const itm = useOptions.find((m) => m.value == op_used);
       return h('div', [
-        h(naive.NButton, { type: 'info', style: { marginRight: '10px' } }, '详情'),
-        itm ? h(naive.NButton, { type: itm.type, style: { marginRight: '10px' } }, itm.label) : undefined,
-        h(naive.NButton, { type: 'error' }, '删除'),
+        h(naive.NButton, { type: 'info', style: { marginRight: '10px' } }, () => '详情'),
+        itm ? h(naive.NButton, { type: itm.type, style: { marginRight: '10px' } }, () => itm.label) : undefined,
+        h(naive.NButton, { type: 'error' }, () => '删除'),
       ]);
     },
   },
@@ -77,24 +77,33 @@ export default {
     const adModalVisible = ref(false);
     //
     onMounted(async () => {
+      await handleSearch();
+    });
+    //
+    async function handleSearch() {
       const response = await new Kiko().fetch('/api/authorized');
       tableData.value = response.list;
-    });
+    }
     //
     function handleAddAuth() {
       adModalVisible.value = true;
     }
     //
     function handleAddModalCancel(v) {
-      adModalVisible.value = v;
+      adModalVisible.value = Boolean(v);
+    }
+    //
+    function handleConfirm(v) {
+      console.log(v);
+      handleSearch();
     }
     //
     return () =>
       h('div', { style: { maxWidth: '1200px', margin: '0 auto' } }, [
-        h(naive.NAlert, { type: 'success', title: '授权信息', style: 'margin-bottom: 10px' }, '已授权信息表格'),
+        h(naive.NAlert, { type: 'success', title: '授权信息', style: 'margin-bottom: 10px' }, () => '已授权信息表格'),
         h('div', [
           h('div', { style: { marginBottom: '10px', textAlign: 'right', padding: '0 12px' } }, [
-            h(naive.NButton, { type: 'info', onClick: handleAddAuth }, '新增'),
+            h(naive.NButton, { type: 'info', onClick: handleAddAuth }, () => '新增'),
           ]),
           h(naive.NDataTable, {
             columns: columns,
@@ -104,12 +113,12 @@ export default {
         ]),
 
         // 新增授权 dialog
-        h(
-          naive.NMessageProvider,
+        h(naive.NMessageProvider, () =>
           h(AddDialog, {
             visible: adModalVisible.value,
             'onUpdate:visible': handleAddModalCancel,
             onClose: handleAddModalCancel,
+            'onKiko:conform': handleConfirm,
           })
         ),
       ]);

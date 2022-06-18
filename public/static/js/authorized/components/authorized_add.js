@@ -9,7 +9,7 @@ export default {
   props: {
     visible: Boolean,
   },
-  emits: ['update:visible'],
+  emits: ['update:visible', 'kiko:conform'],
   // https://staging-cn.vuejs.org/guide/components/attrs.html#attribute-inheritance-on-multiple-root-nodes
   setup(props, ctx) {
     const message = useMessage();
@@ -39,12 +39,18 @@ export default {
     });
     //
     async function handleSure() {
-      await formRef.value?.validate();
-      const response = await new Kiko().fetch('/api/authorized/add', {
-        method: 'POST',
-        body: formData
-      });
-      message.success('验证成功');
+      const response = await formRef.value?.validate();
+      try {
+        await new Kiko().fetch('/api/authorized', {
+          method: 'POST',
+          body: formData,
+        });
+        message.success('创建成功');
+        handleCancel();
+        ctx.emit('kiko:conform', response);
+      } catch (error) {
+        message.error(`创建失败:code: ${error.code};message: ${error.message}`);
+      }
     }
     //
     const handleCancel = () => {
@@ -58,37 +64,41 @@ export default {
         title: '新增授权',
         preset: 'dialog',
         content: () =>
-          h(NCard, [
-            h(NForm, { model: formData, rules: rules, ref: formRef, labelPlacement: 'left', labelWidth: '120px' }, [
-              //
-              h(NFormItem, { label: '调用方', path: 'business_key' }, [
-                h(NInput, {
-                  value: formData.business_key,
-                  'onUpdate:value': (v) => (formData.business_key = v),
-                  type: 'text',
-                  placeholder: '请输入调用方标识',
-                }),
-              ]),
-              //
-              h(NFormItem, { label: '调用方对接人', path: 'business_developer' }, [
-                h(NInput, {
-                  value: formData.business_developer,
-                  'onUpdate:value': (v) => (formData.business_developer = v),
-                  type: 'text',
-                  placeholder: '请输入调用方对接人',
-                }),
-              ]),
-              //
-              h(NFormItem, { label: '备注', path: 'remark' }, [
-                h(NInput, {
-                  value: formData.remark,
-                  'onUpdate:value': (v) => (formData.remark = v),
-                  type: 'text',
-                  placeholder: '请输入备注',
-                }),
-              ]),
-            ]),
-          ]),
+          h(NCard, () =>
+            h(
+              NForm,
+              { model: formData, rules: rules, ref: formRef, labelPlacement: 'left', labelWidth: '120px' },
+              () => [
+                //
+                h(NFormItem, { label: '调用方', path: 'business_key' }, () =>
+                  h(NInput, {
+                    value: formData.business_key,
+                    'onUpdate:value': (v) => (formData.business_key = v),
+                    type: 'text',
+                    placeholder: '请输入调用方标识',
+                  })
+                ),
+                //
+                h(NFormItem, { label: '调用方对接人', path: 'business_developer' }, () =>
+                  h(NInput, {
+                    value: formData.business_developer,
+                    'onUpdate:value': (v) => (formData.business_developer = v),
+                    type: 'text',
+                    placeholder: '请输入调用方对接人',
+                  })
+                ),
+                //
+                h(NFormItem, { label: '备注', path: 'remark' }, () =>
+                  h(NInput, {
+                    value: formData.remark,
+                    'onUpdate:value': (v) => (formData.remark = v),
+                    type: 'text',
+                    placeholder: '请输入备注',
+                  })
+                ),
+              ]
+            )
+          ),
         positiveText: '确认',
         negativeText: '取消',
         onNegativeClick: handleCancel,
