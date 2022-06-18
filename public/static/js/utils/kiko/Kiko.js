@@ -52,7 +52,7 @@ export default class Kiko {
         'Authorization-Date': authorizationData.date,
         Token: token,
       },
-      body: bodyR ? new URLSearchParams(bodyR) : undefined,
+      body: bodyR ? new URLSearchParams(bodyR) : null,
     });
     //
     const response = await fetch(input, initAuth);
