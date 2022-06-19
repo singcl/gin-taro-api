@@ -111,6 +111,8 @@ func (h *handler) List() core.HandlerFunc {
 		res.Pagination.Total = cast.ToInt(resCountData)
 		res.Pagination.PerPageCount = pageSize
 		res.Pagination.CurrentPage = page
+		// 创建指定容量切片
+		res.List = make([]listData, len(resListData))
 
 		for k, v := range resListData {
 			hashId, err := h.hashids.HashidsEncode([]int{cast.ToInt(v.Id)})
