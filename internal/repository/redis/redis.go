@@ -32,11 +32,8 @@ type Repo interface {
 	SetR(key, value string, ttl time.Duration, options ...Option) error
 	Del(key string, options ...Option) bool
 	Version() string
-	//
-	IsExist(key string) bool
-	Delete(key string) error
-	Get(key string) interface{}
-	Set(key string, val interface{}, timeout time.Duration) error
+	// wechat cache
+	WeixinCache
 }
 
 // https://silenceper.com/wechat/officialaccount/configuration.html
