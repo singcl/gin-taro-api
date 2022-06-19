@@ -24,7 +24,6 @@ type service struct {
 
 func New(cache redis.Repo) Service {
 	wc := wechat.NewWechat()
-	// TODO wechat cache interface
 	wc.SetCache(cache)
 	cfg := &miniConfig.Config{
 		AppID:     configs.Get().Wechat.AppID,
