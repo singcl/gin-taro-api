@@ -41,3 +41,7 @@ minidleconns = 5
 pass = ''
 poolsize = 10
 
+[wechat]
+appid = 'sljfdlsjfdlsk3'
+secret = 'sfsfdsfeeeee'
+

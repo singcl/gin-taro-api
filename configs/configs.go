@@ -62,6 +62,11 @@ type Config struct {
 	Language struct {
 		Local string `toml:"local"`
 	} `toml:"language"`
+
+	Wechat struct {
+		AppID  string `toml:"appid"`
+		Secret string `toml:"secret"`
+	} `toml:"wechat"`
 }
 
 var (
