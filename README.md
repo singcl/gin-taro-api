@@ -25,3 +25,8 @@ GRANT ALL PRIVILEGES ON gin_taro_api.* TO taro'@'127.0.0.1' WITH GRANT OPTION;
 
 ## mail
 告警邮件发送调试通过 SUCCESS😇
+
+## 界面
+![授权列表](./imgs/authorized_list.png)
+![新增授权](./imgs/authorized_add.png)
+![授权详情](./imgs/authorized_detail.png)
