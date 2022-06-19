@@ -83,7 +83,7 @@ func (h *handler) Login() core.HandlerFunc {
 		}
 
 		// 将用户信息记录到 Redis 中
-		err = h.cache.Set(
+		err = h.cache.SetR(
 			configs.RedisKeyPrefixLoginUser+token,
 			string(sessionUserInfo.Marshal()),
 			configs.LoginSessionTTL,
@@ -114,7 +114,7 @@ func (h *handler) Login() core.HandlerFunc {
 		// 菜单栏信息
 		menuJsonInfo, _ := json.Marshal(menu)
 		// 将菜单栏信息记录到 Redis 中
-		err = h.cache.Set(
+		err = h.cache.SetR(
 			configs.RedisKeyPrefixLoginUser+token+":menu",
 			string(menuJsonInfo),
 			configs.LoginSessionTTL,
@@ -145,7 +145,7 @@ func (h *handler) Login() core.HandlerFunc {
 		actionJsonInfo, _ := json.Marshal(action)
 
 		// 将可访问接口信息记录到 Redis 中
-		err = h.cache.Set(
+		err = h.cache.SetR(
 			configs.RedisKeyPrefixLoginUser+token+":action",
 			string(actionJsonInfo),
 			configs.LoginSessionTTL,

@@ -37,7 +37,7 @@ func (h *handler) Detail() core.HandlerFunc {
 			return
 		}
 
-		menuCacheData, err := h.cache.Get(configs.RedisKeyPrefixLoginUser+password.GenerateLoginToken(searchOneData.Id)+":menu",
+		menuCacheData, err := h.cache.GetR(configs.RedisKeyPrefixLoginUser+password.GenerateLoginToken(searchOneData.Id)+":menu",
 			redis.WithTrace(ctx.Trace()))
 		if err != nil {
 			ctx.AbortWithError(core.Error(

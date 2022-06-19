@@ -32,7 +32,7 @@ func (i *interceptor) CheckLogin(ctx core.Context) (sessionUserInfo proposal.Ses
 		return
 	}
 
-	cacheData, cacheErr := i.cache.Get(configs.RedisKeyPrefixLoginUser+token, redis.WithTrace(ctx.Trace()))
+	cacheData, cacheErr := i.cache.GetR(configs.RedisKeyPrefixLoginUser+token, redis.WithTrace(ctx.Trace()))
 	if cacheErr != nil {
 		err = core.Error(
 			http.StatusUnauthorized,

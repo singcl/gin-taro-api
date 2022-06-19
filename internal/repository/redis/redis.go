@@ -28,13 +28,15 @@ func newOption() *option {
 type Repo interface {
 	i()
 	Exists(keys ...string) bool
-	Get(key string, options ...Option) (string, error)
-	Set(key, value string, ttl time.Duration, options ...Option) error
+	GetR(key string, options ...Option) (string, error)
+	SetR(key, value string, ttl time.Duration, options ...Option) error
 	Del(key string, options ...Option) bool
 	Version() string
 	//
 	IsExist(key string) bool
 	Delete(key string) error
+	Get(key string) interface{}
+	Set(key string, val interface{}, timeout time.Duration) error
 }
 
 // https://silenceper.com/wechat/officialaccount/configuration.html
@@ -98,7 +100,16 @@ func (c *cacheRepo) IsExist(key string) bool {
 }
 
 // Set set some <key,value> into redis
-func (c *cacheRepo) Set(key, value string, ttl time.Duration, options ...Option) error {
+func (c *cacheRepo) Set(key string, value interface{}, ttl time.Duration) error {
+	if err := c.client.Set(key, value, ttl).Err(); err != nil {
+		return errors.Wrapf(err, "redis set key: %s err", key)
+	}
+
+	return nil
+}
+
+// Set set some <key,value> into redis
+func (c *cacheRepo) SetR(key, value string, ttl time.Duration, options ...Option) error {
 	ts := time.Now()
 	opt := newOption()
 	defer func() {
@@ -135,7 +146,7 @@ func WithTrace(t Trace) Option {
 }
 
 // Get get some key from redis
-func (c *cacheRepo) Get(key string, options ...Option) (string, error) {
+func (c *cacheRepo) GetR(key string, options ...Option) (string, error) {
 	ts := time.Now()
 	opt := newOption()
 	defer func() {
@@ -158,6 +169,16 @@ func (c *cacheRepo) Get(key string, options ...Option) (string, error) {
 	}
 
 	return value, nil
+}
+
+// Get get some key from redis
+func (c *cacheRepo) Get(key string) interface{} {
+	value, err := c.client.Get(key).Result()
+	if err != nil {
+		return ""
+	}
+
+	return value
 }
 
 func (c *cacheRepo) Del(key string, options ...Option) bool {

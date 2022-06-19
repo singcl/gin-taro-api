@@ -67,7 +67,7 @@ func (s *service) DetailByKey(ctx core.Context, key string) (cacheData *CacheAut
 
 		cacheDataByte, _ := json.Marshal(cacheData)
 
-		err = s.cache.Set(cacheKey, string(cacheDataByte), configs.LoginSessionTTL, redis.WithTrace(ctx.Trace()))
+		err = s.cache.SetR(cacheKey, string(cacheDataByte), configs.LoginSessionTTL, redis.WithTrace(ctx.Trace()))
 
 		if err != nil {
 			return nil, err
@@ -76,7 +76,7 @@ func (s *service) DetailByKey(ctx core.Context, key string) (cacheData *CacheAut
 		return cacheData, nil
 	}
 
-	value, err := s.cache.Get(cacheKey, redis.WithTrace(ctx.RequestContext().Trace))
+	value, err := s.cache.GetR(cacheKey, redis.WithTrace(ctx.RequestContext().Trace))
 	if err != nil {
 		return nil, err
 	}

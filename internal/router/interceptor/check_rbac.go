@@ -42,7 +42,7 @@ func (i *interceptor) CheckRBAC() core.HandlerFunc {
 			return
 		}
 
-		actionData, err := i.cache.Get(configs.RedisKeyPrefixLoginUser+token+":action", redis.WithTrace(c.Trace()))
+		actionData, err := i.cache.GetR(configs.RedisKeyPrefixLoginUser+token+":action", redis.WithTrace(c.Trace()))
 		if err != nil {
 			c.AbortWithError(core.Error(
 				http.StatusUnauthorized,
