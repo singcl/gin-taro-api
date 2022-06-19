@@ -27,6 +27,10 @@ type Handler interface {
 	// @Tags API.admin
 	// @Router /api/admin/info [get]
 	Detail() core.HandlerFunc
+	// List 管理员列表
+	// @Tags API.admin
+	// @Router /api/admin [get]
+	List() core.HandlerFunc
 }
 
 type handler struct {

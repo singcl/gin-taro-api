@@ -14,6 +14,9 @@ type Service interface {
 	Detail(ctx core.Context, searchOneData *SearchOneData) (info *admin.Admin, err error)
 	MyMenu(ctx core.Context, searchData *SearchMyMenuData) (menuData []ListMyMenuData, err error)
 	MyAction(ctx core.Context, searchData *SearchMyActionData) (actionData []MyActionData, err error)
+
+	PageList(ctx core.Context, searchData *SearchData) (listData []*admin.Admin, err error)
+	PageListCount(ctx core.Context, searchData *SearchData) (total int64, err error)
 }
 
 type service struct {
