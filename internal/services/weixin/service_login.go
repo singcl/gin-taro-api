@@ -5,9 +5,9 @@ import (
 )
 
 type SearchCode2SessionData struct {
-	// Appid     string `json: "appid"`      // 小程序 appId
-	// Secret    string `json: "secret"`     // 小程序 appSecret
-	// GrantType string `json: "grant_type"` // 授权类型，此处只需填写 authorization_code
+	// Appid     string `json:"appid"`      // 小程序 appId
+	// Secret    string `json:"secret"`     // 小程序 appSecret
+	// GrantType string `json:"grant_type"` // 授权类型，此处只需填写 authorization_code
 	JsCode string `json:"js_code"` // 登录时获取的 code
 }
 
