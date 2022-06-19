@@ -32,6 +32,18 @@ type Repo interface {
 	Set(key, value string, ttl time.Duration, options ...Option) error
 	Del(key string, options ...Option) bool
 	Version() string
+	//
+	IsExist(key string) bool
+	Delete(key string) error
+}
+
+// https://silenceper.com/wechat/officialaccount/configuration.html
+// 自定义微信缓存数据接口
+type WeixinCache interface {
+	Get(key string) interface{}
+	Set(key string, val interface{}, timeout time.Duration) error
+	IsExist(key string) bool
+	Delete(key string) error
 }
 
 type cacheRepo struct {
@@ -74,6 +86,14 @@ func (c *cacheRepo) Exists(keys ...string) bool {
 		return true
 	}
 	value, _ := c.client.Exists(keys...).Result()
+	return value > 0
+}
+
+func (c *cacheRepo) IsExist(key string) bool {
+	if key == "" {
+		return true
+	}
+	value, _ := c.client.Exists(key).Result()
 	return value > 0
 }
 
@@ -163,6 +183,19 @@ func (c *cacheRepo) Del(key string, options ...Option) bool {
 
 	value, _ := c.client.Del(key).Result()
 	return value > 0
+}
+
+func (c *cacheRepo) Delete(key string) error {
+	if key == "" {
+		return nil
+	}
+
+	value, _ := c.client.Del(key).Result()
+
+	if value > 0 {
+		return nil
+	}
+	return errors.New("删除失败")
 }
 
 // Version redis server version
