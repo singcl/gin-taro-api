@@ -4,6 +4,7 @@ import (
 	"github.com/singcl/gin-taro-api/internal/api/admin"
 	"github.com/singcl/gin-taro-api/internal/api/authorized"
 	"github.com/singcl/gin-taro-api/internal/api/helper"
+	"github.com/singcl/gin-taro-api/internal/api/weixin"
 	"github.com/singcl/gin-taro-api/internal/pkg/core"
 )
 
@@ -15,6 +16,14 @@ func setApiRouter(r *resource) {
 	{
 		helpers.GET("/md5/:str", helperHandler.Md5())
 		helpers.POST("/sign", helperHandler.Sign())
+	}
+
+	// 微信
+	weixinHandler := weixin.New(r.logger, r.cache)
+	weixin := r.kiko.Group("/weixin")
+	{
+		// 微信登录
+		weixin.GET("/login", weixinHandler.Login())
 	}
 
 	// admin
