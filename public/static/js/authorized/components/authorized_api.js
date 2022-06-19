@@ -5,7 +5,7 @@ import Kiko from '/public/static/js/utils/kiko/Kiko.js';
 import { getTagType } from './utils.js';
 import ApiAddDialog from './authorized_api_add.js';
 
-const { NDrawer, NList, NListItem, /* useMessage, */ NAlert, NThing, NTag, NEmpty, NButton } = naive;
+const { NDrawer, NList, NListItem, useMessage, useDialog, NAlert, NThing, NTag, NEmpty, NButton } = naive;
 
 export default {
   props: {
@@ -15,7 +15,8 @@ export default {
   emits: ['update:visible', 'kiko:conform'],
   // https://staging-cn.vuejs.org/guide/components/attrs.html#attribute-inheritance-on-multiple-root-nodes
   setup(props /* ctx */) {
-    // const message = useMessage();
+    const message = useMessage();
+    const dialog = useDialog();
     const visible = toRef(props, 'visible');
     const detailData = toRef(props, 'detailData');
     const apiModalVisible = ref(false);
@@ -41,6 +42,29 @@ export default {
       const { business_key, list = [] } = response;
       listData.business_key = business_key;
       listData.list = list;
+    }
+
+    // 取消接口授权
+    function handleCancelApiAuth(row) {
+      return async function () {
+        dialog.warning({
+          title: '警告',
+          content: `确定取消当前API授权吗？`,
+          positiveText: '确定',
+          negativeText: '取消',
+          onPositiveClick: async () => {
+            try {
+              await new Kiko().fetch(`/api/authorized_api/${row.hash_id}`, {
+                method: 'DELETE',
+              });
+              message.success('成功取消授权');
+              handleSearch();
+            } catch (error) {
+              message.error(`取消授权失败:code: ${error.code};message: ${error.message}`);
+            }
+          },
+        });
+      };
     }
 
     function handleAddApiAuth() {
@@ -92,6 +116,8 @@ export default {
                           h(NThing, null, {
                             header: () => h(NTag, { type: getTagType(item.method), round: true }, () => item.method),
                             description: () => item.api,
+                            'header-extra': () =>
+                              h(NButton, { type: 'error', onClick: handleCancelApiAuth(item) }, () => '取消授权'),
                           }),
                       })
                     )
