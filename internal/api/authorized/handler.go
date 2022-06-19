@@ -44,6 +44,11 @@ type Handler interface {
 	// @Tags API.authorized
 	// @Router /api/authorized_api [post]
 	CreateAPI() core.HandlerFunc
+
+	// DeleteAPI 删除调用方接口地址
+	// @Tags API.authorized
+	// @Router /api/authorized_api/{id} [delete]
+	DeleteAPI() core.HandlerFunc
 }
 
 type handler struct {

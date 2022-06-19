@@ -87,3 +87,36 @@ func (qb *authorizedApiQueryBuilder) buildQuery(db *gorm.DB) *gorm.DB {
 	ret = ret.Limit(qb.limit).Offset(qb.offset)
 	return ret
 }
+
+func (qb *authorizedApiQueryBuilder) WhereId(p mysql.Predicate, value int32) *authorizedApiQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "id", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *authorizedApiQueryBuilder) First(db *gorm.DB) (*AuthorizedApi, error) {
+	ret := &AuthorizedApi{}
+	res := qb.buildQuery(db).First(ret)
+	if res.Error != nil && res.Error == gorm.ErrRecordNotFound {
+		ret = nil
+	}
+	return ret, res.Error
+}
+
+func (qb *authorizedApiQueryBuilder) Updates(db *gorm.DB, m map[string]interface{}) (err error) {
+	db = db.Model(&AuthorizedApi{})
+
+	for _, where := range qb.where {
+		db.Where(where.prefix, where.value)
+	}
+
+	if err = db.Updates(m).Error; err != nil {
+		return errors.Wrap(err, "updates err")
+	}
+	return nil
+}
