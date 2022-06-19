@@ -2,11 +2,8 @@
 
 # GIN-TARO-API
 
-[gin framework](https://gin-gonic.com/zh-cn/docs/quickstart/)
-
-[go-gin-api](https://github.com/xinliangnote/go-gin-api)
-
-[moose-go](https://gitee.com/shizidada/moose-go)
+Inspired by [go-gin-api](https://github.com/xinliangnote/go-gin-api). about some other resource [gin framework](https://gin-gonic.com/zh-cn/docs/quickstart/)
+,[moose-go](https://gitee.com/shizidada/moose-go)
 
 ## start
 
