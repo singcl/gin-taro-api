@@ -43,7 +43,7 @@ export default class Kiko {
     const token = localStorage.getItem(Kiko.getTokenName());
     // GET HEAD 请求不能穿BODY
     const banBody = ['GET', 'HEAD'].some((m) => m === method);
-    const bodyRQS = new URLSearchParams(bodyR);
+    const bodyRQS = new URLSearchParams(bodyR).toString();
     /**
      * @type {RequestInit}
      */
@@ -61,10 +61,10 @@ export default class Kiko {
     if (banBody) {
       switch (typeof inputR) {
         case 'string':
-          inputR = `${inputR}?${bodyRQS}`;
+          inputR = `${inputR}${bodyRQS ? '?' + bodyRQS : bodyRQS}`;
           break;
         case 'object':
-          inputR.url = `${inputR.url}?${bodyRQS}`;
+          inputR.url = `${inputR.url}${bodyRQS ? '?' + bodyRQS : bodyRQS}`;
           break;
         default:
           break;
