@@ -1,6 +1,12 @@
 package weixin
 
-import "github.com/singcl/gin-taro-api/internal/pkg/core"
+import (
+	"net/http"
+
+	"github.com/singcl/gin-taro-api/internal/code"
+	"github.com/singcl/gin-taro-api/internal/pkg/core"
+	"github.com/singcl/gin-taro-api/internal/services/weixin"
+)
 
 type loginRequest struct {
 	Code string `form:"code" binding:"required"` // 微信小程序临时登录凭证code
@@ -22,6 +28,32 @@ type loginResponse struct {
 // @Router /weixin/login [get]
 func (h *handler) Login() core.HandlerFunc {
 	return func(c core.Context) {
-		// TODO
+		req := new(loginRequest)
+		res := new(loginResponse)
+
+		if err := c.ShouldBindForm(req); err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.ParamBindError,
+				code.Text(code.ParamBindError)).WithError(err),
+			)
+			return
+		}
+
+		searchData := new(weixin.SearchCode2SessionData)
+		searchData.JsCode = req.Code
+		_, err := h.weixinService.Login(c, searchData)
+
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.AdminLoginError,
+				code.Text(code.AdminLoginError)).WithError(err),
+			)
+			return
+		}
+
+		res.Code = req.Code
+		c.Payload(res)
 	}
 }
