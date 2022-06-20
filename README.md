@@ -20,8 +20,45 @@ CREATE DATABASE gin_taro_api DEFAULT CHARACTER SET = 'utf8mb4';
 GRANT ALL PRIVILEGES ON gin_taro_api.* TO taro'@'127.0.0.1' WITH GRANT OPTION;
 ```
 
-## mail
+## Mail
 告警邮件发送调试通过 SUCCESS😇
+
+## Debug
+在vscode中调试应用程序
+
+相关参考文档
+```sh
+  # https://github.com/golang/vscode-go/blob/master/docs/debugging.md
+  # https://code.visualstudio.com/docs/languages/go#_debugging
+  # https://juejin.cn/post/6844904087763304462
+```
+1. 手动安装`delve` Go debugger
+```sh
+# Install the latest release:
+$ go install github.com/go-delve/delve/cmd/dlv@latest
+
+```
+2. 配置launch.json
+```json
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  // https://github.com/golang/vscode-go/blob/master/docs/debugging.md
+  // https://code.visualstudio.com/docs/languages/go#_debugging
+  // https://juejin.cn/post/6844904087763304462
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Launch Package",
+      "type": "go",
+      "request": "launch",
+      "mode": "auto",
+      "program": "${workspaceFolder}"
+    }
+  ]
+}
+```
 
 ## 界面
 ![授权列表](./imgs/authorized_list.png)
