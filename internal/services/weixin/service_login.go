@@ -26,12 +26,20 @@ func (s *service) Login(ctx core.Context, searchCode2Session *SearchCode2Session
 	if err != nil {
 		return nil, err
 	}
-	info = new(Code2SessionData)
-	info.UnionID = session.UnionID
-	info.OpenID = session.OpenID
-	info.SessionKey = session.SessionKey
-	info.Errcode = session.ErrCode
-	info.Errmsg = session.ErrMsg
+	info = &Code2SessionData{
+		session.UnionID,
+		session.OpenID,
+		session.SessionKey,
+		session.ErrCode,
+		session.ErrMsg,
+	}
+	// 或者
+	// info = new(Code2SessionData)
+	// info.UnionID = session.UnionID
+	// info.OpenID = session.OpenID
+	// info.SessionKey = session.SessionKey
+	// info.Errcode = session.ErrCode
+	// info.Errmsg = session.ErrMsg
 
 	return
 }
