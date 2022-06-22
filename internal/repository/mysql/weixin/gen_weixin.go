@@ -1,6 +1,11 @@
 package weixin
 
-import "gorm.io/gorm"
+import (
+	"fmt"
+
+	"github.com/singcl/gin-taro-api/internal/repository/mysql"
+	"gorm.io/gorm"
+)
 
 func NewModel() *Weixin {
 	return new(Weixin)
@@ -39,4 +44,85 @@ func (qb *weixinQueryBuilder) First(db *gorm.DB) (*Weixin, error) {
 		ret = nil
 	}
 	return ret, res.Error
+}
+
+func (qb *weixinQueryBuilder) QueryOne(db *gorm.DB) (*Weixin, error) {
+	qb.limit = 1
+	ret, err := qb.QueryAll(db)
+	if len(ret) > 0 {
+		return ret[0], err
+	}
+	return nil, err
+}
+
+func (qb *weixinQueryBuilder) QueryAll(db *gorm.DB) ([]*Weixin, error) {
+	var ret []*Weixin
+	err := qb.buildQuery(db).Find(&ret).Error
+	return ret, err
+}
+
+func (qb *weixinQueryBuilder) WhereIsDeleted(p mysql.Predicate, value int32) *weixinQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "is_deleted", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *weixinQueryBuilder) WhereOpenid(p mysql.Predicate, value string) *weixinQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "openid", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *weixinQueryBuilder) WhereUsername(p mysql.Predicate, value string) *weixinQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "username", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *weixinQueryBuilder) WhereNickname(p mysql.Predicate, value string) *weixinQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "nickname", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *weixinQueryBuilder) WhereMobile(p mysql.Predicate, value string) *weixinQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "mobile", p),
+		value,
+	})
+	return qb
+}
+
+func (qb *weixinQueryBuilder) WhereIsUsed(p mysql.Predicate, value int32) *weixinQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "is_used", p),
+		value,
+	})
+	return qb
 }

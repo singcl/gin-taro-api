@@ -19,7 +19,7 @@ func setApiRouter(r *resource) {
 	}
 
 	// 微信
-	weixinHandler := weixin.New(r.logger, r.cache)
+	weixinHandler := weixin.New(r.logger, r.db, r.cache)
 	weixin := r.kiko.Group("/weixin")
 	{
 		// 微信登录
