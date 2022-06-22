@@ -61,6 +61,5 @@ var zhCNText = map[int]string{
 	CronDetailError:  "获取定时任务详情失败",
 	CronExecuteError: "手动执行定时任务失败",
 
-	WeixinLoginError:        "Code2Session成功，但是微信小程序数据库查询openid失败",
-	WeixinCode2SessionError: "微信Code2Session时出错",
+	WeixinLoginError: "微信登录失败",
 }
