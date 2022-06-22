@@ -1,10 +1,12 @@
 package weixin
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/singcl/gin-taro-api/internal/code"
 	"github.com/singcl/gin-taro-api/internal/pkg/core"
+	"github.com/singcl/gin-taro-api/internal/pkg/password"
 	"github.com/singcl/gin-taro-api/internal/services/weixin"
 )
 
@@ -13,7 +15,7 @@ type loginRequest struct {
 }
 
 type loginResponse struct {
-	Code string `json:"code"` // 微信小程序临时登录凭证code
+	Token string `json:"token"` // 微信小程序登录凭证token
 }
 
 // Sign 微信登录
@@ -40,20 +42,49 @@ func (h *handler) Login() core.HandlerFunc {
 			return
 		}
 
+		// 微信Code2Session
 		searchData := new(weixin.SearchCode2SessionData)
 		searchData.JsCode = req.Code
-		_, err := h.weixinService.Login(c, searchData)
+		wxLoginData, err := h.weixinService.Login(c, searchData)
 
 		if err != nil {
 			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
-				code.AdminLoginError,
-				code.Text(code.AdminLoginError)).WithError(err),
+				code.WeixinLoginError,
+				code.Text(code.WeixinLoginError)).WithError(err),
 			)
 			return
 		}
 
-		res.Code = req.Code
+		// 数据库查询该用户
+		searchOneData := new(weixin.SearchOneData)
+		searchOneData.Openid = wxLoginData.OpenID
+		searchOneData.IsUsed = 1
+
+		info, err := h.weixinService.Detail(c, searchOneData)
+
+		// TODO 找不到用户则插入，找到则更新
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.WeixinLoginError,
+				code.Text(code.WeixinLoginError)).WithError(err),
+			)
+			return
+		}
+
+		if info == nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.WeixinLoginError,
+				code.Text(code.WeixinLoginError)).WithError(errors.New("Code2Session成功，但是微信用户表中未找到该用户")),
+			)
+			return
+		}
+
+		token := password.GenerateWeixinLoginToken(info.Openid)
+
+		res.Token = token
 		c.Payload(res)
 	}
 }
