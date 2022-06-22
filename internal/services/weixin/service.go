@@ -6,6 +6,7 @@ import (
 	miniConfig "github.com/silenceper/wechat/v2/miniprogram/config"
 	"github.com/singcl/gin-taro-api/configs"
 	"github.com/singcl/gin-taro-api/internal/pkg/core"
+	"github.com/singcl/gin-taro-api/internal/repository/mysql"
 	"github.com/singcl/gin-taro-api/internal/repository/redis"
 )
 
@@ -17,12 +18,13 @@ type Service interface {
 }
 
 type service struct {
+	db          mysql.Repo
 	cache       redis.Repo
 	wc          *wechat.Wechat
 	miniprogram *miniprogram.MiniProgram
 }
 
-func New(cache redis.Repo) Service {
+func New(db mysql.Repo, cache redis.Repo) Service {
 	wc := wechat.NewWechat()
 	wc.SetCache(cache)
 	cfg := &miniConfig.Config{
@@ -32,6 +34,7 @@ func New(cache redis.Repo) Service {
 	miniprogram := wc.GetMiniProgram(cfg)
 
 	return &service{
+		db:          db,
 		cache:       cache,
 		wc:          wc,
 		miniprogram: miniprogram,
