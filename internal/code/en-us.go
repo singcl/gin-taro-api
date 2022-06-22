@@ -60,4 +60,7 @@ var enUSText = map[int]string{
 	CronListError:    "Failed to get cron list",
 	CronDetailError:  "Failed to get cron detail",
 	CronExecuteError: "Failed to execute cron",
+
+	WeixinLoginError:        "Failed to weixin login, but Code2Session success",
+	WeixinCode2SessionError: "Failed to weixin code to session",
 }
