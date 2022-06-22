@@ -44,3 +44,11 @@ func GenerateLoginToken(id int32) (token string) {
 
 	return
 }
+
+func GenerateWeixinLoginToken(openid string) (token string) {
+	m := md5.New()
+	m.Write([]byte(fmt.Sprintf("%s%s", openid, saltPassword)))
+	token = hex.EncodeToString(m.Sum(nil))
+
+	return
+}
