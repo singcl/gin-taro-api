@@ -27,9 +27,9 @@ func (s *service) Login(ctx core.Context, searchCode2Session *SearchCode2Session
 		return nil, err
 	}
 	info = &Code2SessionData{
-		session.UnionID,
 		session.OpenID,
 		session.SessionKey,
+		session.UnionID,
 		session.ErrCode,
 		session.ErrMsg,
 	}
