@@ -1,7 +1,6 @@
 package weixin
 
 import (
-	"errors"
 	"net/http"
 
 	"github.com/singcl/gin-taro-api/internal/code"
@@ -32,6 +31,7 @@ func (h *handler) Login() core.HandlerFunc {
 	return func(c core.Context) {
 		req := new(loginRequest)
 		res := new(loginResponse)
+		var uId int32
 
 		if err := c.ShouldBindForm(req); err != nil {
 			c.AbortWithError(core.Error(
@@ -63,7 +63,6 @@ func (h *handler) Login() core.HandlerFunc {
 
 		info, err := h.weixinService.Detail(c, searchOneData)
 
-		// TODO 找不到用户则插入，找到则更新
 		if err != nil {
 			c.AbortWithError(core.Error(
 				http.StatusBadRequest,
@@ -73,16 +72,27 @@ func (h *handler) Login() core.HandlerFunc {
 			return
 		}
 
+		// TODO 找不到用户则插入，找到则更新
 		if info == nil {
-			c.AbortWithError(core.Error(
-				http.StatusBadRequest,
-				code.WeixinLoginError,
-				code.Text(code.WeixinLoginError)).WithError(errors.New("Code2Session成功，但是微信用户表中未找到该用户")),
-			)
-			return
-		}
+			createWeixinUserData := new(weixin.CreateWeixinUserData)
+			createWeixinUserData.Openid = wxLoginData.OpenID
+			createWeixinUserData.Unionid = wxLoginData.UnionID
+			createWeixinUserData.SessionKey = wxLoginData.SessionKey
 
-		token := password.GenerateWeixinLoginToken(info.Openid)
+			id, err := h.weixinService.Create(c, createWeixinUserData)
+			if err != nil {
+				c.AbortWithError(core.Error(
+					http.StatusBadRequest,
+					code.WeixinLoginError,
+					code.Text(code.WeixinLoginError)).WithError(err),
+				)
+				return
+			}
+			uId = id
+		} else {
+			uId = info.Id
+		}
+		token := password.GenerateLoginToken(uId)
 
 		res.Token = token
 		c.Payload(res)
