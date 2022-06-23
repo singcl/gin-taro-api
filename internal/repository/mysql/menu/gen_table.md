@@ -1,4 +1,4 @@
-#### go_gin_api.menu 
+#### gin_taro_api.menu 
 左侧菜单栏表
 
 | 序号 | 名称 | 描述 | 类型 | 键 | 为空 | 额外 | 默认值 |
