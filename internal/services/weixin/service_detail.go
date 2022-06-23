@@ -7,12 +7,14 @@ import (
 )
 
 type SearchOneData struct {
-	Id       int32  // 用户ID
-	Openid   string // 微信Openid
-	Username string // 用户名
-	Nickname string // 昵称
-	Mobile   string // 手机号
-	IsUsed   int32  // 是否启用 1:是  -1:否
+	Id         int32  // 用户ID
+	Openid     string // 微信Openid
+	Unionid    string // 微信Unionid
+	SessionKey string // 微信SessionKey
+	Username   string // 用户名
+	Nickname   string // 昵称
+	Mobile     string // 手机号
+	IsUsed     int32  // 是否启用 1:是  -1:否
 }
 
 func (s *service) Detail(ctx core.Context, searchOneData *SearchOneData) (info *weixin.Weixin, err error) {
@@ -21,6 +23,9 @@ func (s *service) Detail(ctx core.Context, searchOneData *SearchOneData) (info *
 
 	if searchOneData.Openid != "" {
 		qb.WhereOpenid(mysql.EqualPredicate, searchOneData.Openid)
+	}
+	if searchOneData.Unionid != "" {
+		qb.WhereUnionid(mysql.EqualPredicate, searchOneData.Unionid)
 	}
 	if searchOneData.Username != "" {
 		qb.WhereUsername(mysql.EqualPredicate, searchOneData.Username)

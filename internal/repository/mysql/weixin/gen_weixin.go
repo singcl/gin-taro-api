@@ -82,6 +82,16 @@ func (qb *weixinQueryBuilder) WhereOpenid(p mysql.Predicate, value string) *weix
 	})
 	return qb
 }
+func (qb *weixinQueryBuilder) WhereUnionid(p mysql.Predicate, value string) *weixinQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "unionid", p),
+		value,
+	})
+	return qb
+}
 
 func (qb *weixinQueryBuilder) WhereUsername(p mysql.Predicate, value string) *weixinQueryBuilder {
 	qb.where = append(qb.where, struct {
