@@ -17,6 +17,7 @@ type Service interface {
 	i()
 	Login(ctx core.Context, searchCode2Session *SearchCode2SessionData) (info *Code2SessionData, err error)
 	Detail(ctx core.Context, searchOneData *SearchOneData) (info *weixin.Weixin, err error)
+	Create(ctx core.Context, weixinUserData *CreateWeixinUserData) (id int32, err error)
 }
 
 type service struct {

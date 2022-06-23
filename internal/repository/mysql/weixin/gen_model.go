@@ -7,6 +7,8 @@ import "time"
 type Weixin struct {
 	Id          int32     // 主键
 	Openid      string    // 微信openid
+	Unionid     string    // 微信unionid
+	SessionKey  string    // 微信session_key
 	Nickname    string    // 昵称
 	Mobile      string    // 手机号
 	IsUsed      int32     // 是否启用 1:是  -1:否

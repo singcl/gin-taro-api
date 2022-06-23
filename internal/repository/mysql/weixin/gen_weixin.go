@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	"github.com/singcl/gin-taro-api/internal/repository/mysql"
+	"github.com/singcl/gin-taro-api/pkg/errors"
 	"gorm.io/gorm"
 )
 
@@ -135,4 +136,11 @@ func (qb *weixinQueryBuilder) WhereIsUsed(p mysql.Predicate, value int32) *weixi
 		value,
 	})
 	return qb
+}
+
+func (t *Weixin) Create(db *gorm.DB) (id int32, err error) {
+	if err = db.Create(t).Error; err != nil {
+		return 0, errors.Wrap(err, "create err")
+	}
+	return t.Id, nil
 }
