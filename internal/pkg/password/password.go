@@ -9,8 +9,9 @@ import (
 )
 
 const (
-	saltPassword    = "qkhPAGA13HocW3GAEWwb"
-	defaultPassword = "123456"
+	saltPassword       = "qkhPAGA13HocW3GAEWwb"
+	saltWeixinPassword = "sfjlsjfdlskjfkleee44455ssSSDFCSSSE4"
+	defaultPassword    = "123456"
 )
 
 func GeneratePassword(str string) (password string) {
@@ -47,7 +48,7 @@ func GenerateLoginToken(id int32) (token string) {
 
 func GenerateWeixinLoginToken(openid string) (token string) {
 	m := md5.New()
-	m.Write([]byte(fmt.Sprintf("%s%s", openid, saltPassword)))
+	m.Write([]byte(fmt.Sprintf("%s%s", openid, saltWeixinPassword)))
 	token = hex.EncodeToString(m.Sum(nil))
 
 	return

@@ -31,7 +31,6 @@ func (h *handler) Login() core.HandlerFunc {
 	return func(c core.Context) {
 		req := new(loginRequest)
 		res := new(loginResponse)
-		var uId int32
 
 		if err := c.ShouldBindForm(req); err != nil {
 			c.AbortWithError(core.Error(
@@ -79,7 +78,7 @@ func (h *handler) Login() core.HandlerFunc {
 			createWeixinUserData.Unionid = wxLoginData.UnionID
 			createWeixinUserData.SessionKey = wxLoginData.SessionKey
 
-			id, err := h.weixinService.Create(c, createWeixinUserData)
+			_, err := h.weixinService.Create(c, createWeixinUserData)
 			if err != nil {
 				c.AbortWithError(core.Error(
 					http.StatusBadRequest,
@@ -88,11 +87,9 @@ func (h *handler) Login() core.HandlerFunc {
 				)
 				return
 			}
-			uId = id
-		} else {
-			uId = info.Id
 		}
-		token := password.GenerateLoginToken(uId)
+
+		token := password.GenerateWeixinLoginToken(wxLoginData.OpenID)
 
 		res.Token = token
 		c.Payload(res)
