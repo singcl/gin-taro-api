@@ -1,4 +1,4 @@
-### 后端代码核心逻辑示例
+## 微信小程序登陆核心逻辑片段
 
 ```go
 // services/weixin/service.go

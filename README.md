@@ -70,6 +70,9 @@ $ go install github.com/go-delve/delve/cmd/dlv@latest
 }
 ```
 
+## 微信小程序登陆核心代码片段
+
+[小程序登陆](./Wx.md)
 ## 界面
 
 ![授权列表](./imgs/authorized_list.png)
