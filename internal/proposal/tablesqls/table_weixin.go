@@ -18,7 +18,7 @@ package tablesqls
 // UNIQUE KEY `unique_openid` (`openid`)
 // ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='微信小程序登录用户表';
 
-func CreateWxUserTableSql() (sql string) {
+func CreateWeixinTableSql() (sql string) {
 	sql = "CREATE TABLE `weixin` ("
 	sql += "`id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',"
 	sql += "`openid` varchar(60) NOT NULL DEFAULT '' COMMENT '微信openid',"
