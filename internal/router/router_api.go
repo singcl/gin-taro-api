@@ -23,6 +23,7 @@ func setApiRouter(r *resource) {
 	weixin := r.kiko.Group("/weixin")
 	{
 		// 微信登录
+		// 无需签名验证，无需登录验证，无需 RBAC 权限验证
 		weixin.GET("/login", weixinHandler.Login())
 	}
 
