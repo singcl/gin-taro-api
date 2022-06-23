@@ -13,3 +13,15 @@ func (user *SessionUserInfo) Marshal() (jsonRaw []byte) {
 	jsonRaw, _ = json.Marshal(user)
 	return
 }
+
+// weixinSessionUserInfo 当前用户会话信息
+type WeixinSessionUserInfo struct {
+	Openid     string `json:"openid"`      // 微信openid
+	SessionKey string `json:"session_key"` // 微信session_key
+}
+
+// Marshal 序列化到JSON
+func (wxUser *WeixinSessionUserInfo) Marshal() (jsonRaw []byte) {
+	jsonRaw, _ = json.Marshal(wxUser)
+	return
+}

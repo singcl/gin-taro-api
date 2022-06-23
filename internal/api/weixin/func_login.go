@@ -3,9 +3,12 @@ package weixin
 import (
 	"net/http"
 
+	"github.com/singcl/gin-taro-api/configs"
 	"github.com/singcl/gin-taro-api/internal/code"
 	"github.com/singcl/gin-taro-api/internal/pkg/core"
 	"github.com/singcl/gin-taro-api/internal/pkg/password"
+	"github.com/singcl/gin-taro-api/internal/proposal"
+	"github.com/singcl/gin-taro-api/internal/repository/redis"
 	"github.com/singcl/gin-taro-api/internal/services/weixin"
 )
 
@@ -90,6 +93,28 @@ func (h *handler) Login() core.HandlerFunc {
 		}
 
 		token := password.GenerateWeixinLoginToken(wxLoginData.OpenID)
+
+		// 用户信息
+		sessionWeixinUserInfo := &proposal.WeixinSessionUserInfo{
+			Openid:     wxLoginData.OpenID,
+			SessionKey: wxLoginData.SessionKey,
+		}
+
+		// 将用户信息记录到 Redis 中
+		err = h.cache.SetR(
+			configs.RedisKeyPrefixWeixinLoginUser+token,
+			string(sessionWeixinUserInfo.Marshal()),
+			configs.LoginSessionTTL,
+			redis.WithTrace(c.Trace()))
+
+		if err != nil {
+			c.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.WeixinLoginError,
+				code.Text(code.WeixinLoginError)).WithError(err),
+			)
+			return
+		}
 
 		res.Token = token
 		c.Payload(res)

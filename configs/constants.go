@@ -42,6 +42,9 @@ const (
 	// RedisKeyPrefixLoginUser Redis Key 前缀 - 登录用户信息
 	RedisKeyPrefixLoginUser = ProjectName + ":login-user:"
 
+	// RedisKeyPrefixWeixinLoginUser Redis Key 前缀 - 微信登录用户信息
+	RedisKeyPrefixWeixinLoginUser = ProjectName + ":weixin-login-user:"
+
 	// RedisKeyPrefixSignature Redis Key 前缀 - 签名验证信息
 	RedisKeyPrefixSignature = ProjectName + ":signature:"
 
