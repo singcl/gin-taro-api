@@ -73,6 +73,15 @@ $ go install github.com/go-delve/delve/cmd/dlv@latest
 ## 微信小程序登陆核心代码片段
 
 [小程序登陆](./Wx.md)
+
+## Changelog
+[changelog](./CHANGELOG.md) is hear
+
+use[git-chaglog](https://github.com/git-chglog/git-chglog) auto generate changelog.
+
+- go install -v github.com/git-chglog/git-chglog/cmd/git-chglog
+- git-chglog --init
+- git-chglog
 ## 界面
 
 ![授权列表](./imgs/authorized_list.png)
