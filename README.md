@@ -1,5 +1,8 @@
 ![gin-taro-api](./imgs/20220609102431.jpg)
 
+[![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
+[![Conventional Commits](https://img.shields.io/badge/Conventional%20Commits-1.0.0-%23FE5196?logo=conventionalcommits&logoColor=white)](https://conventionalcommits.org)
+
 # GIN-TARO-API
 
 Inspired by [go-gin-api](https://github.com/xinliangnote/go-gin-api). about some other resource [gin framework](https://gin-gonic.com/zh-cn/docs/quickstart/)
