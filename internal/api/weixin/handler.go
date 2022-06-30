@@ -17,6 +17,11 @@ type Handler interface {
 	// @Tags weixin
 	// @Router /weixin/login [get]
 	Login() core.HandlerFunc
+
+	// Detail 个人信息
+	// @Tags API.weixin
+	// @Router /weixin/auth/info [get]
+	Detail() core.HandlerFunc
 }
 
 type handler struct {

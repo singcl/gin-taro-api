@@ -18,6 +18,8 @@ func setApiRouter(r *resource) {
 		helpers.POST("/sign", helperHandler.Sign())
 	}
 
+	//////////////////////////////////////////////////////////////////////////
+
 	// 微信
 	weixinHandler := weixin.New(r.logger, r.db, r.cache)
 	weixin := r.kiko.Group("/weixin")
@@ -26,6 +28,15 @@ func setApiRouter(r *resource) {
 		// 无需签名验证，无需登录验证，无需 RBAC 权限验证
 		weixin.GET("/login", weixinHandler.Login())
 	}
+
+	// 无需签名验证、登录验证，无需 RBAC 权限验证
+	weixinCheckLogin := r.kiko.Group("/weixin", core.WrapWeixinAuthHandler(r.interceptors.CheckWeixinLogin))
+	{
+		// weixinCheckLogin.POST("/auth/logout", weixinHandler.Logout())
+		weixinCheckLogin.GET("/auth/info", weixinHandler.Detail())
+	}
+
+	/////////////////////////////////////////////////////////////////////////
 
 	// admin
 	adminHandler := admin.New(r.logger, r.db, r.cache)
