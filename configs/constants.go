@@ -33,6 +33,9 @@ const (
 	// HeaderLoginToken 登录验证 Token，Header 中传递的参数
 	HeaderLoginToken = "Token"
 
+	// HeaderWeixinLoginToken 登录验证 WxToken，Header 中传递的参数
+	HeaderWeixinLoginToken = "WxToken"
+
 	// HeaderSignToken 签名验证 Authorization，Header 中传递的参数
 	HeaderSignToken = "Authorization"
 
