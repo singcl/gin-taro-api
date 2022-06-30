@@ -5,8 +5,8 @@ package tablesqls
 // `openid` varchar(60) NOT NULL DEFAULT '' COMMENT '微信openid',
 // `unionid` varchar(60) NOT NULL DEFAULT '' COMMENT '微信unionid',
 // `session_key` varchar(60) NOT NULL DEFAULT '' COMMENT '微信session_key',
-// `username` varchar(32) NOT NULL DEFAULT '' COMMENT '微信用户名',
-// `nickname` varchar(60) NOT NULL DEFAULT '' COMMENT '昵称',
+// `username` varchar(32) NOT NULL DEFAULT 'singcl' COMMENT '微信用户名',
+// `nickname` varchar(60) NOT NULL DEFAULT '微信用户' COMMENT '昵称',
 // `avatar_url` varchar(60) NOT NULL DEFAULT '' COMMENT '头像',
 // `mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号',
 // `is_used` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否启用 1:是  -1:否',
@@ -25,8 +25,8 @@ func CreateWeixinTableSql() (sql string) {
 	sql += "`openid` varchar(60) NOT NULL DEFAULT '' COMMENT '微信openid',"
 	sql += "`unionid` varchar(60) NOT NULL DEFAULT '' COMMENT '微信unionid',"
 	sql += "`session_key` varchar(60) NOT NULL DEFAULT '' COMMENT '微信session_key',"
-	sql += "`username` varchar(32) NOT NULL DEFAULT '' COMMENT '微信用户名',"
-	sql += "`nickname` varchar(60) NOT NULL DEFAULT '' COMMENT '昵称',"
+	sql += "`username` varchar(32) NOT NULL DEFAULT 'singcl' COMMENT '微信用户名',"
+	sql += "`nickname` varchar(60) NOT NULL DEFAULT '微信用户' COMMENT '昵称',"
 	sql += "`avatar_url` varchar(60) NOT NULL DEFAULT '' COMMENT '头像',"
 	sql += "`mobile` varchar(20) NOT NULL DEFAULT '' COMMENT '手机号',"
 	sql += "`is_used` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否启用 1:是  -1:否',"
