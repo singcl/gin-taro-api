@@ -7,6 +7,7 @@
 | 3 | openid | 微信openid | varchar(60) | UNI,PRI | NO |  |  |
 | 2 | username | 用户名 | varchar(32) |  | NO |  |  |
 | 4 | nickname | 昵称 | varchar(60) |  | NO |  |  |
+| 4 | avatar_url | 头像 | varchar(60) |  | NO |  |  |
 | 5 | mobile | 手机号 | varchar(20) |  | NO |  |  |
 | 6 | is_used | 是否启用 1:是  -1:否 | tinyint(1) |  | NO |  | 1 |
 | 7 | is_deleted | 是否删除 1:是  -1:否 | tinyint(1) |  | NO |  | -1 |

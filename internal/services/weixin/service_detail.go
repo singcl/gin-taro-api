@@ -13,6 +13,7 @@ type SearchOneData struct {
 	SessionKey string // 微信SessionKey
 	Username   string // 用户名
 	Nickname   string // 昵称
+	AvatarUrl  string // 头像
 	Mobile     string // 手机号
 	IsUsed     int32  // 是否启用 1:是  -1:否
 }
@@ -33,6 +34,9 @@ func (s *service) Detail(ctx core.Context, searchOneData *SearchOneData) (info *
 
 	if searchOneData.Nickname != "" {
 		qb.WhereNickname(mysql.EqualPredicate, searchOneData.Nickname)
+	}
+	if searchOneData.AvatarUrl != "" {
+		qb.WhereAvatarUrl(mysql.EqualPredicate, searchOneData.AvatarUrl)
 	}
 
 	if searchOneData.Mobile != "" {

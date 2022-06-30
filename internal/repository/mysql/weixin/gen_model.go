@@ -10,6 +10,7 @@ type Weixin struct {
 	Unionid     string    // 微信unionid
 	SessionKey  string    // 微信session_key
 	Nickname    string    // 昵称
+	AvatarUrl   string    // 头像
 	Mobile      string    // 手机号
 	IsUsed      int32     // 是否启用 1:是  -1:否
 	IsDeleted   int32     // 是否删除 1:是  -1:否

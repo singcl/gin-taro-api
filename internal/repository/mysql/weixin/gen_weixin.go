@@ -116,6 +116,17 @@ func (qb *weixinQueryBuilder) WhereNickname(p mysql.Predicate, value string) *we
 	return qb
 }
 
+func (qb *weixinQueryBuilder) WhereAvatarUrl(p mysql.Predicate, value string) *weixinQueryBuilder {
+	qb.where = append(qb.where, struct {
+		prefix string
+		value  interface{}
+	}{
+		fmt.Sprintf("%v %v ?", "avatar_url", p),
+		value,
+	})
+	return qb
+}
+
 func (qb *weixinQueryBuilder) WhereMobile(p mysql.Predicate, value string) *weixinQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
