@@ -17,14 +17,15 @@ import (
 )
 
 const (
-	_BodyName        = "_body_"
-	_PayloadName     = "_payload_"
-	_AbortErrorName  = "_abort_error_"
-	_LoggerName      = "_logger_"
-	_TraceName       = "_trace_"
-	_IsRecordMetrics = "_is_record_metrics_"
-	_Alias           = "_alias_"
-	_SessionUserInfo = "_session_user_info"
+	_BodyName              = "_body_"
+	_PayloadName           = "_payload_"
+	_AbortErrorName        = "_abort_error_"
+	_LoggerName            = "_logger_"
+	_TraceName             = "_trace_"
+	_IsRecordMetrics       = "_is_record_metrics_"
+	_Alias                 = "_alias_"
+	_SessionUserInfo       = "_session_user_info"
+	_SessionWeixinUserInfo = "_session_weixin_user_info"
 )
 
 type HandlerFunc func(c Context)
@@ -96,6 +97,10 @@ type Context interface {
 	// SessionUserInfo 当前用户信息
 	SessionUserInfo() proposal.SessionUserInfo
 	setSessionUserInfo(info proposal.SessionUserInfo)
+
+	// Weixin SessionUserInfo 当前微信用户信息
+	SessionWeixinUserInfo() proposal.WeixinSessionUserInfo
+	setSessionWeixinUserInfo(info proposal.WeixinSessionUserInfo)
 }
 
 type context struct {
@@ -314,6 +319,19 @@ func (c *context) SessionUserInfo() proposal.SessionUserInfo {
 
 func (c *context) setSessionUserInfo(info proposal.SessionUserInfo) {
 	c.ctx.Set(_SessionUserInfo, info)
+}
+
+func (c *context) SessionWeixinUserInfo() proposal.WeixinSessionUserInfo {
+	val, ok := c.ctx.Get(_SessionWeixinUserInfo)
+	if !ok {
+		return proposal.WeixinSessionUserInfo{}
+	}
+
+	return val.(proposal.WeixinSessionUserInfo)
+}
+
+func (c *context) setSessionWeixinUserInfo(info proposal.WeixinSessionUserInfo) {
+	c.ctx.Set(_SessionWeixinUserInfo, info)
 }
 
 var contextPool = &sync.Pool{

@@ -115,6 +115,19 @@ func WrapAuthHandler(handler func(Context) (sessionUserInfo proposal.SessionUser
 	}
 }
 
+// WrapWeixinAuthHandler 用来处理 Auth 的入口
+func WrapWeixinAuthHandler(handler func(Context) (sessionUserInfo proposal.WeixinSessionUserInfo, err BusinessError)) HandlerFunc {
+	return func(ctx Context) {
+		sessionUserInfo, err := handler(ctx)
+
+		if err != nil {
+			ctx.AbortWithError(err)
+			return
+		}
+		ctx.setSessionWeixinUserInfo(sessionUserInfo)
+	}
+}
+
 // AliasForRecordMetrics 对请求路径起个别名，用于记录指标。
 // 如：Get /user/:username 这样的路径，因为 username 会有非常多的情况，这样记录指标非常不友好。
 func AliasForRecordMetrics(path string) HandlerFunc {

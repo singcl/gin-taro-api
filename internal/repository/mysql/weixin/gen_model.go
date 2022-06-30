@@ -9,6 +9,7 @@ type Weixin struct {
 	Openid      string    // 微信openid
 	Unionid     string    // 微信unionid
 	SessionKey  string    // 微信session_key
+	Username    string    // 用户名
 	Nickname    string    // 昵称
 	AvatarUrl   string    // 头像
 	Mobile      string    // 手机号
