@@ -19,6 +19,9 @@ type Interceptor interface {
 	// CheckLogin 验证是否登录
 	CheckLogin(ctx core.Context) (info proposal.SessionUserInfo, err core.BusinessError)
 
+	// CheckWeixinLogin 验证是否微信登录
+	CheckWeixinLogin(ctx core.Context) (info proposal.WeixinSessionUserInfo, err core.BusinessError)
+
 	// CheckRBAC 验证 RBAC 权限是否合法
 	CheckRBAC() core.HandlerFunc
 
