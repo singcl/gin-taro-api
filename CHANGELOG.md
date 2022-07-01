@@ -2,6 +2,22 @@
 ## [Unreleased]
 
 
+<a name="v0.0.1-alpha.1"></a>
+## [v0.0.1-alpha.1] - 2022-07-01
+### Docs
+- **chaglog:** update docs about changelog
+- **docs:** update readme chaglog
+
+### Feat
+- **api:** weixin user info
+- **core:** weixin session context
+- **intercepter:** weixin login intercepter
+- **interceptor:** interceptor
+- **login:** redis save more user info when login
+- **sql:** update weixin sql
+- **sql:** update weixin table
+
+
 <a name="v0.0.1-alpha.0"></a>
 ## v0.0.1-alpha.0 - 2022-06-24
 ### Chore
@@ -253,4 +269,5 @@
 - **fed:** fed static embed
 
 
-[Unreleased]: https://github.com/singcl/gin-taro-api/compare/v0.0.1-alpha.0...HEAD
+[Unreleased]: https://github.com/singcl/gin-taro-api/compare/v0.0.1-alpha.1...HEAD
+[v0.0.1-alpha.1]: https://github.com/singcl/gin-taro-api/compare/v0.0.1-alpha.0...v0.0.1-alpha.1
