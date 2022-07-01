@@ -69,7 +69,8 @@ const (
 	CronDetailError  = 20404
 	CronExecuteError = 20405
 
-	WeixinLoginError = 60101
+	WeixinLoginError         = 60101
+	WeixinAuthorizationError = 60102
 )
 
 func Text(code int) string {

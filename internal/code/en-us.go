@@ -61,5 +61,6 @@ var enUSText = map[int]string{
 	CronDetailError:  "Failed to get cron detail",
 	CronExecuteError: "Failed to execute cron",
 
-	WeixinLoginError: "Failed to weixin login",
+	WeixinLoginError:         "Failed to weixin login",
+	WeixinAuthorizationError: "Faild to Auth access the api",
 }
