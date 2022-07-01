@@ -17,8 +17,8 @@ func (i *interceptor) CheckWeixinLogin(ctx core.Context) (sessionWeixinUserInfo 
 	if token == "" {
 		err = core.Error(
 			http.StatusUnauthorized,
-			code.AuthorizationError,
-			code.Text(code.AuthorizationError)).WithError(errors.New("Header 中缺少 Token 参数"))
+			code.WeixinAuthorizationError,
+			code.Text(code.WeixinAuthorizationError)).WithError(errors.New("Header 中缺少 Token 参数"))
 
 		return
 	}
@@ -26,8 +26,8 @@ func (i *interceptor) CheckWeixinLogin(ctx core.Context) (sessionWeixinUserInfo 
 	if !i.cache.Exists(configs.RedisKeyPrefixWeixinLoginUser + token) {
 		err = core.Error(
 			http.StatusUnauthorized,
-			code.AuthorizationError,
-			code.Text(code.AuthorizationError)).WithError(errors.New("请先登录"))
+			code.WeixinAuthorizationError,
+			code.Text(code.WeixinAuthorizationError)).WithError(errors.New("请先登录"))
 
 		return
 	}
@@ -36,8 +36,8 @@ func (i *interceptor) CheckWeixinLogin(ctx core.Context) (sessionWeixinUserInfo 
 	if cacheErr != nil {
 		err = core.Error(
 			http.StatusUnauthorized,
-			code.AuthorizationError,
-			code.Text(code.AuthorizationError)).WithError(cacheErr)
+			code.WeixinAuthorizationError,
+			code.Text(code.WeixinAuthorizationError)).WithError(cacheErr)
 
 		return
 	}
@@ -46,8 +46,8 @@ func (i *interceptor) CheckWeixinLogin(ctx core.Context) (sessionWeixinUserInfo 
 	if jsonErr != nil {
 		core.Error(
 			http.StatusUnauthorized,
-			code.AuthorizationError,
-			code.Text(code.AuthorizationError)).WithError(jsonErr)
+			code.WeixinAuthorizationError,
+			code.Text(code.WeixinAuthorizationError)).WithError(jsonErr)
 
 		return
 	}
