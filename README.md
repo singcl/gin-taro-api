@@ -83,9 +83,20 @@ project [changelog](./CHANGELOG.md) is hear.use [git-chaglog](https://github.com
 
 ```sh
 
+# 安装
 go install -v github.com/git-chglog/git-chglog/cmd/git-chglog
+
+# git-chglog requires configuration files and templates to generate a CHANGELOG
+# However, it is a waste of time to create configuration files and templates from scratch.
+# Therefore we recommend using the --init option which will create them interactively 👍
 git-chglog --init
+
+# You are now ready for configuration files and templates!
+# Let's immediately generate a CHANGELOG of your project. By doing the following simple command, Markdown for your CHANGELOG is displayed on stdout.
 git-chglog
+
+# Use -o (--output) option if you want to output to a file instead of stdout.
+git-chglog -o CHANGELOG.md
 
 ```
 
