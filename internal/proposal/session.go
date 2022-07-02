@@ -18,9 +18,9 @@ func (user *SessionUserInfo) Marshal() (jsonRaw []byte) {
 type WeixinSessionUserInfo struct {
 	Openid     string `json:"openid"`      // 微信openid
 	SessionKey string `json:"session_key"` // 微信session_key
-	Nickname   string `json:"nickname"`    // 昵称
-	AvatarUrl  string `json:"avatar_url"`  // 头像
-	Mobile     string `json:"mobile"`      // 手机号
+	// Nickname   string `json:"nickname"`    // 昵称
+	// AvatarUrl  string `json:"avatar_url"`  // 头像
+	// Mobile     string `json:"mobile"`      // 手机号
 }
 
 // Marshal 序列化到JSON

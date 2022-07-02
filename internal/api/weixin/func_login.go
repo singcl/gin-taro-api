@@ -95,13 +95,9 @@ func (h *handler) Login() core.HandlerFunc {
 		token := password.GenerateWeixinLoginToken(wxLoginData.OpenID)
 
 		// 用户信息
-		sessionWeixinUserInfo := &proposal.WeixinSessionUserInfo{
-			Openid:     wxLoginData.OpenID,
-			SessionKey: wxLoginData.SessionKey,
-			AvatarUrl:  info.AvatarUrl,
-			Nickname:   info.Nickname,
-			Mobile:     info.Mobile,
-		}
+		sessionWeixinUserInfo := new(proposal.WeixinSessionUserInfo)
+		sessionWeixinUserInfo.Openid = wxLoginData.OpenID
+		sessionWeixinUserInfo.SessionKey = wxLoginData.SessionKey
 
 		// 将用户信息记录到 Redis 中
 		err = h.cache.SetR(
