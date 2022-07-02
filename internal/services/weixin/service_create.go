@@ -1,6 +1,7 @@
 package weixin
 
 import (
+	"github.com/singcl/gin-taro-api/configs"
 	"github.com/singcl/gin-taro-api/internal/pkg/core"
 	"github.com/singcl/gin-taro-api/internal/repository/mysql/weixin"
 )
@@ -17,6 +18,10 @@ func (s *service) Create(ctx core.Context, weixinUserData *CreateWeixinUserData)
 	model.Openid = weixinUserData.Openid
 	model.Unionid = weixinUserData.Unionid
 	model.SessionKey = weixinUserData.SessionKey
+
+	model.Nickname = configs.Get().Wechat.Nickname
+	model.AvatarUrl = configs.Get().Wechat.AvatarUrl
+	model.Mobile = configs.Get().Wechat.Mobile
 
 	model.CreatedUser = ctx.SessionUserInfo().UserName
 	model.IsUsed = 1

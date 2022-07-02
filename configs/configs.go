@@ -64,8 +64,11 @@ type Config struct {
 	} `toml:"language"`
 
 	Wechat struct {
-		AppID  string `toml:"appid"`
-		Secret string `toml:"secret"`
+		AppID     string `toml:"appid"`
+		Secret    string `toml:"secret"`
+		Nickname  string `toml:"nickname"`
+		AvatarUrl string `toml:"avatar_url"`
+		Mobile    string `toml:"mobile"`
 	} `toml:"wechat"`
 }
 
