@@ -67,7 +67,7 @@ type Config struct {
 		AppID     string `toml:"appid"`
 		Secret    string `toml:"secret"`
 		Nickname  string `toml:"nickname"`
-		AvatarUrl string `toml:"avatar_url"`
+		AvatarUrl string `toml:"avatarUrl"`
 		Mobile    string `toml:"mobile"`
 	} `toml:"wechat"`
 }

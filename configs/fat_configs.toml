@@ -43,5 +43,5 @@ poolsize = 10
 appid = 'wxdab8b7eb35a7d2f5'
 secret = 'd1a032c3e3749638d8a57dff88a865bd'
 nickname = '微信用户[开发版]'
-avatar_url = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
+avatarurl = 'https://mmbiz.qpic.cn/mmbiz/icTdbqWNOwNRna42FI242Lcia07jQodd2FJGIYQfG0LAJGFxM4FbnQP6yfMxBgJ0F3YRqJCJ1aPAK2dQagdusBZg/0'
 mobile = '18866666666'
