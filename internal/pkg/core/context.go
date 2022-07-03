@@ -128,7 +128,7 @@ func (c *context) Payload(payload interface{}) {
 }
 
 func (c *context) getPayload() interface{} {
-	if payload, ok := c.ctx.Get(_PayloadName); ok != false {
+	if payload, ok := c.ctx.Get(_PayloadName); ok {
 		return payload
 	}
 	return nil
