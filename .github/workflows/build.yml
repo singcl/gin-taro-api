@@ -1,12 +1,11 @@
-name: Go
+name: API_BUILDING
 
 on:
   push:
-    branches: [ $default-branch ]
+    branches: [$default-branch]
   pull_request:
-    branches: [ $default-branch ]
+    branches: [$default-branch]
 
-name: API BUILDING
 jobs:
   build:
     strategy:
@@ -16,11 +15,11 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     steps:
-    - uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-    - name: Caches
-      uses: actions/cache@v3
-      with:
+      - name: Caches
+        uses: actions/cache@v3
+        with:
           # In order:
           # * Module download cache
           # * Build cache (Linux)
@@ -35,11 +34,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-go-${{ matrix.go-version }}-
 
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: ${{ matrix.go-version }}
+      - name: Set up Go
+        uses: actions/setup-go@v3
+        with:
+          go-version: ${{ matrix.go-version }}
 
-    - name: Build
-      run: go build
-
+      - name: Build
+        run: go build
