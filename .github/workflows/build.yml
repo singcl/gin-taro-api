@@ -5,10 +5,11 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - $default-branch
+      - master
   pull_request:
+    types: [assigned, opened, synchronize, reopened, labeled]
     branches:
-      - $default-branch
+      - master
 
 jobs:
   build:
