@@ -1,4 +1,4 @@
-name: API_BUILDING
+name: build|1.17.x|1.18.x
 
 on: [push, pull_request]
 
