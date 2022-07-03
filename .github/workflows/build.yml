@@ -1,11 +1,10 @@
-name: API_BUILDING
-
 on:
   push:
     branches: [$default-branch]
   pull_request:
     branches: [$default-branch]
 
+name: API_BUILDING
 jobs:
   build:
     strategy:
