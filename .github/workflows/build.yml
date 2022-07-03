@@ -1,6 +1,10 @@
-name: build|1.17.x|1.18.x
+name: build|go|1.17|1.18
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
 
 jobs:
   build:
