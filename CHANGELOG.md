@@ -2,6 +2,21 @@
 ## [Unreleased]
 
 
+<a name="v0.0.1-alpha.2"></a>
+## [v0.0.1-alpha.2] - 2022-07-03
+### Ci
+- **github:** build
+
+### Docs
+- **CHANGELOG:** Readme changelog
+- **docs:** workflow badge
+
+### Feat
+- **api:** config weixin default created user
+- **auth:** check weixin login auth
+- **code:** update the response code
+
+
 <a name="v0.0.1-alpha.1"></a>
 ## [v0.0.1-alpha.1] - 2022-07-01
 ### Docs
@@ -269,5 +284,6 @@
 - **fed:** fed static embed
 
 
-[Unreleased]: https://github.com/singcl/gin-taro-api/compare/v0.0.1-alpha.1...HEAD
+[Unreleased]: https://github.com/singcl/gin-taro-api/compare/v0.0.1-alpha.2...HEAD
+[v0.0.1-alpha.2]: https://github.com/singcl/gin-taro-api/compare/v0.0.1-alpha.1...v0.0.1-alpha.2
 [v0.0.1-alpha.1]: https://github.com/singcl/gin-taro-api/compare/v0.0.1-alpha.0...v0.0.1-alpha.1

@@ -85,7 +85,7 @@ project [changelog](./CHANGELOG.md) is hear.use [git-chaglog](https://github.com
 ```sh
 
 # 安装
-go install -v github.com/git-chglog/git-chglog/cmd/git-chglog
+go install -v github.com/git-chglog/git-chglog/cmd/git-chglog@latest
 
 # git-chglog requires configuration files and templates to generate a CHANGELOG
 # However, it is a waste of time to create configuration files and templates from scratch.
