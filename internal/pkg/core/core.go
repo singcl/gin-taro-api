@@ -31,6 +31,8 @@ const _UI = `
  ╚═════╝ ╚═╝╚═╝  ╚═══╝      ╚═╝   ╚═╝  ╚═╝╚═╝  ╚═╝ ╚═════╝       ╚═╝  ╚═╝╚═╝     ╚═╝                                                                    
 `
 
+// any is an alias for interface{} and is equivalent to interface{} in all ways.
+type any = interface{}
 type Option func(*option)
 
 type option struct {
