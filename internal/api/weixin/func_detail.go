@@ -38,6 +38,6 @@ func (h *handler) Detail() core.HandlerFunc {
 		res.Nickname = info.Nickname
 		res.Mobile = info.Mobile
 		res.AvatarUrl = info.AvatarUrl
-		ctx.Payload(res)
+		ctx.PayloadStandard(res)
 	}
 }

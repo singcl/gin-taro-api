@@ -116,6 +116,6 @@ func (h *handler) Login() core.HandlerFunc {
 		}
 
 		res.Token = token
-		c.Payload(res)
+		c.PayloadStandard(res)
 	}
 }

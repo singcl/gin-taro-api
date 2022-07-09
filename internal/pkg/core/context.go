@@ -38,6 +38,7 @@ type Context interface {
 	init()
 	// Payload 正确返回
 	Payload(payload interface{})
+	PayloadStandard(payload interface{})
 	getPayload() interface{}
 	Method() string
 	// Alias 设置路由别名 for metrics path
@@ -125,6 +126,10 @@ func (c *context) init() {
 
 func (c *context) Payload(payload interface{}) {
 	c.ctx.Set(_PayloadName, payload)
+}
+
+func (c *context) PayloadStandard(payload interface{}) {
+	c.ctx.Set(_PayloadName, SuccessStandard(payload))
 }
 
 func (c *context) getPayload() interface{} {
