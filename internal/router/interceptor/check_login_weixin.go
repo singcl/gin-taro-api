@@ -26,7 +26,7 @@ func (i *interceptor) CheckWeixinLogin(ctx core.Context) (sessionWeixinUserInfo 
 	if !i.cache.Exists(configs.RedisKeyPrefixWeixinLoginUser + token) {
 		err = core.Error(
 			http.StatusUnauthorized,
-			code.WeixinAuthorizationError,
+			code.WeixinAuthorizationExpiredError,
 			code.Text(code.WeixinAuthorizationExpiredError)).WithError(errors.New("请先登录"))
 
 		return
