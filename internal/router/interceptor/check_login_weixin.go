@@ -44,7 +44,7 @@ func (i *interceptor) CheckWeixinLogin(ctx core.Context) (sessionWeixinUserInfo 
 
 	jsonErr := json.Unmarshal([]byte(cacheData), &sessionWeixinUserInfo)
 	if jsonErr != nil {
-		core.Error(
+		err = core.Error(
 			http.StatusUnauthorized,
 			code.WeixinAuthorizationError,
 			code.Text(code.WeixinAuthorizationError)).WithError(jsonErr)

@@ -29,7 +29,8 @@ func setApiRouter(r *resource) {
 		weixin.GET("/login", weixinHandler.Login())
 	}
 
-	// 无需签名验证、登录验证，无需 RBAC 权限验证
+	// 无需签名验证、无需 RBAC 权限验证
+	// 需要登录验证
 	weixinCheckLogin := r.kiko.Group("/weixin", core.WrapWeixinAuthHandler(r.interceptors.CheckWeixinLogin))
 	{
 		// weixinCheckLogin.POST("/auth/logout", weixinHandler.Logout())
