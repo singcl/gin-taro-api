@@ -61,5 +61,5 @@ const (
 	LoginSessionTTL = time.Hour * 24
 
 	// 微信上传文件目录
-	WeixinUploadFileDir = "./upload"
+	WeixinUploadFileDir = "./uploads"
 )
