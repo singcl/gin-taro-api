@@ -4,6 +4,7 @@ import (
 	"bytes"
 	stdctx "context"
 	"io/ioutil"
+	"mime/multipart"
 	"net/http"
 	"net/url"
 	"strings"
@@ -60,6 +61,11 @@ type Context interface {
 	// 当 querystring 和 postform 存在相同字段时，postform 优先使用。
 	// tag: `form:"xxx"`
 	ShouldBindForm(obj interface{}) error
+	// 单个文件绑定
+	// @see https://gin-gonic.com/zh-cn/docs/examples/upload-file/single-file/
+	ShouldBindFile(filename string) (*multipart.FileHeader, error)
+	// 单个文件绑定 save
+	SaveUploadedFile(file *multipart.FileHeader, dst string) error
 	// RequestContext 获取请求的 context (当 client 关闭后，会自动 canceled)
 	RequestContext() StdContext
 
@@ -203,6 +209,18 @@ func (c *context) abortError() BusinessError {
 // tag: `form:"xxx"`
 func (c *context) ShouldBindForm(obj interface{}) error {
 	return c.ctx.ShouldBindWith(obj, binding.Form)
+}
+
+// 单个文件绑定
+// @see https://gin-gonic.com/zh-cn/docs/examples/upload-file/single-file/
+func (c *context) ShouldBindFile(filename string) (*multipart.FileHeader, error) {
+	return c.ctx.FormFile(filename)
+}
+
+// 单个文件save
+// @see https://gin-gonic.com/zh-cn/docs/examples/upload-file/single-file/
+func (c *context) SaveUploadedFile(file *multipart.FileHeader, dst string) error {
+	return c.ctx.SaveUploadedFile(file, dst)
 }
 
 func (c *context) Trace() Trace {

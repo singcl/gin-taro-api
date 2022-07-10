@@ -224,6 +224,9 @@ func New(logger *zap.Logger, options ...Option) (Kiko, error) {
 
 	fmt.Println(color.Blue(_UI))
 
+	// 为 multipart forms 设置较低的内存限制 (默认是 32 MiB)
+	kiko.engine.MaxMultipartMemory = 2 << 20 // 2 MiB
+
 	// 静态资源服务
 	// kiko.engine.StaticFS("public", http.FS(public.Public))
 	// kiko.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(views.Templates, "templates/**/*")))

@@ -35,6 +35,7 @@ func setApiRouter(r *resource) {
 	{
 		// weixinCheckLogin.POST("/auth/logout", weixinHandler.Logout())
 		weixinCheckLogin.GET("/auth/info", weixinHandler.Detail())
+		weixinCheckLogin.POST("/auth/avatar", weixinHandler.Avatar())
 	}
 
 	/////////////////////////////////////////////////////////////////////////

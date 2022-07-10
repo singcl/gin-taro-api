@@ -64,4 +64,5 @@ var enUSText = map[int]string{
 	WeixinLoginError:                "Failed to weixin login",
 	WeixinAuthorizationError:        "Failed to Auth access the api",
 	WeixinAuthorizationExpiredError: "Failed to Auth, Login expired",
+	WeixinAvatarUploadError:         "Failed to upload avatar",
 }

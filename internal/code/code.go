@@ -79,6 +79,7 @@ const (
 	WeixinLoginError                = 60101
 	WeixinAuthorizationError        = 60102
 	WeixinAuthorizationExpiredError = 60103
+	WeixinAvatarUploadError         = 60104
 )
 
 func Text(code int) string {
