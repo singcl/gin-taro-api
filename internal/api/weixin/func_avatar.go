@@ -1,7 +1,6 @@
 package weixin
 
 import (
-	"errors"
 	"fmt"
 	"net/http"
 	"os"
@@ -29,11 +28,11 @@ func (h *handler) Avatar() core.HandlerFunc {
 
 		fileExt := strings.ToLower(path.Ext(file.Filename))
 		// 限制只能传指定格式图片
-		if utils.CheckImage(fileExt) {
+		if err := utils.CheckImage(file); err != nil {
 			ctx.AbortWithError(core.Error(
 				http.StatusBadRequest,
 				code.WeixinAvatarUploadError,
-				code.Text(code.WeixinAvatarUploadError)).WithError(errors.New("只允许png,jpg,gif,jpeg文件")),
+				code.Text(code.WeixinAvatarUploadError)).WithError(err),
 			)
 			return
 		}

@@ -3,8 +3,12 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"errors"
 	"fmt"
+	"mime/multipart"
 	"os"
+	"path"
+	"strings"
 )
 
 const (
@@ -31,8 +35,18 @@ func Md5Avatar(name string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-// TODO: 优化判断方式
-// 限制只能传指定格式图片
-func CheckImage(fileExt string) bool {
-	return fileExt != ".png" && fileExt != ".jpg" && fileExt != ".gif" && fileExt != ".jpeg"
+// 图片验证
+func CheckImage(file *multipart.FileHeader) (err error) {
+	fileExt := strings.ToLower(path.Ext(file.Filename))
+	// TODO: 优化判断方式
+	// 限制只能传指定格式图片
+	if fileExt != ".png" && fileExt != ".jpg" && fileExt != ".gif" && fileExt != ".jpeg" {
+		err = errors.New("只允许png,jpg,gif,jpeg文件")
+		return
+	}
+	if file.Size > 200*1024 {
+		err = errors.New("图片大小不得大于200KB")
+		return
+	}
+	return nil
 }
