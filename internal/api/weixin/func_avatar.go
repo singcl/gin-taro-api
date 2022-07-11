@@ -58,9 +58,28 @@ func (h *handler) Avatar() core.HandlerFunc {
 		dst := fmt.Sprintf("%s%s%s", fileDir, fileName, fileExt)
 		// log.Println(dst)
 		// 上传文件至指定的完整文件路径
-		ctx.SaveUploadedFile(file, dst)
+		err = ctx.SaveUploadedFile(file, dst)
+		if err != nil {
+			ctx.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.WeixinAvatarUploadError,
+				code.Text(code.WeixinAvatarUploadError)).WithError(err),
+			)
+			return
+		}
 
-		ctx.PayloadStandard(dst[2:])
+		dstShort := dst[2:]
+		err = h.weixinService.Avatar(ctx, dstShort, ctx.SessionWeixinUserInfo().Openid)
+		if err != nil {
+			ctx.AbortWithError(core.Error(
+				http.StatusBadRequest,
+				code.WeixinAvatarUploadError,
+				code.Text(code.WeixinAvatarUploadError)).WithError(err),
+			)
+			return
+		}
+
+		ctx.PayloadStandard(dstShort)
 		// ctx.String(http.StatusOK, fmt.Sprintf("'%s' uploaded!", file.Filename))
 	}
 }

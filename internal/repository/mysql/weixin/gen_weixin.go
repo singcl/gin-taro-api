@@ -83,6 +83,19 @@ func (qb *weixinQueryBuilder) WhereOpenid(p mysql.Predicate, value string) *weix
 	})
 	return qb
 }
+func (qb *weixinQueryBuilder) Updates(db *gorm.DB, m map[string]interface{}) (err error) {
+	db = db.Model(&Weixin{})
+
+	for _, where := range qb.where {
+		db.Where(where.prefix, where.value)
+	}
+
+	if err = db.Updates(m).Error; err != nil {
+		return errors.Wrap(err, "updates err")
+	}
+	return nil
+}
+
 func (qb *weixinQueryBuilder) WhereUnionid(p mysql.Predicate, value string) *weixinQueryBuilder {
 	qb.where = append(qb.where, struct {
 		prefix string
