@@ -8,7 +8,7 @@ import (
 )
 
 func (s *service) Avatar(ctx core.Context, avatarUrl string, openid string) (err error) {
-	_, err = weixin.NewQueryBuilder().
+	info, err := weixin.NewQueryBuilder().
 		WhereIsDeleted(mysql.EqualPredicate, -1).
 		WhereOpenid(mysql.EqualPredicate, openid).
 		First(s.db.GetDbR().WithContext(ctx.RequestContext()))
@@ -22,9 +22,8 @@ func (s *service) Avatar(ctx core.Context, avatarUrl string, openid string) (err
 	}
 
 	data := map[string]interface{}{
-		"avatar_url": avatarUrl,
-		// TODO: 登录成功redis存储Username
-		// "updated_user": ctx.SessionWeixinUserInfo().Username
+		"avatar_url":   avatarUrl,
+		"updated_user": info.Nickname,
 	}
 
 	qb := weixin.NewQueryBuilder()
