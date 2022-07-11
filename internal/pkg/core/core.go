@@ -236,6 +236,7 @@ func New(logger *zap.Logger, options ...Option) (Kiko, error) {
 	// kiko.engine.Static("/public", "./public")
 	// 和上面的方式功能一样，不过下面会启动一个静态资源文件系统
 	kiko.engine.StaticFS("/public", http.Dir("./public"))
+	kiko.engine.StaticFS("/uploads", http.Dir("./uploads"))
 	kiko.engine.LoadHTMLGlob("views/templates/**/*")
 
 	// withoutTracePaths 这些请求，默认不记录日志
