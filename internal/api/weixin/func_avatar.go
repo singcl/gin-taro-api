@@ -1,15 +1,12 @@
 package weixin
 
 import (
-	"crypto/md5"
-	"encoding/hex"
 	"errors"
 	"fmt"
 	"net/http"
 	"os"
 	"path"
 	"strings"
-	"time"
 
 	"github.com/singcl/gin-taro-api/configs"
 	"github.com/singcl/gin-taro-api/internal/code"
@@ -31,9 +28,8 @@ func (h *handler) Avatar() core.HandlerFunc {
 		}
 
 		fileExt := strings.ToLower(path.Ext(file.Filename))
-		// TODO: 优化判断方式
 		// 限制只能传指定格式图片
-		if fileExt != ".png" && fileExt != ".jpg" && fileExt != ".gif" && fileExt != ".jpeg" {
+		if utils.CheckImage(fileExt) {
 			ctx.AbortWithError(core.Error(
 				http.StatusBadRequest,
 				code.WeixinAvatarUploadError,
@@ -43,12 +39,9 @@ func (h *handler) Avatar() core.HandlerFunc {
 		}
 
 		// 文件重命名
-		h := md5.New()
-		h.Write([]byte(fmt.Sprintf("%s%s", file.Filename, time.Now().String())))
-		fileName := hex.EncodeToString(h.Sum(nil))
-
+		fileName := utils.Md5Avatar(file.Filename)
 		// 上传目录
-		fileDir := fmt.Sprintf("%s/%d%s/", configs.WeixinUploadFileDir, time.Now().Year(), time.Now().Month().String())
+		fileDir := fmt.Sprintf("%s/%s/", configs.WeixinUploadFileDir, utils.Md5Avatar(ctx.SessionWeixinUserInfo().Openid))
 		isExist, err := utils.PathExists(fileDir)
 		if err != nil {
 			ctx.AbortWithError(core.Error(

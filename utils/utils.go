@@ -1,6 +1,15 @@
 package utils
 
-import "os"
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"fmt"
+	"os"
+)
+
+const (
+	saltAvatar = "SKDedk49sjkc"
+)
 
 // 判断所给路径文件/文件夹是否存在
 func PathExists(path string) (bool, error) {
@@ -14,4 +23,16 @@ func PathExists(path string) (bool, error) {
 		return false, nil
 	}
 	return false, err //如果有错误了，但是不是不存在的错误，所以把这个错误原封不动的返回
+}
+
+func Md5Avatar(name string) string {
+	h := md5.New()
+	h.Write([]byte(fmt.Sprintf("%s%s", name, saltAvatar)))
+	return hex.EncodeToString(h.Sum(nil))
+}
+
+// TODO: 优化判断方式
+// 限制只能传指定格式图片
+func CheckImage(fileExt string) bool {
+	return fileExt != ".png" && fileExt != ".jpg" && fileExt != ".gif" && fileExt != ".jpeg"
 }
