@@ -11,7 +11,7 @@ import (
 )
 
 type logoutResponse struct {
-	Username string `json: "username"` // 用户账号
+	Username string `json:"username"` // 用户账号
 }
 
 // Logout 管理员登出
