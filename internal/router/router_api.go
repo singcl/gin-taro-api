@@ -72,5 +72,6 @@ func setApiRouter(r *resource) {
 
 		// admin
 		api.GET("/admin", adminHandler.List())
+		api.POST("/admin", adminHandler.Create())
 	}
 }

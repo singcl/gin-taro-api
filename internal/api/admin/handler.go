@@ -31,6 +31,10 @@ type Handler interface {
 	// @Tags API.admin
 	// @Router /api/admin [get]
 	List() core.HandlerFunc
+	// Create 新增管理员
+	// @Tags API.admin
+	// @Router /api/admin [post]
+	Create() core.HandlerFunc
 }
 
 type handler struct {
