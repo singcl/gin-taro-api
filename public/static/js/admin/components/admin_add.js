@@ -56,7 +56,7 @@ export default {
         {
           required: true,
           trigger: 'blur',
-          message: '手机号',
+          message: '请输入手机号',
         },
         {
           pattern: /^1[34578]\d{9}$/,
@@ -68,7 +68,7 @@ export default {
         {
           required: true,
           trigger: 'blur',
-          message: '密码',
+          message: '请输入密码',
         },
         {
           pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,20}$/,
