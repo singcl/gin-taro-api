@@ -9,9 +9,9 @@ import (
 )
 
 type createRequest struct {
-	BusinessKey       string `form:"business_key"`       // 调用方key
-	BusinessDeveloper string `form:"business_developer"` // 调用方对接人
-	Remark            string `form:"remark"`             // 备注
+	BusinessKey       string `form:"business_key" binding:"required"`       // 调用方key
+	BusinessDeveloper string `form:"business_developer" binding:"required"` // 调用方对接人
+	Remark            string `form:"remark" binding:"required"`             // 备注
 }
 
 type createResponse struct {
