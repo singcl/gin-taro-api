@@ -15,33 +15,73 @@ export default {
     const message = useMessage();
     const visible = toRef(props, 'visible');
     const formData = reactive({
-      business_key: undefined,
-      business_developer: undefined,
-      remark: undefined,
+      username: undefined,
+      nickname: undefined,
+      mobile: undefined,
+      password: undefined,
     });
     const formRef = ref(null);
     const rules = reactive({
-      business_key: {
-        required: true,
-        trigger: 'blur',
-        message: '请输入调用方标识',
-      },
-      business_developer: {
-        required: true,
-        trigger: 'blur',
-        message: '请输入调用方对接人',
-      },
-      remark: {
-        required: true,
-        trigger: 'blur',
-        message: '备注',
-      },
+      username: [
+        {
+          required: true,
+          trigger: 'blur',
+          message: '请输入用户名',
+        },
+        // {
+        //   min: 6,
+        //   max: 12,
+        //   message: '用户名长度必须在6-12之间',
+        // trigger: 'blur',
+        // },
+        {
+          pattern: /^[a-z][a-z0-9_]{5,11}$/,
+          message: '用户名长度必须在6-12位之间，以小写字母开头且只能包含字母数字下划线',
+          trigger: 'blur',
+        },
+      ],
+      nickname: [
+        {
+          required: true,
+          trigger: 'blur',
+          message: '请输入昵称',
+        },
+        {
+          pattern: /^[^0-9-][a-zA-Z0-9\u4e00-\u9fa5_-]{7,17}$/,
+          message: '昵称长度必须在8-18位之间，只能包含字母数字下划线中划线中文',
+          trigger: 'blur',
+        },
+      ],
+      mobile: [
+        {
+          required: true,
+          trigger: 'blur',
+          message: '手机号',
+        },
+        {
+          pattern: /^1[34578]\d{9}$/,
+          message: '请输入正确的手机号码',
+          trigger: 'blur',
+        },
+      ],
+      password: [
+        {
+          required: true,
+          trigger: 'blur',
+          message: '密码',
+        },
+        {
+          pattern: /^(?![a-zA-Z]+$)(?![A-Z0-9]+$)(?![A-Z\W_]+$)(?![a-z0-9]+$)(?![a-z\W_]+$)(?![0-9\W_]+$)[a-zA-Z0-9\W_]{8,20}$/,
+          message: '请输入8-20位字符，必须包含大写字母小写字母和数字',
+          trigger: 'blur',
+        },
+      ],
     });
     //
     async function handleSure() {
       const response = await formRef.value?.validate();
       try {
-        await new Kiko().fetch('/api/authorized', {
+        await new Kiko().fetch('/api/admin', {
           method: 'POST',
           body: formData,
         });
@@ -70,30 +110,39 @@ export default {
               { model: formData, rules: rules, ref: formRef, labelPlacement: 'left', labelWidth: '120px' },
               () => [
                 //
-                h(NFormItem, { label: '调用方', path: 'business_key' }, () =>
+                h(NFormItem, { label: '用户名', path: 'username' }, () =>
                   h(NInput, {
-                    value: formData.business_key,
-                    'onUpdate:value': (v) => (formData.business_key = v),
+                    value: formData.username,
+                    'onUpdate:value': (v) => (formData.username = v),
                     type: 'text',
-                    placeholder: '请输入调用方标识',
+                    placeholder: '请输入用户名',
                   })
                 ),
                 //
-                h(NFormItem, { label: '调用方对接人', path: 'business_developer' }, () =>
+                h(NFormItem, { label: '昵称', path: 'nickname' }, () =>
                   h(NInput, {
-                    value: formData.business_developer,
-                    'onUpdate:value': (v) => (formData.business_developer = v),
+                    value: formData.nickname,
+                    'onUpdate:value': (v) => (formData.nickname = v),
                     type: 'text',
-                    placeholder: '请输入调用方对接人',
+                    placeholder: '请输入昵称',
                   })
                 ),
                 //
-                h(NFormItem, { label: '备注', path: 'remark' }, () =>
+                h(NFormItem, { label: '手机号', path: 'mobile' }, () =>
                   h(NInput, {
-                    value: formData.remark,
-                    'onUpdate:value': (v) => (formData.remark = v),
+                    value: formData.mobile,
+                    'onUpdate:value': (v) => (formData.mobile = v),
                     type: 'text',
-                    placeholder: '请输入备注',
+                    placeholder: '请输入手机号',
+                  })
+                ),
+                //
+                h(NFormItem, { label: '密码', path: 'password' }, () =>
+                  h(NInput, {
+                    value: formData.password,
+                    'onUpdate:value': (v) => (formData.password = v),
+                    type: 'password',
+                    placeholder: '请输入密码',
                   })
                 ),
               ]
