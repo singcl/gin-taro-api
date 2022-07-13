@@ -4,7 +4,7 @@ import naive from '/public/static/js/vue/naive.js';
 import Kiko from './../../utils/kiko/Kiko.js';
 
 //
-// import AddDialog from './components/authorized_add.js';
+import AddDialog from '../components/admin_add.js';
 // import AuthApiDrawer from './components/authorized_api.js';
 
 const { useMessage, useDialog } = naive;
@@ -145,20 +145,20 @@ export default {
     function handleAddAuth() {
       adModalVisible.value = true;
     }
-    // //
-    // function handleAddModalCancel(v) {
-    //   adModalVisible.value = Boolean(v);
-    // }
+    //
+    function handleAddModalCancel(v) {
+      adModalVisible.value = Boolean(v);
+    }
     // //
     // function handleApiDrawerCancel(v) {
     //   apiDrawerVisible.value = Boolean(v);
     // }
-    // //
-    // function handleConfirm(v) {
-    //   console.log(v);
-    //   handleSearch();
-    // }
     //
+    function handleConfirm(v) {
+      console.log(v);
+      handleSearch();
+    }
+    
     async function handleUpdateUsed(row) {
       const { hashid, is_used } = row;
       const used = { 1: -1, '-1': 1 }[is_used];
@@ -233,15 +233,15 @@ export default {
           }),
         ]),
 
-        // // 新增授权 dialog
-        // h(naive.NMessageProvider, () =>
-        //   h(AddDialog, {
-        //     visible: adModalVisible.value,
-        //     'onUpdate:visible': handleAddModalCancel,
-        //     onClose: handleAddModalCancel,
-        //     'onKiko:conform': handleConfirm,
-        //   })
-        // ),
+        // 新增管理员 dialog
+        h(naive.NMessageProvider, () =>
+          h(AddDialog, {
+            visible: adModalVisible.value,
+            'onUpdate:visible': handleAddModalCancel,
+            onClose: handleAddModalCancel,
+            'onKiko:conform': handleConfirm,
+          })
+        ),
 
         // // 已授权API drawer
         // h(naive.NMessageProvider, () =>
