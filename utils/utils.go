@@ -35,14 +35,22 @@ func Md5Avatar(name string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
+func ValidateExt(ext string) (bool, error) {
+	extSlice := []string{".png", ".jpg", ".gif", ".jpeg"}
+	for _, v := range extSlice {
+		if v == ext {
+			return true, nil
+		}
+	}
+	return false, errors.New("只允许png,jpg,gif,jpeg文件")
+}
+
 // 图片验证
 func CheckImage(file *multipart.FileHeader) (err error) {
 	fileExt := strings.ToLower(path.Ext(file.Filename))
-	// TODO: 优化判断方式
 	// 限制只能传指定格式图片
-	if fileExt != ".png" && fileExt != ".jpg" && fileExt != ".gif" && fileExt != ".jpeg" {
-		err = errors.New("只允许png,jpg,gif,jpeg文件")
-		return
+	if _, err := ValidateExt(fileExt); err != nil {
+		return err
 	}
 	if file.Size > 200*1024 {
 		err = errors.New("图片大小不得大于200KB")
