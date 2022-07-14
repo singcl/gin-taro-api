@@ -99,17 +99,17 @@ export default {
               return h('div', [
                 h(
                   naive.NButton,
-                  { type: 'info', style: { marginRight: '10px' }, onClick: () => handleAuthApiDetail(row) },
+                  { type: 'info',  text: true, style: { marginRight: '10px' }, onClick: () => handleAuthApiDetail(row) },
                   () => '接口'
                 ),
                 itm
                   ? h(
                       naive.NButton,
-                      { type: itm.type, style: { marginRight: '10px' }, onClick: () => handleUpdateUsed(row) },
+                      { type: itm.type,  text: true, style: { marginRight: '10px' }, onClick: () => handleUpdateUsed(row) },
                       () => itm.label
                     )
                   : undefined,
-                h(naive.NButton, { type: 'error', onClick: () => handleDelete(row) }, () => '删除'),
+                h(naive.NButton, { type: 'error',  text: true, onClick: () => handleDelete(row) }, () => '删除'),
               ]);
             },
           };
