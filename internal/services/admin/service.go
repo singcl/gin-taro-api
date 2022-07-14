@@ -13,6 +13,7 @@ type Service interface {
 	i()
 
 	Create(ctx core.Context, adminData *CreateAdminData) (id int32, err error)
+	Delete(ctx core.Context, id int32) (err error)
 	Detail(ctx core.Context, searchOneData *SearchOneData) (info *admin.Admin, err error)
 	MyMenu(ctx core.Context, searchData *SearchMyMenuData) (menuData []ListMyMenuData, err error)
 	MyAction(ctx core.Context, searchData *SearchMyActionData) (actionData []MyActionData, err error)
