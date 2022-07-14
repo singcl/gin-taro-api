@@ -165,7 +165,7 @@ export default {
       const itm = useOptions.find((item) => item.value == used);
       dialog.warning({
         title: '警告',
-        content: `确定${itm.label}当前授权吗？`,
+        content: `确定${itm.label}当前用户吗？`,
         positiveText: '确定',
         negativeText: '取消',
         onPositiveClick: async () => {
@@ -198,7 +198,7 @@ export default {
 
       dialog.warning({
         title: '警告',
-        content: `确定删除当前授权吗？`,
+        content: `确定删除当前用户吗？`,
         positiveText: '确定',
         negativeText: '取消',
         onPositiveClick: async () => {
