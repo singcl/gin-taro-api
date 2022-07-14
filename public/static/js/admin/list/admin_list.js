@@ -203,7 +203,7 @@ export default {
         negativeText: '取消',
         onPositiveClick: async () => {
           try {
-            await new Kiko().fetch(`/api/authorized/${hashid}`, {
+            await new Kiko().fetch(`/api/admin/${hashid}`, {
               method: 'DELETE',
             });
             message.success(`删除成功！`);
