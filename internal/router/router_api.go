@@ -74,5 +74,6 @@ func setApiRouter(r *resource) {
 		api.GET("/admin", adminHandler.List())
 		api.POST("/admin", adminHandler.Create())
 		api.DELETE("/admin/:id", core.AliasForRecordMetrics("/api/admin"), adminHandler.Delete())
+		api.PATCH("/admin/used", adminHandler.UpdateUsed())
 	}
 }
