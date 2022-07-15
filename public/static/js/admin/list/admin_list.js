@@ -170,7 +170,7 @@ export default {
         negativeText: '取消',
         onPositiveClick: async () => {
           try {
-            await new Kiko().fetch('/api/authorized/used', {
+            await new Kiko().fetch('/api/admin/used', {
               method: 'PATCH',
               body: {
                 id: hashid,
