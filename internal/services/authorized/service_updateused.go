@@ -6,7 +6,6 @@ import (
 	"github.com/singcl/gin-taro-api/internal/repository/mysql"
 	"github.com/singcl/gin-taro-api/internal/repository/mysql/authorized"
 	"github.com/singcl/gin-taro-api/internal/repository/redis"
-	"gorm.io/gorm"
 )
 
 func (s *service) UpdateUsed(ctx core.Context, id int32, used int32) (err error) {
@@ -15,8 +14,11 @@ func (s *service) UpdateUsed(ctx core.Context, id int32, used int32) (err error)
 		WhereId(mysql.EqualPredicate, id).
 		First(s.db.GetDbR().WithContext(ctx.RequestContext()))
 
-	if err == gorm.ErrRecordNotFound {
-		return nil
+		// if err == gorm.ErrRecordNotFound {
+		// 	return nil
+		// }
+	if err != nil {
+		return err
 	}
 
 	data := map[string]interface{}{
