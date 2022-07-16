@@ -43,6 +43,10 @@ type Handler interface {
 	// @Tags API.admin
 	// @Router /api/admin/used [patch]
 	UpdateUsed() core.HandlerFunc
+	// Offline 下线管理员
+	// @Tags API.admin
+	// @Router /api/admin/offline [patch]
+	Offline() core.HandlerFunc
 }
 
 type handler struct {
