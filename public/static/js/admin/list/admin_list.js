@@ -60,7 +60,8 @@ const defaultColumnsConfig = [
     },
   },
   {
-    key: 'is_online', title: '在线状态',
+    key: 'is_online',
+    title: '在线状态',
     render(row) {
       const { is_online } = row;
       const itm = onlineOptions.find((m) => m.value == is_online);
@@ -99,17 +100,23 @@ export default {
               return h('div', [
                 h(
                   naive.NButton,
-                  { type: 'info',  text: true, style: { marginRight: '10px' }, onClick: () => handleAuthApiDetail(row) },
+                  { type: 'info', text: true, style: { marginRight: '10px' }, onClick: () => handleAuthApiDetail(row) },
                   () => '接口'
                 ),
                 itm
                   ? h(
                       naive.NButton,
-                      { type: itm.type,  text: true, style: { marginRight: '10px' }, onClick: () => handleUpdateUsed(row) },
+                      {
+                        type: itm.type,
+                        text: true,
+                        style: { marginRight: '10px' },
+                        onClick: () => handleUpdateUsed(row),
+                      },
                       () => itm.label
                     )
                   : undefined,
-                h(naive.NButton, { type: 'error',  text: true, onClick: () => handleDelete(row) }, () => '删除'),
+                h(naive.NButton, { type: 'error', text: true, onClick: () => handleDelete(row) }, () => '删除'),
+                h(naive.NButton, { type: 'error', text: true, onClick: () => handleOffline(row) }, () => '下线'),
               ]);
             },
           };
@@ -158,7 +165,7 @@ export default {
       console.log(v);
       handleSearch();
     }
-    
+
     async function handleUpdateUsed(row) {
       const { hashid, is_used } = row;
       const used = { 1: -1, '-1': 1 }[is_used];
@@ -207,6 +214,31 @@ export default {
               method: 'DELETE',
             });
             message.success(`删除成功！`);
+            handleSearch();
+          } catch (error) {
+            message.error(`code: ${error.code};message: ${error.message}`);
+          }
+        },
+      });
+    }
+    //
+    async function handleOffline(row) {
+      const { hashid } = row;
+
+      dialog.warning({
+        title: '警告',
+        content: `确定下线当前用户吗？`,
+        positiveText: '确定',
+        negativeText: '取消',
+        onPositiveClick: async () => {
+          try {
+            await new Kiko().fetch(`/api/admin/offline`, {
+              method: 'PATCH',
+              body: {
+                id: hashid,
+              },
+            });
+            message.success(`下线成功！`);
             handleSearch();
           } catch (error) {
             message.error(`code: ${error.code};message: ${error.message}`);
