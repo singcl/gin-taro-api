@@ -94,30 +94,15 @@ export default {
           newItem = {
             ...newItem,
             render(row) {
-              const { is_used } = row;
-              const op_used = { 1: -1, '-1': 1 }[is_used];
-              const itm = useOptions.find((m) => m.value == op_used);
-              return h('div', [
-                h(
-                  naive.NButton,
-                  { type: 'info', text: true, style: { marginRight: '10px' }, onClick: () => handleAuthApiDetail(row) },
-                  () => '接口'
-                ),
-                itm
-                  ? h(
-                      naive.NButton,
-                      {
-                        type: itm.type,
-                        text: true,
-                        style: { marginRight: '10px' },
-                        onClick: () => handleUpdateUsed(row),
-                      },
-                      () => itm.label
-                    )
-                  : undefined,
-                h(naive.NButton, { type: 'error', text: true, onClick: () => handleDelete(row) }, () => '删除'),
-                h(naive.NButton, { type: 'error', text: true, onClick: () => handleOffline(row) }, () => '下线'),
-              ]);
+              return h(
+                naive.NDropdown,
+                {
+                  options: dropdownOptionsRender(row),
+                  trigger: 'click',
+                  width: 'trigger',
+                },
+                () => h(naive.NButton, { type: 'info', size: 'small' }, () => '批量操作')
+              );
             },
           };
           break;
@@ -126,6 +111,82 @@ export default {
       }
       return newItem;
     });
+    // 下拉菜单 @see https://www.naiveui.com/zh-CN/os-theme/components/dropdown
+
+    function dropdownOptionsRender(row) {
+      const { is_used } = row;
+      const op_used = { 1: -1, '-1': 1 }[is_used];
+      const itm = useOptions.find((m) => m.value == op_used);
+      return [
+        {
+          type: 'render',
+          key: 'interface',
+          render() {
+            return h(
+              naive.NButton,
+              {
+                type: 'info',
+                text: true,
+                style: { marginRight: '10px', width: '100%', marginBottom: '6px' },
+                onClick: () => handleAuthApiDetail(row),
+              },
+              () => '接口'
+            );
+          },
+        },
+        {
+          type: 'render',
+          key: 'used',
+          render() {
+            return itm
+              ? h(
+                  naive.NButton,
+                  {
+                    type: itm.type,
+                    text: true,
+                    style: { width: '100%', marginBottom: '6px' },
+                    onClick: () => handleUpdateUsed(row),
+                  },
+                  () => itm.label
+                )
+              : undefined;
+          },
+        },
+        {
+          type: 'render',
+          key: 'delete',
+          render() {
+            return h(
+              naive.NButton,
+              {
+                type: 'error',
+                style: { width: '100%', marginBottom: '6px' },
+                text: true,
+                onClick: () => handleDelete(row),
+              },
+              () => '删除'
+            );
+          },
+        },
+        {
+          type: 'render',
+          key: 'offline',
+          render() {
+            return h(
+              naive.NButton,
+              {
+                type: 'error',
+                text: true,
+                style: { width: '100%', marginBottom: '6px' },
+                onClick: () => handleOffline(row),
+              },
+              () => '下线'
+            );
+          },
+        },
+      ];
+    }
+
     const columns = reactive(defaultColumns);
     const tableData = ref([]);
     const adModalVisible = ref(false);
