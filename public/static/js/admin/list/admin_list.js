@@ -184,6 +184,22 @@ export default {
             );
           },
         },
+        {
+          type: 'render',
+          key: 'reset',
+          render() {
+            return h(
+              naive.NButton,
+              {
+                type: 'warning',
+                text: true,
+                style: { width: '100%', marginBottom: '6px' },
+                onClick: () => handleResetPassword(row),
+              },
+              () => '重置密码'
+            );
+          },
+        },
       ];
     }
 
@@ -300,6 +316,29 @@ export default {
               },
             });
             message.success(`下线成功！`);
+            handleSearch();
+          } catch (error) {
+            message.error(`code: ${error.code};message: ${error.message}`);
+          }
+        },
+      });
+    }
+
+    //
+    async function handleResetPassword(row) {
+      const { hashid } = row;
+
+      dialog.warning({
+        title: '警告',
+        content: `确定重置当前用户密码吗？`,
+        positiveText: '确定',
+        negativeText: '取消',
+        onPositiveClick: async () => {
+          try {
+            await new Kiko().fetch(`/api/admin/reset_password/hashid`, {
+              method: 'PATCH',
+            });
+            message.success(`重置成功！`);
             handleSearch();
           } catch (error) {
             message.error(`code: ${error.code};message: ${error.message}`);
