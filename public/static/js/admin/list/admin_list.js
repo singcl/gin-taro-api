@@ -335,7 +335,7 @@ export default {
         negativeText: '取消',
         onPositiveClick: async () => {
           try {
-            await new Kiko().fetch(`/api/admin/reset_password/hashid`, {
+            await new Kiko().fetch(`/api/admin/reset_password/${hashid}`, {
               method: 'PATCH',
             });
             message.success(`重置成功！`);

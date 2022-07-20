@@ -11,7 +11,7 @@ import (
 const (
 	saltPassword       = "qkhPAGA13HocW3GAEWwb"
 	saltWeixinPassword = "sfjlsjfdlskjfkleee44455ssSSDFCSSSE4"
-	defaultPassword    = "123456"
+	defaultPassword    = "Qwer123456"
 )
 
 func GeneratePassword(str string) (password string) {
