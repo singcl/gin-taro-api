@@ -76,5 +76,6 @@ func setApiRouter(r *resource) {
 		api.DELETE("/admin/:id", core.AliasForRecordMetrics("/api/admin"), adminHandler.Delete())
 		api.PATCH("/admin/used", adminHandler.UpdateUsed())
 		api.PATCH("/admin/offline", adminHandler.Offline())
+		api.PATCH("/admin/reset_password/:id", core.AliasForRecordMetrics("/api/admin/reset_password"), adminHandler.ResetPassword())
 	}
 }
