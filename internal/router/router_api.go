@@ -54,6 +54,7 @@ func setApiRouter(r *resource) {
 	{
 		notRBAC.POST("/admin/logout", adminHandler.Logout())
 		notRBAC.GET("/admin/info", adminHandler.Detail())
+		notRBAC.PATCH("/admin/modify_password", adminHandler.ModifyPassword())
 	}
 
 	// 需要签名验证、登录验证、RBAC 权限验证

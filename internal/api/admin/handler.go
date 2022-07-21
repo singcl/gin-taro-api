@@ -51,6 +51,10 @@ type Handler interface {
 	// @Tags API.admin
 	// @Router /api/admin/reset_password/{id} [patch]
 	ResetPassword() core.HandlerFunc
+	// ModifyPassword 修改密码
+	// @Tags API.admin
+	// @Router /api/admin/modify_password [patch]
+	ModifyPassword() core.HandlerFunc
 }
 
 type handler struct {
