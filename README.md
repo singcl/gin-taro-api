@@ -106,4 +106,4 @@ git-chglog -o CHANGELOG.md
 |                 预览                  |                预览                |
 | :---------------------------------------: | :------------------------------------: |
 |  ![授权列表](./imgs/authorized_list.png)  | ![新增授权](./imgs/authorized_add.png) |
-| ![授权详情](./imgs/authorized_detail.png) |                                        |
+| ![授权详情](./imgs/authorized_detail.png) |       -                                 |
