@@ -55,6 +55,10 @@ type Handler interface {
 	// @Tags API.admin
 	// @Router /api/admin/modify_password [patch]
 	ModifyPassword() core.HandlerFunc
+	// ModifyPersonalInfo 修改个人信息
+	// @Tags API.admin
+	// @Router /api/admin/modify_personal_info [patch]
+	ModifyPersonalInfo() core.HandlerFunc
 }
 
 type handler struct {

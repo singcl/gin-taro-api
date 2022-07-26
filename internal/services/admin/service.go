@@ -23,6 +23,7 @@ type Service interface {
 	PageListCount(ctx core.Context, searchData *SearchData) (total int64, err error)
 	ResetPassword(ctx core.Context, id int32) (err error)
 	ModifyPassword(ctx core.Context, id int32, newPassword string) (err error)
+	ModifyPersonalInfo(ctx core.Context, id int32, modifyData *ModifyData) (err error)
 }
 
 type service struct {
