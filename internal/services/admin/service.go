@@ -26,6 +26,7 @@ type Service interface {
 	ModifyPersonalInfo(ctx core.Context, id int32, modifyData *ModifyData) (err error)
 
 	CreateMenu(ctx core.Context, menuData *CreateMenuData) (err error)
+	ListMenu(ctx core.Context, searchData *SearchListMenuData) (menuData []ListMenuData, err error)
 }
 
 type service struct {
