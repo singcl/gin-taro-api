@@ -79,5 +79,7 @@ func setApiRouter(r *resource) {
 		api.PATCH("/admin/used", adminHandler.UpdateUsed())
 		api.PATCH("/admin/offline", adminHandler.Offline())
 		api.PATCH("/admin/reset_password/:id", core.AliasForRecordMetrics("/api/admin/reset_password"), adminHandler.ResetPassword())
+
+		api.POST("/admin/menu", adminHandler.CreateAdminMenu())
 	}
 }

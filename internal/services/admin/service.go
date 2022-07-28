@@ -24,6 +24,8 @@ type Service interface {
 	ResetPassword(ctx core.Context, id int32) (err error)
 	ModifyPassword(ctx core.Context, id int32, newPassword string) (err error)
 	ModifyPersonalInfo(ctx core.Context, id int32, modifyData *ModifyData) (err error)
+
+	CreateMenu(ctx core.Context, menuData *CreateMenuData) (err error)
 }
 
 type service struct {

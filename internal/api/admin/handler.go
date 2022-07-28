@@ -59,6 +59,10 @@ type Handler interface {
 	// @Tags API.admin
 	// @Router /api/admin/modify_personal_info [patch]
 	ModifyPersonalInfo() core.HandlerFunc
+	// CreateAdminMenu 提交菜单授权
+	// @Tags API.admin
+	// @Router /api/admin/menu [post]
+	CreateAdminMenu() core.HandlerFunc
 }
 
 type handler struct {
