@@ -82,5 +82,8 @@ func setApiRouter(r *resource) {
 
 		api.POST("/admin/menu", adminHandler.CreateAdminMenu())
 		api.GET("/admin/menu/:id", core.AliasForRecordMetrics("/api/admin/menu"), adminHandler.ListAdminMenu())
+
+		// menu
+		// menuHandler := menu.New(r.logger, r.db, r.cache)
 	}
 }
