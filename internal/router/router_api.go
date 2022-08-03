@@ -4,6 +4,7 @@ import (
 	"github.com/singcl/gin-taro-api/internal/api/admin"
 	"github.com/singcl/gin-taro-api/internal/api/authorized"
 	"github.com/singcl/gin-taro-api/internal/api/helper"
+	"github.com/singcl/gin-taro-api/internal/api/menu"
 	"github.com/singcl/gin-taro-api/internal/api/weixin"
 	"github.com/singcl/gin-taro-api/internal/pkg/core"
 )
@@ -84,6 +85,7 @@ func setApiRouter(r *resource) {
 		api.GET("/admin/menu/:id", core.AliasForRecordMetrics("/api/admin/menu"), adminHandler.ListAdminMenu())
 
 		// menu
-		// menuHandler := menu.New(r.logger, r.db, r.cache)
+		menuHandler := menu.New(r.logger, r.db, r.cache)
+		api.POST("/menu", menuHandler.Create())
 	}
 }

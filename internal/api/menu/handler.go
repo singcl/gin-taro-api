@@ -2,6 +2,7 @@ package menu
 
 import (
 	"github.com/singcl/gin-taro-api/configs"
+	"github.com/singcl/gin-taro-api/internal/pkg/core"
 	"github.com/singcl/gin-taro-api/internal/repository/mysql"
 	"github.com/singcl/gin-taro-api/internal/repository/redis"
 	"github.com/singcl/gin-taro-api/internal/services/menu"
@@ -13,6 +14,11 @@ var _ Handler = (*handler)(nil)
 
 type Handler interface {
 	i()
+
+	// Create 创建/编辑菜单
+	// @Tags API.menu
+	// @Router /api/menu [post]
+	Create() core.HandlerFunc
 }
 
 type handler struct {
