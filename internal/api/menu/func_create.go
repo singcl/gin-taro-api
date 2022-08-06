@@ -42,7 +42,6 @@ func (h *handler) Create() core.HandlerFunc {
 				code.ParamBindError,
 				code.Text(code.ParamBindError)).WithError(err),
 			)
-			//
 			return
 		}
 	}
