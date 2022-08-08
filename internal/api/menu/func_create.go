@@ -34,7 +34,7 @@ type createResponse struct {
 func (h *handler) Create() core.HandlerFunc {
 	return func(c core.Context) {
 		req := new(createRequest)
-		res := new(createResponse)
+		// res := new(createResponse)
 
 		if err := c.ShouldBindForm(req); err != nil {
 			c.AbortWithError(core.Error(
