@@ -1,6 +1,7 @@
 package menu
 
 import (
+	"github.com/singcl/gin-taro-api/internal/pkg/core"
 	"github.com/singcl/gin-taro-api/internal/repository/mysql"
 	"github.com/singcl/gin-taro-api/internal/repository/redis"
 )
@@ -9,6 +10,9 @@ var _ Service = (*service)(nil)
 
 type Service interface {
 	i()
+
+	Create(ctx core.Context, menuData *CreateMenuData) (id int32, err error)
+	Modify(ctx core.Context, id int32, menuData *UpdateMenuData) (err error)
 }
 
 type service struct {

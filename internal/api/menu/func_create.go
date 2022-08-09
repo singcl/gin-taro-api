@@ -5,6 +5,8 @@ import (
 
 	"github.com/singcl/gin-taro-api/internal/code"
 	"github.com/singcl/gin-taro-api/internal/pkg/core"
+	"github.com/singcl/gin-taro-api/internal/services/menu"
+	"github.com/spf13/cast"
 )
 
 type createRequest struct {
@@ -34,7 +36,7 @@ type createResponse struct {
 func (h *handler) Create() core.HandlerFunc {
 	return func(c core.Context) {
 		req := new(createRequest)
-		// res := new(createResponse)
+		res := new(createResponse)
 
 		if err := c.ShouldBindForm(req); err != nil {
 			c.AbortWithError(core.Error(
@@ -43,6 +45,67 @@ func (h *handler) Create() core.HandlerFunc {
 				code.Text(code.ParamBindError)).WithError(err),
 			)
 			return
+		}
+
+		// 编辑功能
+		if req.Id != "" {
+			ids, err := h.hashids.HashidsDecode(req.Id)
+			if err != nil {
+				c.AbortWithError(core.Error(
+					http.StatusBadRequest,
+					code.HashIdsDecodeError,
+					code.Text(code.HashIdsDecodeError)).WithError(err),
+				)
+				return
+			}
+
+			id := int32(ids[0])
+			updateData := new(menu.UpdateMenuData)
+			updateData.Name = req.Name
+			updateData.Icon = req.Icon
+			updateData.Link = req.Link
+
+			err = h.menuService.Modify(c, id, updateData)
+			if err != nil {
+				c.AbortWithError(core.Error(
+					http.StatusBadRequest,
+					code.MenuUpdateError,
+					code.Text(code.MenuUpdateError)).WithError(err),
+				)
+				return
+			}
+
+			res.Id = id
+			c.Payload(res)
+		} else {
+			// 新增功能
+			pid := req.Level
+			level := 2
+
+			if req.Level == -1 {
+				pid = 0
+				level = 1
+			}
+
+			createData := new(menu.CreateMenuData)
+			createData.Pid = pid
+			createData.Name = req.Name
+			createData.Icon = req.Icon
+			createData.Link = req.Link
+			createData.Level = cast.ToInt32(level)
+
+			id, err := h.menuService.Create(c, createData)
+			if err != nil {
+				c.AbortWithError(core.Error(
+					http.StatusBadRequest,
+					code.MenuCreateError,
+					code.Text(code.MenuCreateError)).WithError(err),
+				)
+				return
+			}
+
+			res.Id = id
+			c.Payload(res)
 		}
 	}
 }
