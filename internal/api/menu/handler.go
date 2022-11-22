@@ -19,6 +19,11 @@ type Handler interface {
 	// @Tags API.menu
 	// @Router /api/menu [post]
 	Create() core.HandlerFunc
+
+	// List 菜单列表
+	// @Tags API.menu
+	// @Router /api/menu [get]
+	List() core.HandlerFunc
 }
 
 type handler struct {

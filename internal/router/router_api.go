@@ -87,5 +87,6 @@ func setApiRouter(r *resource) {
 		// menu
 		menuHandler := menu.New(r.logger, r.db, r.cache)
 		api.POST("/menu", menuHandler.Create())
+		api.GET("/menu", menuHandler.List())
 	}
 }
