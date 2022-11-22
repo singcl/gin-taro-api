@@ -45,6 +45,7 @@
     "gonic",
     "gorm",
     "gormgen",
+    "hashid",
     "Hashids",
     "historyarpu",
     "historynew",
