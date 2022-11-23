@@ -14,6 +14,7 @@ type Handler interface {
 	Login() core.HandlerFunc
 	List() core.HandlerFunc
 	ModifyPassword() core.HandlerFunc
+	ModifyInfo() core.HandlerFunc
 }
 
 type handler struct {
@@ -47,5 +48,11 @@ func (h *handler) List() core.HandlerFunc {
 func (h *handler) ModifyPassword() core.HandlerFunc {
 	return func(c core.Context) {
 		c.HTML("admin_modify_password", nil)
+	}
+}
+
+func (h *handler) ModifyInfo() core.HandlerFunc {
+	return func(ctx core.Context) {
+		ctx.HTML("admin_modify_info", nil)
 	}
 }

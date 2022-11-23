@@ -32,6 +32,7 @@ func setRenderRouter(r *resource) {
 		// 管理员
 		notRBAC.GET("/login", renderAdmin.Login())
 		notRBAC.GET("/admin/modify_password", renderAdmin.ModifyPassword())
+		notRBAC.GET("/admin/modify_info", renderAdmin.ModifyInfo())
 	}
 
 	// 无需记录日志，需要 RBAC 权限验证
