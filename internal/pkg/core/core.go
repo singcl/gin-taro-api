@@ -228,14 +228,13 @@ func New(logger *zap.Logger, options ...Option) (Kiko, error) {
 	kiko.engine.MaxMultipartMemory = 2 << 20 // 2 MiB
 
 	// 静态资源服务
-	// kiko.engine.StaticFS("public", http.FS(public.Public))
+	// kiko.engine.Static("/uploads", "./uploads")
 	// kiko.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(views.Templates, "templates/**/*")))
 
 	// @DEBUG: DEBUG for fed live reload
 	// 第一个参数静态资源前缀，第二参数静态资源目录
-	// kiko.engine.Static("/public", "./public")
+	// kiko.engine.Static("/uploads", "./uploads")
 	// 和上面的方式功能一样，不过下面会启动一个静态资源文件系统
-	kiko.engine.StaticFS("/public", http.Dir("./public")) // TODO:迁移完成后删除
 	kiko.engine.StaticFS("/uploads", http.Dir("./uploads"))
 	kiko.engine.StaticFS("/views/static", http.Dir("./views/static"))
 	kiko.engine.StaticFS("/views/templates", http.Dir("./views/templates"))
