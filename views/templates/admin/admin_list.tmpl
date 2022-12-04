@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="shortcut icon" type="image/x-icon" href="/public/static/favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="/views/static/favicon.ico" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>管理员列表</title>
@@ -10,10 +10,10 @@
   <body>
     <div id="app"></div>
 
-    <script src="/public/static/js/lib/authorization/crypto-js.min.js"></script>
+    <script src="/views/static/js/lib/authorization/crypto-js.min.js"></script>
     <script type="module">
-      import { createApp } from '/public/static/js/vue/vue3.esm-browser.js';
-      import App from '/public/static/js/admin/list/app.js';
+      import { createApp } from '/views/static/js/vue/vue3.esm-browser.js';
+      import App from '/views/templates/admin/admin_list/app.js';
 
       createApp(App).mount('#app');
     </script>
