@@ -2,20 +2,18 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link
-      rel="shortcut icon"
-      type="image/x-icon"
-      href="/views/static/favicon.ico"
-    />
-    <link rel="stylesheet" href="/views/templates/admin/admin_login/admin_login.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="/views/static/favicon.ico" />
+    <!-- <link rel="stylesheet" href="/views/templates/admin/admin_login/admin_login.css" /> -->
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script src="https://cdn.jsdelivr.net/npm/tailwindcss@3.2.4/lib/index.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>登录</title>
   </head>
   <body>
-    <div id="app"></div>
-
+    <div
+      id="app"
+      class="w-full h-screen bg-cover bg-no-repeat bg-center bg-[url('https://cdn.apifox.cn/mirror-www/web/static/bg-texture.c61f6dbd.svg')] relative flex flex-col justify-center overflow-auto"
+    ></div>
     <script src="/views/static/js/lib/authorization/crypto-js.min.js"></script>
     <script type="module">
       import { createApp } from '/views/static/js/vue/vue3.esm-browser.js';

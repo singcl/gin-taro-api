@@ -37,38 +37,40 @@ export default {
 
     // 渲染函数
     return () =>
-      h('div', { class: 'admin-login' }, [
-        h('div', { class: 'admin-login-form' }, [
-          h('div', { class: 'admin-login-form__item' }, [
-            h('label', { for: 'username' }, ['用户名:']),
-            h('input', {
-              name: 'username',
-              type: 'text',
-              value: username.value,
-              placeholder: '请输入用户名',
-              onInput: (e) => {
-                // username.value = e.target.value 这样写无法响应式更新，为啥？
-                onInputChange(e.target.value);
-              },
-            }),
-          ]),
-          h('div', { class: 'admin-login-form__item' }, [
-            h('label', { for: 'password' }, ['密码:']),
-            h('input', {
-              name: 'password',
-              type: 'password',
-              value: password.value,
-              placeholder: '请输入密码',
-              onInput: (e) => {
-                // password.value = e.target.value 这样写无法响应式更新，为啥？
-                onPasswordChange(e.target.value);
-              },
-            }),
-          ]),
+      h('div', null, [
+        h('div', { class: 'mx-auto my-0 px-6 flex flex-col justify-center items-center' }, [
+          h('div', { class: 'admin-login-form' }, [
+            h('div', { class: 'admin-login-form__item' }, [
+              h('label', { for: 'username' }, ['用户名:']),
+              h('input', {
+                name: 'username',
+                type: 'text',
+                value: username.value,
+                placeholder: '请输入用户名',
+                onInput: (e) => {
+                  // username.value = e.target.value 这样写无法响应式更新，为啥？
+                  onInputChange(e.target.value);
+                },
+              }),
+            ]),
+            h('div', { class: 'admin-login-form__item' }, [
+              h('label', { for: 'password' }, ['密码:']),
+              h('input', {
+                name: 'password',
+                type: 'password',
+                value: password.value,
+                placeholder: '请输入密码',
+                onInput: (e) => {
+                  // password.value = e.target.value 这样写无法响应式更新，为啥？
+                  onPasswordChange(e.target.value);
+                },
+              }),
+            ]),
 
-          h('div', { class: 'admin-login-form__item' }, [
-            h('label'),
-            h(naive.NButton, {type: 'info', onClick: handleSubmitClick }, '登录'),
+            h('div', { class: 'admin-login-form__item' }, [
+              h('label'),
+              h(naive.NButton, { type: 'info', onClick: handleSubmitClick }, '登录'),
+            ]),
           ]),
         ]),
       ]);
