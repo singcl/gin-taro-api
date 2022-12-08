@@ -44,7 +44,7 @@ export default {
             { class: 'w-[400px] rounded-lg bg-[#fff] p-6 flex flex-col justify-center items-center text-slate-900' },
             [
               h('h3', { class: 'self-start pt-4 mb-2 text-2xl' }, ['欢迎使用GIN-TARO-API']),
-              h('div', { class: 'w-full flex overflow-hidden flex-col' }, [
+              h('div', { class: 'w-full flex overflow-hidden flex-col text-sm' }, [
                 h('div', { class: 'relative flex flex-none items-center' }, [
                   h('div', { class: 'relative flex flex-auto grow' }, [
                     h('div', { class: 'relative flex pt-2 pb-2' }, [
@@ -115,7 +115,7 @@ export default {
                         'button',
                         {
                           class:
-                            'w-full inline-flex justify-center items-center mb-2 bg-green-600 hover:bg-green-700 text-white pt-2 pb-2 pl-4 pr-4 rounded outline-0',
+                            'w-full inline-flex justify-center items-center mb-2 bg-green-600 hover:bg-green-700 text-white pt-2 pb-2 pl-4 pr-4 rounded outline-0 text-base',
                           onClick: handleSubmitClick,
                         },
                         '登录'
