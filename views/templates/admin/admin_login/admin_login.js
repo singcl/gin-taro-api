@@ -52,7 +52,7 @@ export default {
                         'div',
                         {
                           class:
-                            'text-green-500 after:absolute after:w-full after:h-[2px] after:left-0 after:bottom-0 after:bg-green-500',
+                            'text-green-600 after:absolute after:w-full after:h-[2px] after:left-0 after:bottom-0 after:bg-green-600',
                         },
                         ['邮箱']
                       ),
@@ -67,7 +67,7 @@ export default {
                           'span',
                           {
                             class:
-                              'w-full inline-flex pt-2 pb-2 pl-[10px] pr-[10px] border-solid border-slate-100 border hover:border-green-500 focus:border-green-500 rounded',
+                              'w-full inline-flex pt-2 pb-2 pl-[10px] pr-[10px] border-solid border-slate-100 border hover:border-green-600 focus:border-green-600 rounded',
                           },
                           [
                             h('input', {
@@ -91,7 +91,7 @@ export default {
                           'span',
                           {
                             class:
-                              'w-full inline-flex pt-2 pb-2 pl-[10px] pr-[10px] border-solid border-slate-100 border hover:border-green-500 focus:border-green-500 rounded',
+                              'w-full inline-flex pt-2 pb-2 pl-[10px] pr-[10px] border-solid border-slate-100 border hover:border-green-600 focus:border-green-600 rounded',
                           },
                           [
                             h('input', {
@@ -115,7 +115,7 @@ export default {
                         'button',
                         {
                           class:
-                            'w-full inline-flex justify-center items-center mb-2 bg-green-500 hover:bg-green-600 text-white pt-2 pb-2 pl-4 pr-4 rounded outline-0',
+                            'w-full inline-flex justify-center items-center mb-2 bg-green-600 hover:bg-green-700 text-white pt-2 pb-2 pl-4 pr-4 rounded outline-0',
                           onClick: handleSubmitClick,
                         },
                         '登录'
