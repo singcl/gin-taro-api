@@ -40,6 +40,7 @@ export default {
       h('div', null, [
         h('div', { class: 'mx-auto my-0 px-6 flex flex-col justify-center items-center' }, [
           h('div', { class: 'w-[400px] rounded-lg bg-[#fff] p-6 flex flex-col justify-center items-center' }, [
+            h('h3', {class: 'self-start pt-4 mb-2 text-2xl'}, ['欢迎使用GIN-TARO-API']),
             h('div', { class: 'admin-login-form__item' }, [
               h('label', { for: 'username' }, ['用户名:']),
               h('input', {
