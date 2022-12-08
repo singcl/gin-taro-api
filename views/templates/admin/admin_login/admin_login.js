@@ -39,7 +39,7 @@ export default {
     return () =>
       h('div', null, [
         h('div', { class: 'mx-auto my-0 px-6 flex flex-col justify-center items-center' }, [
-          h('div', { class: 'admin-login-form' }, [
+          h('div', { class: 'w-[400px] rounded-lg bg-[#fff] p-6 flex flex-col justify-center items-center' }, [
             h('div', { class: 'admin-login-form__item' }, [
               h('label', { for: 'username' }, ['用户名:']),
               h('input', {
