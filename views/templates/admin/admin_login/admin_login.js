@@ -144,7 +144,38 @@ export default {
                         '登录'
                       ),
                     ]),
+
+                    h('div', { class: 'flex justify-between items-center' }, [
+                      h(
+                        'button',
+                        {
+                          class: 'inline-flex text-green-600 rounded outline-0 h-8 justify-center items-center',
+                          onClick: handleSubmitClick,
+                        },
+                        '验证码登陆/注册'
+                      ),
+                      h(
+                        'button',
+                        {
+                          class: 'inline-flex text-green-600 rounded outline-0 h-8 justify-center items-center',
+                          onClick: handleSubmitClick,
+                        },
+                        '忘记密码'
+                      ),
+                    ]),
                   ]),
+                ]),
+              ]),
+              h('div', { class: 'w-full flex flex-col pt-4 mt-0 border-solid border-t border-slate-200' }, [
+                h('div', { class: 'py-2' }, [
+                  h(
+                    'button',
+                    {
+                      class:
+                        'w-full inline-flex justify-center items-center py-2 text-green-600 rounded outline-0 text-base border-solid border-slate-100 border hover:border-green-600',
+                    },
+                    ['微信登陆']
+                  ),
                 ]),
               ]),
             ]
