@@ -1,4 +1,4 @@
-import { h, ref } from '/views/static/js/vue/vue3.esm-browser.js';
+import { h, ref, reactive } from '/views/static/js/vue/vue3.esm-browser.js';
 // import naive from '/views/static/js/vue/naive.js';
 import Kiko from '/views/static/js/utils/kiko/Kiko.js';
 
@@ -14,6 +14,15 @@ export default {
     const password = ref('123456');
     //
     const onPasswordChange = (v) => (password.value = v);
+
+    //
+    const fieldFocused = reactive({
+      username: false,
+      password: false,
+    });
+    function onFieldReactive(field, res) {
+      fieldFocused[field] = res;
+    }
     //
     async function handleSubmitClick() {
       try {
@@ -66,8 +75,9 @@ export default {
                         h(
                           'span',
                           {
-                            class:
-                              'w-full inline-flex pt-2 pb-2 pl-[10px] pr-[10px] border-solid border-slate-100 border hover:border-green-600 focus:border-green-600 rounded',
+                            class: `w-full inline-flex pt-2 pb-2 pl-[10px] pr-[10px] border-solid border-slate-100 border hover:border-green-600 focus:border-green-600 rounded ${
+                              fieldFocused.username ? 'login-field-focused' : ''
+                            }`,
                           },
                           [
                             h('input', {
@@ -80,6 +90,12 @@ export default {
                                 // username.value = e.target.value 这样写无法响应式更新，为啥？
                                 onInputChange(e.target.value);
                               },
+                              onFocus: () => {
+                                onFieldReactive('username', true);
+                              },
+                              onBlur: () => {
+                                onFieldReactive('username', false);
+                              },
                             }),
                           ]
                         ),
@@ -90,8 +106,9 @@ export default {
                         h(
                           'span',
                           {
-                            class:
-                              'w-full inline-flex pt-2 pb-2 pl-[10px] pr-[10px] border-solid border-slate-100 border hover:border-green-600 focus:border-green-600 rounded',
+                            class: `w-full inline-flex pt-2 pb-2 pl-[10px] pr-[10px] border-solid border-slate-100 border hover:border-green-600 focus:border-green-600 rounded ${
+                              fieldFocused.password ? 'login-field-focused' : ''
+                            }`,
                           },
                           [
                             h('input', {
@@ -103,6 +120,12 @@ export default {
                               onInput: (e) => {
                                 // password.value = e.target.value 这样写无法响应式更新，为啥？
                                 onPasswordChange(e.target.value);
+                              },
+                              onFocus: () => {
+                                onFieldReactive('password', true);
+                              },
+                              onBlur: () => {
+                                onFieldReactive('password', false);
                               },
                             }),
                           ]
