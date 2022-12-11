@@ -44,6 +44,15 @@ export default {
       }
     }
 
+    //
+    function handleVerifyCodeLogin() {
+      // TODO:
+    }
+
+    function handleForgotPassword() {
+      // TODO:
+    }
+
     // 渲染函数
     return () =>
       h('div', null, [
@@ -150,7 +159,7 @@ export default {
                         'button',
                         {
                           class: 'inline-flex text-green-600 rounded outline-0 h-8 justify-center items-center',
-                          onClick: handleSubmitClick,
+                          onClick: handleVerifyCodeLogin,
                         },
                         '验证码登陆/注册'
                       ),
@@ -158,7 +167,7 @@ export default {
                         'button',
                         {
                           class: 'inline-flex text-green-600 rounded outline-0 h-8 justify-center items-center',
-                          onClick: handleSubmitClick,
+                          onClick: handleForgotPassword,
                         },
                         '忘记密码'
                       ),
