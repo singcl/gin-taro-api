@@ -5,6 +5,7 @@ import Kiko from '/views/static/js/utils/kiko/Kiko.js';
 // App
 export default {
   setup() {
+    const nMessage = naive.useMessage();
     // 账号
     const username = ref('admin');
     function onInputChange(v) {
@@ -47,10 +48,12 @@ export default {
     //
     function handleVerifyCodeLogin() {
       // TODO:
+      nMessage.info('紧锣密鼓开发中...');
     }
 
     function handleForgotPassword() {
       // TODO:
+      nMessage.info('紧锣密鼓开发中...');
     }
 
     // 渲染函数
@@ -81,12 +84,14 @@ export default {
                 ]
               )
             ),
-            'Taro'
+            'Taro',
           ]),
           h('div', { class: 'mx-auto my-0 px-6 flex flex-col justify-center items-center' }, [
             h(
               'div',
-              { class: 'w-[400px] rounded-lg bg-[#fff] p-6 flex flex-col justify-center items-center text-slate-900' },
+              {
+                class: 'w-[400px] rounded-lg bg-[#fff] p-6 flex flex-col justify-center items-center text-slate-900',
+              },
               [
                 h('h3', { class: 'self-start pt-4 mb-2 text-2xl' }, ['欢迎使用GIN-TARO-API']),
                 h('div', { class: 'w-full flex overflow-hidden flex-col text-sm' }, [
