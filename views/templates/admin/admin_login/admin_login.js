@@ -6,6 +6,7 @@ import Kiko from '/views/static/js/utils/kiko/Kiko.js';
 export default {
   setup() {
     const nMessage = naive.useMessage();
+    const nNotification = naive.useNotification();
     // 账号
     const username = ref('admin');
     function onInputChange(v) {
@@ -41,7 +42,14 @@ export default {
       } catch (error) {
         const code = error.code;
         const message = error.message;
-        alert(`code：${code}\r\nmessage：${message}`);
+        nNotification.error({
+          title: '错误信息',
+          content: () => h('div', [h('p', [code]), h('p', [message])]),
+          // meta: new Date().toLocaleDateString(),
+          duration: 2500,
+          keepAliveOnHover: true,
+        });
+        // alert(`code：${code}\r\nmessage：${message}`);
       }
     }
 
