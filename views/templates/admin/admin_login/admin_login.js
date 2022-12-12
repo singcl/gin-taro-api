@@ -124,9 +124,7 @@ export default {
                           h(
                             'span',
                             {
-                              class: `w-full inline-flex pt-2 pb-2 pl-[10px] pr-[10px] border-solid border-slate-100 border hover:border-green-600 focus:border-green-600 rounded ${
-                                fieldFocused.username ? 'login-field-focused' : ''
-                              }`,
+                              class: `login-field ${fieldFocused.username ? 'login-field-focused' : ''}`,
                             },
                             [
                               h('input', {
@@ -155,9 +153,7 @@ export default {
                           h(
                             'span',
                             {
-                              class: `w-full inline-flex pt-2 pb-2 pl-[10px] pr-[10px] border-solid border-slate-100 border hover:border-green-600 focus:border-green-600 rounded ${
-                                fieldFocused.password ? 'login-field-focused' : ''
-                              }`,
+                              class: `login-field ${fieldFocused.password ? 'login-field-focused' : ''}`,
                             },
                             [
                               h('input', {

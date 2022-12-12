@@ -12,6 +12,9 @@
       @tailwind utilities;
 
       @layer components {
+        .login-field {
+          @apply w-full inline-flex pt-2 pb-2 pl-[10px] pr-[10px] border-solid border-slate-100 border hover:border-green-600 focus:border-green-600 rounded;
+        }
         .login-field-focused {
           @apply border-green-600 shadow-md shadow-green-200;
         }
