@@ -74,12 +74,14 @@ export default class Kiko {
     //
     const response = await fetch(inputR, initAuth);
     const status = response.status;
-    const resBody = await response.json();
     const ok = response.ok;
     if (ok && status == 200) {
+      const resBody = await response.json();
       return resBody;
     } else {
-      return Promise.reject(resBody);
+      const err = new Error(response.statusText);
+      err.code = status;
+      return Promise.reject(err);
     }
   }
 
