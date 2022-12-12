@@ -1,6 +1,7 @@
-import { h, ref, reactive } from '/views/static/js/vue/vue3.esm-browser.js';
-import naive from '/views/static/js/vue/naive.js';
-import Kiko from '/views/static/js/utils/kiko/Kiko.js';
+import { h, ref, reactive } from 'vue';
+import naive from 'naive';
+import Kiko from 'kiko';
+import EyeOutline from '@vicons/ionicons5/EyeOutline.js';
 
 // App
 export default {
@@ -93,6 +94,7 @@ export default {
               )
             ),
             'Taro',
+            h(naive.NIcon, { size: 48 }, () => h(EyeOutline)),
           ]),
           h('div', { class: 'mx-auto my-0 px-6 flex flex-col justify-center items-center' }, [
             h(
