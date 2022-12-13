@@ -103,7 +103,7 @@ git-chglog -o CHANGELOG.md
 
 ## 管理界面
 
-|                 预览                  |                预览                |
+|                   预览                    |                  预览                  |
 | :---------------------------------------: | :------------------------------------: |
 |  ![授权列表](./imgs/authorized_list.png)  | ![新增授权](./imgs/authorized_add.png) |
-| ![授权详情](./imgs/authorized_detail.png) |       -                                 |
+| ![授权详情](./imgs/authorized_detail.png) |   ![登录](./imgs/login.png)   |
