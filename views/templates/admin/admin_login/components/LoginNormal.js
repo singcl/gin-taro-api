@@ -5,7 +5,7 @@ import EyeOutline from '@vicons/ionicons5/EyeOutline.js';
 import EyeOffOutline from '@vicons/ionicons5/EyeOffOutline.js';
 import WeChat from '@vicons/ionicons5/WeChat.js';
 //
-export default defineComponent((/* props */) => {
+export default defineComponent((props, { emit }) => {
   const nMessage = naive.useMessage();
   const nNotification = naive.useNotification();
   // 账号
@@ -68,6 +68,13 @@ export default defineComponent((/* props */) => {
     // TODO:待开发
     nMessage.info('紧锣密鼓开发中...');
   }
+
+  function handleLoginWechat() {
+    //
+    emit('change', 'wechat');
+  }
+
+  //
   return () => [
     h('h3', { class: 'self-start pt-4 mb-2 text-2xl' }, ['欢迎使用GIN-TARO-API']),
     h('div', { class: 'w-full flex overflow-hidden flex-col text-sm' }, [
@@ -196,6 +203,7 @@ export default defineComponent((/* props */) => {
           {
             class:
               'w-full inline-flex justify-center items-center py-2 text-green-600 rounded outline-0 text-base border-solid border-slate-100 border hover:border-green-600',
+            onClick: handleLoginWechat,
           },
           [h(naive.NIcon, { size: 24, class: 'mr-1' }, () => h(WeChat)), '微信登陆']
         ),

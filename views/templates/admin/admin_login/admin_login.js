@@ -1,11 +1,27 @@
-import { h } from 'vue';
+import { h, ref } from 'vue';
 import naive from 'naive';
 import WeChat from '@vicons/ionicons5/WeChat.js';
 import LoginNormal from './components/LoginNormal.js';
+import LoginWechat from './components/LoginWechat.js';
 
 // App
 export default {
   setup() {
+    const loginType = ref('normal');
+    function changeLoginType(v) {
+      loginType.value = v;
+    }
+    function loginTypeRender() {
+      switch (loginType.value) {
+        case 'wechat':
+          return h(LoginWechat, { onChange: changeLoginType });
+        case 'normal':
+        default:
+          return h(LoginNormal, {
+            onChange: changeLoginType,
+          });
+      }
+    }
     // 渲染函数
     return () =>
       h(
@@ -25,7 +41,7 @@ export default {
               {
                 class: 'w-[400px] rounded-lg bg-[#fff] p-6 flex flex-col justify-center items-center text-slate-900',
               },
-              [h(LoginNormal)]
+              [loginTypeRender()]
             ),
           ]),
         ]
