@@ -62,12 +62,12 @@ export default {
 
     //
     function handleVerifyCodeLogin() {
-      // TODO:
+      // TODO:待开发
       nMessage.info('紧锣密鼓开发中...');
     }
 
     function handleForgotPassword() {
-      // TODO:
+      // TODO:待开发
       nMessage.info('紧锣密鼓开发中...');
     }
 
