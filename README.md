@@ -107,3 +107,17 @@ git-chglog -o CHANGELOG.md
 | :---------------------------------------: | :------------------------------------: |
 |  ![授权列表](./imgs/authorized_list.png)  | ![新增授权](./imgs/authorized_add.png) |
 | ![授权详情](./imgs/authorized_detail.png) |   ![登录](./imgs/login.png)   |
+
+
+## 开启内网穿透
+```sh
+# server
+cd /usr/local/frp
+ ./frps -c ./frps.ini
+
+ # client windows
+ ./frpc.exe -c ./frpc.ini
+
+ # url
+ https://frps.imcoco.top
+```
