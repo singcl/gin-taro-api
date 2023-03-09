@@ -231,9 +231,9 @@ func New(logger *zap.Logger, options ...Option) (Kiko, error) {
 
 	// 静态资源服务
 	// kiko.engine.Static("/uploads", "./uploads")
-	kiko.engine.StaticFS("/uploads", http.Dir("./uploads"))
-	kiko.engine.StaticFS("/views/static", http.Dir("./views/static"))
-	kiko.engine.StaticFS("/views/templates", http.Dir("./views/templates"))
+	kiko.engine.StaticFS("uploads", http.Dir("./uploads"))
+	kiko.engine.StaticFS("pages", http.FS(views.Templates))
+	kiko.engine.StaticFS("views", http.FS(views.Static))
 	kiko.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(views.Templates, "templates/**/*.tmpl")))
 
 	// @DEBUG: DEBUG for fed live reload
