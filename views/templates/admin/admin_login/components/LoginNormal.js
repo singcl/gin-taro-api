@@ -14,7 +14,7 @@ export default defineComponent((props, { emit }) => {
     username.value = v;
   }
   // 密码
-  const password = ref('123456');
+  const password = ref('');
   //
   const onPasswordChange = (v) => (password.value = v);
 
