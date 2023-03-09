@@ -28,7 +28,7 @@ export default {
         'div',
         {
           class:
-            "w-full h-screen bg-cover bg-no-repeat bg-center bg-[url('https://cdn.apifox.cn/mirror-www/web/static/bg-texture.c61f6dbd.svg')] relative flex flex-col justify-center overflow-auto",
+            "w-full h-screen bg-cover bg-no-repeat bg-center bg-slate-100 relative flex flex-col justify-center overflow-auto",
         },
         [
           h('div', { class: 'flex justify-start px-2 fixed top-16 left-16 text-green-600 text-2xl items-center' }, [
