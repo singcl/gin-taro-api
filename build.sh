@@ -18,8 +18,7 @@ rm -rf ${project_name}
 rm -rf ${project_name}.log
 if [ -f main ]; then
     echo "strat new process"
-    # workspace中运行..
-    mv main ${project_name}
+    #
     chmod -R 777 ${project_name}
     #这里要防止nohup不执行，添加了一个BUILD_ID
     BUILD_ID=DONTKILLME nohup ./${project_name} >${project_name}.log 2>&1 &
