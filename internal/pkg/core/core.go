@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"html/template"
 	"net/http"
 	"net/url"
 	"runtime/debug"
@@ -17,6 +18,7 @@ import (
 	"github.com/singcl/gin-taro-api/pkg/env"
 	"github.com/singcl/gin-taro-api/pkg/errors"
 	"github.com/singcl/gin-taro-api/pkg/trace"
+	"github.com/singcl/gin-taro-api/views"
 	"go.uber.org/multierr"
 	"go.uber.org/zap"
 )
@@ -229,16 +231,19 @@ func New(logger *zap.Logger, options ...Option) (Kiko, error) {
 
 	// 静态资源服务
 	// kiko.engine.Static("/uploads", "./uploads")
-	// kiko.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(views.Templates, "templates/**/*")))
+	kiko.engine.StaticFS("/uploads", http.Dir("./uploads"))
+	kiko.engine.StaticFS("/views/static", http.Dir("./views/static"))
+	kiko.engine.StaticFS("/views/templates", http.Dir("./views/templates"))
+	kiko.engine.SetHTMLTemplate(template.Must(template.New("").ParseFS(views.Templates, "templates/**/*.tmpl")))
 
 	// @DEBUG: DEBUG for fed live reload
 	// 第一个参数静态资源前缀，第二参数静态资源目录
 	// kiko.engine.Static("/uploads", "./uploads")
 	// 和上面的方式功能一样，不过下面会启动一个静态资源文件系统
-	kiko.engine.StaticFS("/uploads", http.Dir("./uploads"))
-	kiko.engine.StaticFS("/views/static", http.Dir("./views/static"))
-	kiko.engine.StaticFS("/views/templates", http.Dir("./views/templates"))
-	kiko.engine.LoadHTMLGlob("views/templates/**/*.tmpl")
+	// kiko.engine.StaticFS("/uploads", http.Dir("./uploads"))
+	// kiko.engine.StaticFS("/views/static", http.Dir("./views/static"))
+	// kiko.engine.StaticFS("/views/templates", http.Dir("./views/templates"))
+	// kiko.engine.LoadHTMLGlob("views/templates/**/*.tmpl")
 
 	// withoutTracePaths 这些请求，默认不记录日志
 	withoutTracePaths := map[string]bool{
